@@ -1,7 +1,9 @@
+import { useState, useEffect } from "react";
 import Table, { ICell, Row } from "../table/Table";
 import { useSearchParams } from "react-router-dom";
+import { ethers } from "ethers";
 
-const headerCells: ICell[] = [
+const hc: ICell[] = [
   {
     size: "xs",
     value: "#",
@@ -91,8 +93,183 @@ const rows: Row[] = [
   },
 ];
 
+/* Search Params:
+  {
+    requester: string;
+    identifier: string;
+    ancillaryData: string;
+    timestamp: number;
+    chainId: number;
+  } 
+*/
+
 const Request = () => {
   const [searchParams] = useSearchParams();
+  const [rows, setRows] = useState<Row[]>([]);
+  const [headerCells] = useState<ICell[]>(hc);
+
+  // const [requester, setRequester] = useState(searchParams.get("requester"));
+  // const [identifier, setIdentifier] = useState(searchParams.get("identifier"));
+  // const [ancillaryData, setAncillaryData] = useState(
+  //   searchParams.get("ancillaryData")
+  // );
+  // const [timestamp, setTimestamp] = useState(searchParams.get("timestamp"));
+  // const [chainId, setChainId] = useState(searchParams.get("chainId"));
+
+  useEffect(() => {
+    const nextRows = [] as Row[];
+
+    const nextRequester = searchParams.get("requester");
+    // setRequester(nextRequester);
+    nextRows.push({
+      cells: [
+        {
+          size: "xs",
+          value: "0",
+        },
+        {
+          size: "sm",
+          value: "requester",
+        },
+        {
+          size: "sm",
+          value: "Address",
+        },
+        {
+          size: "lg",
+          value: (
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href={`https://etherscan.io/address/${nextRequester}`}
+            >
+              {nextRequester}
+            </a>
+          ),
+        },
+      ],
+    });
+
+    const nextIdentifier = searchParams.get("identifier");
+    // setIdentifier(nextIdentifier);
+    nextRows.push({
+      cells: [
+        {
+          size: "xs",
+          value: "1",
+        },
+        {
+          size: "sm",
+          value: "identifier",
+        },
+        {
+          size: "sm",
+          value: "bytes32",
+        },
+        {
+          size: "lg",
+          value: nextIdentifier ?? "",
+        },
+      ],
+    });
+    const nextTimestamp = searchParams.get("timestamp");
+
+    nextRows.push({
+      cells: [
+        {
+          size: "xs",
+          value: "2",
+        },
+        {
+          size: "sm",
+          value: "timestamp",
+        },
+        {
+          size: "sm",
+          value: "uint256",
+        },
+        {
+          size: "lg",
+          value: nextTimestamp ?? "",
+        },
+      ],
+    });
+
+    let nextAncillaryData = searchParams.get("ancillaryData");
+    let convertedAncillaryData = "";
+    if (nextAncillaryData) {
+      try {
+        convertedAncillaryData = ethers.utils.toUtf8String(nextAncillaryData);
+      } catch (err) {
+        convertedAncillaryData = "Not convertible to UTF-8 string.";
+        console.log("not convertible to UTF8");
+      }
+    }
+
+    nextRows.push({
+      cells: [
+        {
+          size: "xs",
+          value: "3",
+        },
+        {
+          size: "sm",
+          value: "ancillaryData",
+        },
+        {
+          size: "sm",
+          value: "string",
+        },
+        {
+          size: "lg",
+          value: convertedAncillaryData,
+        },
+      ],
+    });
+
+    nextRows.push({
+      cells: [
+        {
+          size: "xs",
+          value: "4",
+        },
+        {
+          size: "sm",
+          value: "ancillaryData",
+        },
+        {
+          size: "sm",
+          value: "bytes",
+        },
+        {
+          size: "lg",
+          value: nextAncillaryData ?? "",
+        },
+      ],
+    });
+    const nextChainId = searchParams.get("chainId");
+    nextRows.push({
+      cells: [
+        {
+          size: "xs",
+          value: "5",
+        },
+        {
+          size: "sm",
+          value: "chainId",
+        },
+        {
+          size: "sm",
+          value: "uint",
+        },
+        {
+          size: "lg",
+          value: nextChainId ?? "0",
+        },
+      ],
+    });
+    setRows(nextRows);
+  }, [searchParams]);
 
   return (
     <div>
