@@ -100,8 +100,8 @@ function useRequestTableData(searchParams: URLSearchParams) {
         {
           size: "lg",
           value: nextTimestamp
-            ? `${DateTime.fromSeconds(
-                Number(nextTimestamp)
+            ? `${DateTime.fromSeconds(Number(nextTimestamp)).toFormat(
+                "LLL. dd yyyy hh:mm:ss"
               )} (${nextTimestamp})`
             : "",
         },
