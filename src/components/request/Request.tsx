@@ -1,7 +1,7 @@
 import Table from "../table/Table";
 import { useSearchParams } from "react-router-dom";
 import useRequestTableData from "./useRequestTableData";
-
+import { Wrapper } from "./Request.styled";
 /* Search Params:
   {
     requester: string;
@@ -17,9 +17,9 @@ const Request = () => {
   const { rows, headerCells } = useRequestTableData(searchParams);
 
   return (
-    <div>
+    <Wrapper>
       <Table title={"Input Data"} headerCells={headerCells} rows={rows} />
-    </div>
+    </Wrapper>
   );
 };
 
