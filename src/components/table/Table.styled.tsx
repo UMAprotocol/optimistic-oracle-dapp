@@ -58,7 +58,7 @@ export const Row = styled.div`
   align-items: center;
   padding: 15px 0;
   transition: all linear 0.2s;
-  &:nth-of-type(2) {
+  &:nth-of-type(2n) {
     background-color: #ffffff;
   }
 `;
