@@ -2,6 +2,25 @@ import styled from "@emotion/styled";
 
 export const Wrapper = styled.div``;
 
+/* Table Components */
+
+export const TableSection = styled.section`
+  background-color: #eeeeef;
+  width: 100%;
+  min-height: 30vh;
+  padding: 1rem 2.5rem;
+`;
+
+export const TableContentWrapper = styled.div`
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  width: 100%;
+  max-width: 1700px;
+  margin: 0 auto;
+`;
+
+/* Hero Components */
+
 export const HeroSection = styled.section`
   background-color: #272528;
   width: 100%;
