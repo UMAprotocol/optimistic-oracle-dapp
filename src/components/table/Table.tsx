@@ -3,7 +3,7 @@ import { TableWrapper, Row, Body, HeadRow, Cell, Title } from "./Table.styled";
 
 export interface TableProps {
   headerCells: ICell[];
-  rows: Row[];
+  rows: IRow[];
   // Optional Title component
   title?: string | ReactElement;
 }
@@ -16,7 +16,7 @@ export interface ICell {
   value: string | ReactElement;
 }
 
-export interface Row {
+export interface IRow {
   cells: ICell[];
 }
 

@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import Table, { ICell, Row } from "../table/Table";
+import Table, { ICell, IRow } from "../table/Table";
 import { useSearchParams } from "react-router-dom";
 import { ethers } from "ethers";
+import { DateTime } from "luxon";
 
 const hc: ICell[] = [
   {
@@ -22,77 +23,6 @@ const hc: ICell[] = [
   },
 ];
 
-const rows: Row[] = [
-  {
-    cells: [
-      {
-        size: "xs",
-        value: "0",
-      },
-      {
-        size: "sm",
-        value: "requester",
-      },
-      {
-        size: "sm",
-        value: "Address",
-      },
-      {
-        size: "lg",
-        value: (
-          <a
-            target="_blank"
-            rel="noreferrer"
-            href="https://etherscan.io/address/0x0000000000000000000000000000000000000000"
-          >
-            0x0000000000000000000000000000000000000000
-          </a>
-        ),
-      },
-    ],
-  },
-  {
-    cells: [
-      {
-        size: "xs",
-        value: "1",
-      },
-      {
-        size: "sm",
-        value: "identifier",
-      },
-      {
-        size: "sm",
-        value: "bytes32",
-      },
-      {
-        size: "lg",
-        value: "General KPI",
-      },
-    ],
-  },
-  {
-    cells: [
-      {
-        size: "xs",
-        value: "2",
-      },
-      {
-        size: "sm",
-        value: "timestamp",
-      },
-      {
-        size: "sm",
-        value: "uint256",
-      },
-      {
-        size: "lg",
-        value: "Nov 17 2021 23:00:00 (218817239812389)",
-      },
-    ],
-  },
-];
-
 /* Search Params:
   {
     requester: string;
@@ -105,19 +35,11 @@ const rows: Row[] = [
 
 const Request = () => {
   const [searchParams] = useSearchParams();
-  const [rows, setRows] = useState<Row[]>([]);
+  const [rows, setRows] = useState<IRow[]>([]);
   const [headerCells] = useState<ICell[]>(hc);
 
-  // const [requester, setRequester] = useState(searchParams.get("requester"));
-  // const [identifier, setIdentifier] = useState(searchParams.get("identifier"));
-  // const [ancillaryData, setAncillaryData] = useState(
-  //   searchParams.get("ancillaryData")
-  // );
-  // const [timestamp, setTimestamp] = useState(searchParams.get("timestamp"));
-  // const [chainId, setChainId] = useState(searchParams.get("chainId"));
-
   useEffect(() => {
-    const nextRows = [] as Row[];
+    const nextRows = [] as IRow[];
 
     const nextRequester = searchParams.get("requester");
     // setRequester(nextRequester);
@@ -190,7 +112,11 @@ const Request = () => {
         },
         {
           size: "lg",
-          value: nextTimestamp ?? "",
+          value: nextTimestamp
+            ? `${DateTime.fromSeconds(
+                Number(nextTimestamp)
+              )} (${nextTimestamp})`
+            : "",
         },
       ],
     });
