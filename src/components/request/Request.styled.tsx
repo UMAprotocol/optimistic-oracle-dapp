@@ -78,7 +78,7 @@ export const RequestFormWrapper = styled.div`
   min-height: 20vh;
   width: 100%;
   margin-bottom: 1rem;
-  padding: 1rem;
+  padding: 1rem 1rem 2rem;
   font-family: "Halyard";
 `;
 
@@ -96,7 +96,17 @@ export const RequestFormHeaderAndFormWrapper = styled.div`
 
 export const RequestFormInputWrapper = styled.div`
   background: #efefef;
-  padding: 1rem;
+  padding: 1rem 1rem 1.25rem;
+  label {
+    color: #272528;
+    font-style: normal;
+    font-weight: 700;
+  }
+`;
+
+export const RequestInputButtonBlock = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 export const FormHeader = styled.h2`
@@ -133,4 +143,22 @@ export const ParametersValueHeader = styled.div`
 
 export const ParametersValue = styled.div`
   font-weight: 400;
+`;
+
+interface IRequestFormButton {
+  disabled?: boolean;
+}
+export const RequestFormButton = styled(Button)<IRequestFormButton>`
+  opacity: ${(props) => {
+    if (props.disabled) return "0.35";
+    return "1";
+  }};
+  background-color: #272258;
+  height: 50px;
+  width: 225px;
+  margin-top: 2.6rem;
+  margin-left: 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 0.5rem;
 `;

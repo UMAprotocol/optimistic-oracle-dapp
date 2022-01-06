@@ -11,6 +11,8 @@ import {
   ParametersValuesWrapper,
   ParametersValueHeader,
   ParametersValue,
+  RequestInputButtonBlock,
+  RequestFormButton,
 } from "./Request.styled";
 
 const RequestForm = () => {
@@ -25,11 +27,16 @@ const RequestForm = () => {
         <RequestFormHeaderAndFormWrapper>
           <FormHeader>Proposal</FormHeader>
           <RequestFormInputWrapper>
-            <RequestFormInput
-              label="Propose: "
-              value={value}
-              onChange={inputOnChange}
-            />
+            <RequestInputButtonBlock>
+              <RequestFormInput
+                label="Propose: "
+                value={value}
+                onChange={inputOnChange}
+              />
+              <RequestFormButton disabled={true}>
+                Submit proposal
+              </RequestFormButton>
+            </RequestInputButtonBlock>
           </RequestFormInputWrapper>
         </RequestFormHeaderAndFormWrapper>
         <RequestFormParametersWrapper>

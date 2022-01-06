@@ -12,5 +12,6 @@ export const BaseButton = styled.button`
   &:hover {
     color: var(--hoverTextColor);
     background-color: var(--hoverBackgroundColor);
+    cursor: pointer;
   }
 `;
