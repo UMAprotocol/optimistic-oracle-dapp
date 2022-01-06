@@ -17,7 +17,7 @@ export const TableContentWrapper = styled.div`
   padding-top: 2rem;
   padding-bottom: 2rem;
   width: 100%;
-  max-width: 1700px;
+  max-width: 1400px;
   margin: 0 auto;
 `;
 
@@ -32,7 +32,7 @@ export const HeroSection = styled.section`
 
 export const HeroContentWrapper = styled.div`
   width: 100%;
-  max-width: 1700px;
+  max-width: 1400px;
   margin: 0 auto;
 `;
 
@@ -79,29 +79,58 @@ export const RequestFormWrapper = styled.div`
   width: 100%;
   margin-bottom: 1rem;
   padding: 1rem;
+  font-family: "Halyard";
 `;
 
 export const RequestFormRow = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  > div {
+    margin: 0 1rem;
+  }
 `;
 
 export const RequestFormHeaderAndFormWrapper = styled.div`
-  flex-grow: 4;
+  flex-grow: 3;
 `;
 
 export const RequestFormInputWrapper = styled.div`
   background: #efefef;
+  padding: 1rem;
 `;
 
 export const FormHeader = styled.h2`
   font-family: "Halyard";
   font-weight: 700;
   font-size: 1.25rem;
+  margin-bottom: 1rem;
 `;
 
 export const RequestFormInput = styled(Input)``;
 
 export const RequestFormParametersWrapper = styled.div`
   flex-grow: 2;
+`;
+
+export const ParametersHeader = styled.h3`
+  color: #272528;
+  border-bottom: 1px solid #efefef;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-top: 1rem;
+`;
+
+export const ParametersValuesWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  max-width: 400px;
+`;
+
+export const ParametersValueHeader = styled.div`
+  font-weight: 500;
+`;
+
+export const ParametersValue = styled.div`
+  font-weight: 400;
 `;

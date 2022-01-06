@@ -7,6 +7,10 @@ import {
   RequestFormInputWrapper,
   RequestFormInput,
   RequestFormParametersWrapper,
+  ParametersHeader,
+  ParametersValuesWrapper,
+  ParametersValueHeader,
+  ParametersValue,
 } from "./Request.styled";
 
 const RequestForm = () => {
@@ -21,14 +25,27 @@ const RequestForm = () => {
         <RequestFormHeaderAndFormWrapper>
           <FormHeader>Proposal</FormHeader>
           <RequestFormInputWrapper>
-            <RequestFormInput value={value} onChange={inputOnChange} />
+            <RequestFormInput
+              label="Propose: "
+              value={value}
+              onChange={inputOnChange}
+            />
           </RequestFormInputWrapper>
         </RequestFormHeaderAndFormWrapper>
         <RequestFormParametersWrapper>
-          <p>Parameters</p>
-          <div>Proposal bond:</div>
-          <div>Proposal reward:</div>
-          <div>Liveness period:</div>
+          <ParametersHeader>Parameters</ParametersHeader>
+          <ParametersValuesWrapper>
+            <ParametersValueHeader>Proposal bond:</ParametersValueHeader>
+            <ParametersValue>USDC 10000</ParametersValue>
+          </ParametersValuesWrapper>
+          <ParametersValuesWrapper>
+            <ParametersValueHeader>Proposal reward:</ParametersValueHeader>
+            <ParametersValue>USDC 1000</ParametersValue>
+          </ParametersValuesWrapper>
+          <ParametersValuesWrapper>
+            <ParametersValueHeader>Liveness period:</ParametersValueHeader>
+            <ParametersValue>48 hours</ParametersValue>
+          </ParametersValuesWrapper>
         </RequestFormParametersWrapper>
       </RequestFormRow>
     </RequestFormWrapper>
