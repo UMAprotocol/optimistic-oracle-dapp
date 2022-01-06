@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
-import Button from "../button/Button";
+import Button from "components/button";
+import Input from "components/input";
+
 export const Wrapper = styled.div``;
 
 /* Table Components */
@@ -85,7 +87,7 @@ export const RequestFormRow = styled.div`
 `;
 
 export const RequestFormHeaderAndFormWrapper = styled.div`
-  flex-grow: 3;
+  flex-grow: 4;
 `;
 
 export const RequestFormInputWrapper = styled.div`
@@ -96,4 +98,10 @@ export const FormHeader = styled.h2`
   font-family: "Halyard";
   font-weight: 700;
   font-size: 1.25rem;
+`;
+
+export const RequestFormInput = styled(Input)``;
+
+export const RequestFormParametersWrapper = styled.div`
+  flex-grow: 2;
 `;

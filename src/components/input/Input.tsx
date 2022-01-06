@@ -5,7 +5,7 @@ export interface Props {
   value: string;
   // Note: updating the value needs to happen in this onChange function.
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  ref: ForwardedRef<HTMLInputElement | null>;
+  ref?: ForwardedRef<HTMLInputElement | null>;
   label?: string;
   placeholder?: string;
   labelPlacement?: LabelPlacement;
@@ -16,7 +16,7 @@ export interface Props {
 
 export type LabelPlacement = "default | overlap";
 
-const _TextInput: FC<Props> = ({
+const _Input: FC<Props> = ({
   value,
   onChange,
   label,
@@ -25,7 +25,7 @@ const _TextInput: FC<Props> = ({
   onKeyDown,
   id,
   placeholder,
-  ref,
+  ref = null,
 }) => {
   return (
     <StyledInput inputWidth={width}>
@@ -45,8 +45,8 @@ const _TextInput: FC<Props> = ({
   );
 };
 
-const TextInput = forwardRef<HTMLInputElement | null, Props>((props, ref) => (
-  <_TextInput {...props} ref={ref} />
+const Input = forwardRef<HTMLInputElement | null, Props>((props, ref) => (
+  <_Input {...props} ref={ref} />
 ));
 
-export default TextInput;
+export default Input;
