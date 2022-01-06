@@ -4,6 +4,7 @@ import {
   HeaderTitle,
   HeaderButtonWrapper,
   HeroContentWrapper,
+  HeroButton,
 } from "./Request.styled";
 const RequestHero = () => {
   return (
@@ -11,7 +12,10 @@ const RequestHero = () => {
       <HeroContentWrapper>
         <HeroHeaderRow>
           <HeaderTitle>Optimistic Oracle Request</HeaderTitle>
-          <HeaderButtonWrapper></HeaderButtonWrapper>
+          <HeaderButtonWrapper>
+            <HeroButton>Polygon</HeroButton>
+            <HeroButton>Request</HeroButton>
+          </HeaderButtonWrapper>
         </HeroHeaderRow>
       </HeroContentWrapper>
     </HeroSection>

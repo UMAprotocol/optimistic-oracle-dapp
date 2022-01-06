@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-
+import Button from "../button/Button";
 export const Wrapper = styled.div``;
 
 /* Table Components */
@@ -49,3 +49,22 @@ export const HeaderTitle = styled.h2`
 `;
 
 export const HeaderButtonWrapper = styled.div``;
+
+export const HeroButton = styled(Button)`
+  background: #272528;
+  height: 35px;
+  border: 1px solid #fff;
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 16px;
+  margin: 0 0.5rem;
+  min-width: 115px;
+  text-transform: uppercase;
+  font-family: "Halyard";
+  font-weight: 400;
+  cursor: pointer;
+  &:hover {
+    background: #fff;
+    color: #272528;
+  }
+`;
