@@ -86,7 +86,7 @@ export const RequestFormRow = styled.div`
   display: flex;
   justify-content: space-between;
   > div {
-    margin: 0 1rem;
+    margin: 0 1.5rem;
   }
 `;
 
@@ -97,6 +97,7 @@ export const RequestFormHeaderAndFormWrapper = styled.div`
 export const RequestFormInputWrapper = styled.div`
   background: #efefef;
   padding: 1rem 1rem 1.25rem;
+  border-radius: 5px;
   label {
     color: #272528;
     font-style: normal;
@@ -127,7 +128,7 @@ export const ParametersHeader = styled.h3`
   border-bottom: 1px solid #efefef;
   font-weight: 700;
   font-size: 1rem;
-  margin-top: 1rem;
+  margin-top: 1.75rem;
 `;
 
 export const ParametersValuesWrapper = styled.div`
@@ -135,10 +136,15 @@ export const ParametersValuesWrapper = styled.div`
   justify-content: space-between;
   font-size: 1rem;
   max-width: 400px;
+  &:nth-of-type(1) {
+    margin-top: 0.25rem;
+  }
 `;
 
 export const ParametersValueHeader = styled.div`
   font-weight: 500;
+  line-height: 1.5rem;
+  margin-bottom: 0.25rem;
 `;
 
 export const ParametersValue = styled.div`
