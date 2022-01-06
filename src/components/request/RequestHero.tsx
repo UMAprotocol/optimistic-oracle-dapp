@@ -1,3 +1,5 @@
+import RequestForm from "./RequestForm";
+
 import {
   HeroSection,
   HeroHeaderRow,
@@ -17,6 +19,7 @@ const RequestHero = () => {
             <HeroButton>Request</HeroButton>
           </HeaderButtonWrapper>
         </HeroHeaderRow>
+        <RequestForm></RequestForm>
       </HeroContentWrapper>
     </HeroSection>
   );

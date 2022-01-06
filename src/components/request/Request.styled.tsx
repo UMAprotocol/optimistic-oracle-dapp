@@ -68,3 +68,32 @@ export const HeroButton = styled(Button)`
     color: #272528;
   }
 `;
+
+/* Form */
+
+export const RequestFormWrapper = styled.div`
+  background-color: #fff;
+  min-height: 20vh;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 1rem;
+`;
+
+export const RequestFormRow = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
+
+export const RequestFormHeaderAndFormWrapper = styled.div`
+  flex-grow: 3;
+`;
+
+export const RequestFormInputWrapper = styled.div`
+  background: #efefef;
+`;
+
+export const FormHeader = styled.h2`
+  font-family: "Halyard";
+  font-weight: 700;
+  font-size: 1.25rem;
+`;
