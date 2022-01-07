@@ -14,13 +14,13 @@ export interface Props {
   id?: string;
 }
 
-export type LabelPlacement = "default | overlap";
+export type LabelPlacement = "default" | "overlap";
 
 const _Input: FC<Props> = ({
   value,
   onChange,
   label,
-  labelPlacement = "default" as LabelPlacement,
+  labelPlacement = "default",
   width,
   onKeyDown,
   id,
