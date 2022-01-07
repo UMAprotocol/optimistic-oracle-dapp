@@ -9,7 +9,7 @@ export const Navbar: React.FC = () => {
     <Wrapper>
       <MaxWidth>
         <Link to="/">
-          <img src={logo} />
+          <img src={logo} alt="uma_logo" />
         </Link>
         <Navigation>
           <ConnectButton>Connect wallet</ConnectButton>
