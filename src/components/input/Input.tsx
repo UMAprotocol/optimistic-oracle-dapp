@@ -1,7 +1,12 @@
-import React, { FC, forwardRef, ForwardedRef } from "react";
+import React, {
+  FC,
+  forwardRef,
+  ForwardedRef,
+  ComponentPropsWithoutRef,
+} from "react";
 import { StyledInput, Label } from "./Input.styled";
 
-export interface Props {
+export type Props = {
   value: string;
   // Note: updating the value needs to happen in this onChange function.
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -12,7 +17,7 @@ export interface Props {
   width?: string;
   onKeyDown?: React.KeyboardEventHandler<HTMLInputElement> | undefined;
   id?: string;
-}
+} & ComponentPropsWithoutRef<"input">;
 
 export type LabelPlacement = "default" | "overlap";
 
@@ -26,6 +31,7 @@ const _Input: FC<Props> = ({
   id,
   placeholder,
   ref = null,
+  ...delegated
 }) => {
   return (
     <StyledInput inputWidth={width}>
@@ -39,6 +45,7 @@ const _Input: FC<Props> = ({
           placeholder={placeholder}
           onChange={onChange}
           onKeyDown={onKeyDown}
+          {...delegated}
         />
       </div>
     </StyledInput>
