@@ -160,27 +160,6 @@ function useRequestTableData(searchParams: URLSearchParams) {
         },
       ],
     });
-    const nextChainId = searchParams.get("chainId");
-    nextRows.push({
-      cells: [
-        {
-          size: "xs",
-          value: "5",
-        },
-        {
-          size: "sm",
-          value: "chainId",
-        },
-        {
-          size: "sm",
-          value: "uint",
-        },
-        {
-          size: "lg",
-          value: nextChainId ?? "0",
-        },
-      ],
-    });
     setRows(nextRows);
   }, [searchParams]);
 
