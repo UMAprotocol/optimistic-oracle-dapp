@@ -21,7 +21,7 @@ export type Props = {
 
 export type LabelPlacement = "default" | "overlap";
 
-const _Input: FC<Props> = ({
+const InputComponent: FC<Props> = ({
   value,
   onChange,
   label,
@@ -53,7 +53,7 @@ const _Input: FC<Props> = ({
 };
 
 const Input = forwardRef<HTMLInputElement | null, Props>((props, ref) => (
-  <_Input {...props} ref={ref} />
+  <InputComponent {...props} ref={ref} />
 ));
 
 export default Input;
