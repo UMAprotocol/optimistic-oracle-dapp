@@ -14,7 +14,7 @@ const STYLES: {
   [key in Size]: WrapperStyles;
 } = {
   xl: {
-    "--size": "1280px",
+    "--size": "1400px",
   },
   lg: {
     "--size": "1028px",

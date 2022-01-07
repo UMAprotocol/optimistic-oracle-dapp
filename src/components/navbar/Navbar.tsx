@@ -2,7 +2,7 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 import logo from "assets/logo.svg";
-import { Wrapper, MaxWidth, Navigation, ProductsButton } from "./Navbar.styled";
+import { Wrapper, MaxWidth, Navigation, ConnectButton } from "./Navbar.styled";
 
 export const Navbar: React.FC = () => {
   return (
@@ -12,7 +12,7 @@ export const Navbar: React.FC = () => {
           <img src={logo} />
         </Link>
         <Navigation>
-          <ProductsButton>Connect wallet</ProductsButton>
+          <ConnectButton>Connect wallet</ConnectButton>
         </Navigation>
       </MaxWidth>
     </Wrapper>

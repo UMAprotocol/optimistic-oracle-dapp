@@ -16,6 +16,7 @@ const QUERIES = {
   desktopAndUp: `(min-width: ${BREAKPOINTS.desktopMin / 16}rem)`,
   tabletAndDown: `(max-width: ${(BREAKPOINTS.laptopMin - 1) / 16}rem)`,
 };
+
 export const Slice = styled(motion.div)`
   min-height: 2px;
   background-color: var(--black);
@@ -45,17 +46,17 @@ export const CloseButton = styled(Button)`
 `;
 
 export const Wrapper = styled.header`
-  height: 100px;
+  height: 75px;
   padding: 40px 0 30px;
   @media ${QUERIES.laptopAndUp} {
-    padding: 50px 0 55px;
-    height: 140px;
+    padding: 30px 0 75px;
   }
 `;
 
 export const MaxWidth = styled(MaxWidthWrapper)`
   display: flex;
   align-items: center;
+  padding: 0;
 `;
 
 export const Navigation = styled.nav`
@@ -197,8 +198,18 @@ export const DropdownContent = styled.div`
   }
 `;
 
-export const ProductsButton = styled(Button)`
-  min-height: 1.5rem;
+export const ConnectButton = styled(Button)`
+  background-color: #272258;
+  height: 45px;
+  width: 170px;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 0.5rem;
+  border-radius: 30px;
+  &:hover {
+    opacity: 0.7;
+    background-color: #272258;
+  }
 `;
 
 export const MobileNavigation = motion(styled(Navigation)`
