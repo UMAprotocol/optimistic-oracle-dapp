@@ -107,7 +107,7 @@ export function useOnboard() {
           },
         },
       }),
-    [setError, update]
+    [update]
   );
   const initOnboard = React.useCallback(async () => {
     try {
