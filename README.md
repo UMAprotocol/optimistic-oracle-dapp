@@ -1,3 +1,11 @@
+# Optimistic Oracle dApp
+
+## Required Environment Variables
+
+- REACT_APP_ONBOARD_API_KEY
+
+- REACT_APP_PUBLIC_INFURA_ID
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

@@ -5,8 +5,7 @@ import { Initialization } from "bnc-onboard/dist/src/interfaces";
 
 import { useConnection } from "./useConnection";
 
-const infuraId =
-  process.env.NEXT_PUBLIC_INFURA_ID || "d5e29c9b9a9d4116a7348113f57770a8";
+const infuraId = process.env.REACT_APP_PUBLIC_INFURA_ID;
 
 const getNetworkName = (chainId: number) => {
   switch (chainId) {
@@ -32,7 +31,7 @@ function onboardBaseConfig(_chainId?: number): Initialization {
   )}.infura.io/v3/${infuraId}`;
 
   return {
-    dappId: process.env.NEXT_PUBLIC_ONBOARD_API_KEY || "",
+    dappId: process.env.REACT_APP_ONBOARD_API_KEY || "",
     hideBranding: true,
     networkId: 1, // Default to main net. If on a different network will change with the subscription.
     walletSelect: {

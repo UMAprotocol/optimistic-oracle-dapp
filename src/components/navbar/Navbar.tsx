@@ -24,7 +24,7 @@ export const Navbar: React.FC = () => {
           >
             {!isConnected
               ? "Connect wallet"
-              : `${account?.substring(0, 5)}...${account?.substring(
+              : `${account?.substring(0, 4)}...${account?.substring(
                   account.length - 4,
                   account.length
                 )}`}
