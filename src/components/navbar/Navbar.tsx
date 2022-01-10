@@ -8,7 +8,7 @@ import { useOnboard } from "hooks/useOnboard";
 
 export const Navbar: React.FC = () => {
   const { account, isConnected } = useConnection();
-  const { initOnboard, resetOnboard } = useOnboard();
+  const { connectWallet, resetWallet } = useOnboard();
   return (
     <Wrapper>
       <MaxWidth>
@@ -18,8 +18,8 @@ export const Navbar: React.FC = () => {
         <Navigation>
           <ConnectButton
             onClick={() => {
-              if (!isConnected) return initOnboard();
-              if (isConnected) return resetOnboard();
+              if (!isConnected) return connectWallet();
+              if (isConnected) return resetWallet();
             }}
           >
             {!isConnected
