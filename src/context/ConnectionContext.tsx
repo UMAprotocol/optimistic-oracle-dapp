@@ -1,5 +1,11 @@
 import React from "react";
 import { ethers } from "ethers";
+import {
+  Wallet,
+  Initialization,
+  API as OnboardAPI,
+} from "bnc-onboard/dist/src/interfaces";
+import Onboard from "bnc-onboard";
 
 enum ActionType {
   CONNECT,
@@ -74,6 +80,25 @@ function reducer(
   }
 }
 
+function onboardBaseConfig(_chainId?: number): Initialization {
+  return {
+    dappId: process.env.REACT_APP_ONBOARD_API_KEY || "",
+    hideBranding: true,
+    networkId: 1, // Default to main net. If on a different network will change with the subscription.
+    walletSelect: {
+      wallets: [{ walletName: "metamask", preferred: true }],
+    },
+    walletCheck: [
+      { checkName: "connect" },
+      { checkName: "accounts" },
+      { checkName: "network" },
+      { checkName: "balance", minimumBalance: "0" },
+    ],
+    // To prevent providers from requesting block numbers every 4 seconds (see https://github.com/WalletConnect/walletconnect-monorepo/issues/357)
+    blockPollingInterval: 1000 * 60 * 60,
+  };
+}
+
 type ConnectionState = {
   provider?: ethers.providers.Web3Provider;
   signer?: ethers.Signer;
@@ -82,6 +107,7 @@ type ConnectionState = {
   update: (update: ConnectionManagerState) => void;
   setError: (error: Error) => void;
   isConnected: boolean;
+  instance: OnboardAPI;
 } & Omit<ConnectionManagerState, "provider">;
 
 export const ConnectionContext = React.createContext<
@@ -121,6 +147,33 @@ export const ConnectionProvider: React.FC = ({ children }) => {
     [error]
   );
 
+  const instance = React.useMemo(
+    () =>
+      Onboard({
+        ...onboardBaseConfig(),
+        subscriptions: {
+          address: (address: string) => {
+            update({ account: address });
+          },
+          network: (networkId: number) => {
+            update({
+              chainId: networkId,
+            });
+          },
+          wallet: async (wallet: Wallet) => {
+            if (wallet.provider) {
+              const provider = wallet.provider;
+
+              update({
+                provider,
+              });
+            }
+          },
+        },
+      }),
+    [update]
+  );
+
   const isConnected = provider != null && chainId != null && account != null;
   const wrappedProvider = provider
     ? new ethers.providers.Web3Provider(provider)
@@ -139,7 +192,7 @@ export const ConnectionProvider: React.FC = ({ children }) => {
     disconnect,
     update,
     setError,
-
+    instance,
     isConnected,
   };
 
