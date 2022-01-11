@@ -1,9 +1,11 @@
 import React from "react";
+import assert from "assert";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
+assert(process.env.REACT_APP_CUSTOM_NODE_URL, "Requires provider url");
 
 ReactDOM.render(
   <BrowserRouter>
