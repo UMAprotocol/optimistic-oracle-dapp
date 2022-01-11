@@ -5,7 +5,8 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-assert(process.env.REACT_APP_CUSTOM_NODE_URL, "Requires provider url");
+const nodeProvider = process.env.REACT_APP_CUSTOM_NODE_URL;
+assert(nodeProvider, "Requires provider url");
 
 ReactDOM.render(
   <BrowserRouter>
