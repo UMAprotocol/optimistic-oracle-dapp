@@ -3,6 +3,16 @@ const webpack = require("webpack");
 module.exports = {
   webpack: {
     configure: {
+      module:{
+        rules:[
+          {
+            test: /\.m?js$/,
+            resolve: {
+              fullySpecified: false,
+            },
+          },
+        ],
+      },
       resolve: {
         fallback: {
           // process: require.resolve("process/browser"),
