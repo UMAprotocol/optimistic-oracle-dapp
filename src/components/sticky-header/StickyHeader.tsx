@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-const SuperHeader = styled.div`
+const StickyHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -26,4 +26,4 @@ const SuperHeader = styled.div`
   }
 `;
 
-export default SuperHeader;
+export default StickyHeader;
