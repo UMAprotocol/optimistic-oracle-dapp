@@ -7,7 +7,6 @@ export function useOnboard() {
   const connectWallet = React.useCallback(async () => {
     try {
       await instance.walletSelect();
-      await instance.walletCheck();
       connect({ connector: instance });
     } catch (err: any) {
       setError(err);
