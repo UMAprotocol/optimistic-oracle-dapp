@@ -2,12 +2,13 @@ import { FC } from "react";
 import { ethers } from "ethers";
 import StickyHeader from "components/sticky-header";
 import { switchChain } from "helpers/switchChain";
-import { ChainId, CHAINS } from "helpers/switchChain";
+import { ChainId, CHAINS } from "constants/web3";
 
 interface Props {
   provider: ethers.providers.Web3Provider;
   chainId: ChainId;
 }
+
 const ChangeNetwork: FC<Props> = ({ provider, chainId }) => {
   return (
     <StickyHeader>
