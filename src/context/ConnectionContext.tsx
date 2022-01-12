@@ -110,9 +110,9 @@ type ConnectionState = {
   instance: OnboardAPI;
 } & Omit<ConnectionManagerState, "provider">;
 
-export const ConnectionContext = React.createContext<
-  undefined | ConnectionState
->(undefined);
+export const ConnectionContext = React.createContext<ConnectionState>(
+  {} as ConnectionState
+);
 ConnectionContext.displayName = "ConnectionContext";
 
 export const ConnectionProvider: React.FC = ({ children }) => {

@@ -4,23 +4,23 @@ import GlobalStyles from "./components/global-styles";
 import Navbar from "./components/navbar";
 import Request from "./components/request";
 import Layout from "./components/layout";
-import { ConnectionContext } from "context/ConnectionContext";
 import ChangeNetwork from "components/change-network/ChangeNetwork";
+import { ConnectionContext } from "context/ConnectionContext";
+
 const Router = () => {
-  const connection = useContext(ConnectionContext);
+  const { isConnected, chainId, provider } = useContext(ConnectionContext);
   const [searchParams] = useSearchParams();
   const wrongNetwork =
-    connection &&
-    connection.isConnected &&
+    isConnected &&
     searchParams.get("chainId") &&
-    Number(searchParams.get("chainId")) !== connection.chainId;
+    Number(searchParams.get("chainId")) !== chainId;
 
   return (
     <>
       <GlobalStyles />
-      {wrongNetwork && connection.provider && searchParams.get("chainId") && (
+      {wrongNetwork && provider && searchParams.get("chainId") && (
         <ChangeNetwork
-          provider={connection.provider}
+          provider={provider}
           chainId={Number(searchParams.get("chainId"))}
         />
       )}
