@@ -18,10 +18,10 @@ const Router = () => {
   return (
     <>
       <GlobalStyles />
-      {wrongNetwork && connection.provider && connection.chainId && (
+      {wrongNetwork && connection.provider && searchParams.get("chainId") && (
         <ChangeNetwork
           provider={connection.provider}
-          chainId={connection.chainId}
+          chainId={Number(searchParams.get("chainId"))}
         />
       )}
       <Navbar />

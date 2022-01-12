@@ -6,14 +6,14 @@ const StickyHeader = styled.div`
   align-items: center;
   padding: 0 30px;
   height: 60px;
-  color: var(--color-gray);
-  background-color: var(--color-error);
-  border-bottom: 1px solid var(--color-gray);
+  color: hsl(0deg 0% 0%);
+  background-color: hsl(11deg 92% 70%);
+  border-bottom: 1px solid hsl(0deg 0% 89%);
 
   & button {
     background-color: inherit;
     font-size: inherit;
-    color: var(--color-gray);
+    color: hsl(0deg 0% 0%);
     text-decoration: underline;
     cursor: pointer;
     border: none;
@@ -21,7 +21,7 @@ const StickyHeader = styled.div`
     margin: 0;
     display: inline-flex;
     &:hover {
-      color: var(--color-black);
+      color: hsl(0deg 0% 89%);
     }
   }
 `;

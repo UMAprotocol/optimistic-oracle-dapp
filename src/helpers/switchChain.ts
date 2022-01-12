@@ -39,6 +39,7 @@ export const CHAINS: Record<ChainId, ChainInfo> = {
     name: "Polygon Mainnet",
     chainId: ChainId.POLYGON,
     logoURI: polygonLogo,
+    rpcUrl: "https://polygon-rpc.com/",
     explorerUrl: "https://polygonscan.com/",
     constructExplorerLink: (txHash: string) =>
       `https://polygonscan.com/tx/${txHash}`,
