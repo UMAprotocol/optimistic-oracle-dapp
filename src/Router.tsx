@@ -7,6 +7,7 @@ import Layout from "./components/layout";
 import ChangeNetwork from "components/change-network/ChangeNetwork";
 import { ConnectionContext } from "context/ConnectionContext";
 import { RequestClientContext } from "context/RequestClientContext";
+import NotFound from "components/not-found";
 
 const Router = () => {
   const { isConnected, chainId, provider, account, signer } =
@@ -39,6 +40,7 @@ const Router = () => {
         <Route path="/" element={<Layout />}>
           <Route path="request" element={<Request />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
