@@ -33,7 +33,7 @@ const Request = () => {
   }, [searchParams, client]);
   return (
     <Wrapper>
-      <RequestHero />
+      <RequestHero chainId={Number(searchParams.get("chainId")) ?? 0} />
       <TableSection>
         <TableContentWrapper>
           <Table title={"Input Data"} headerCells={headerCells} rows={rows} />

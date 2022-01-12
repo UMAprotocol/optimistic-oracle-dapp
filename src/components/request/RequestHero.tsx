@@ -1,3 +1,4 @@
+import { FC } from "react";
 import RequestForm from "./RequestForm";
 
 import {
@@ -11,9 +12,20 @@ import {
   HeroButtonText,
   HeroButtonFlex,
 } from "./Request.styled";
-import polygonLogo from "assets/polygon-tag.svg";
+import { CHAINS, ChainId } from "constants/web3";
 
-const RequestHero = () => {
+interface Props {
+  chainId: ChainId;
+}
+
+const RequestHero: FC<Props> = ({ chainId }) => {
+  let logo = CHAINS[1].logoURI,
+    chainName = CHAINS[1].name;
+
+  if (chainId) {
+    logo = CHAINS[chainId].logoURI;
+    chainName = CHAINS[chainId].name;
+  }
   return (
     <HeroSection>
       <HeroContentWrapper>
@@ -22,8 +34,8 @@ const RequestHero = () => {
           <HeaderButtonWrapper>
             <HeroButton>
               <HeroButtonFlex>
-                <HeroLogo src={polygonLogo} alt="polygon_logo" />
-                <HeroButtonText>Polygon</HeroButtonText>
+                <HeroLogo src={logo} alt="polygon_logo" />
+                <HeroButtonText>{chainName}</HeroButtonText>
               </HeroButtonFlex>
             </HeroButton>
 

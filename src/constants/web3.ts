@@ -24,7 +24,7 @@ export enum ChainId {
 
 export const CHAINS: Record<ChainId, ChainMetadata> = {
   [ChainId.MAINNET]: {
-    name: "Ethereum Mainnet",
+    name: "Ethereum",
     chainId: ChainId.MAINNET,
     logoURI: ethereumLogo,
     explorerUrl: "https://etherscan.io",
@@ -37,7 +37,7 @@ export const CHAINS: Record<ChainId, ChainMetadata> = {
     },
   },
   [ChainId.POLYGON]: {
-    name: "Polygon Mainnet",
+    name: "Polygon",
     chainId: ChainId.POLYGON,
     logoURI: polygonLogo,
     rpcUrl: "https://polygon-rpc.com/",
