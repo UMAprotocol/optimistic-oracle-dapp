@@ -190,3 +190,8 @@ export const RequestFormButton = styled(Button)<IRequestFormButton>`
   font-weight: 700;
   line-height: 0.5rem;
 `;
+
+export const BondLogo = styled.img`
+  height: 14px;
+  padding-top: 2px;
+`;

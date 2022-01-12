@@ -13,7 +13,9 @@ import {
   ParametersValue,
   RequestInputButtonBlock,
   RequestFormButton,
+  BondLogo,
 } from "./Request.styled";
+import usdcLogo from "assets/usdc-logo.png";
 
 const RequestForm = () => {
   const [value, setValue] = useState("");
@@ -43,11 +45,15 @@ const RequestForm = () => {
           <ParametersHeader>Parameters</ParametersHeader>
           <ParametersValuesWrapper>
             <ParametersValueHeader>Proposal bond:</ParametersValueHeader>
-            <ParametersValue>USDC 10000</ParametersValue>
+            <ParametersValue>
+              <BondLogo src={usdcLogo} alt="bond_img" /> USDC 10000
+            </ParametersValue>
           </ParametersValuesWrapper>
           <ParametersValuesWrapper>
             <ParametersValueHeader>Proposal reward:</ParametersValueHeader>
-            <ParametersValue>USDC 1000</ParametersValue>
+            <ParametersValue>
+              <BondLogo src={usdcLogo} alt="bond_img" /> USDC 1000
+            </ParametersValue>
           </ParametersValuesWrapper>
           <ParametersValuesWrapper>
             <ParametersValueHeader>Liveness period:</ParametersValueHeader>

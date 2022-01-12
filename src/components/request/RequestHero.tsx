@@ -30,7 +30,7 @@ const RequestHero = () => {
             <HeroButton>Request</HeroButton>
           </HeaderButtonWrapper>
         </HeroHeaderRow>
-        <RequestForm></RequestForm>
+        <RequestForm />
       </HeroContentWrapper>
     </HeroSection>
   );
