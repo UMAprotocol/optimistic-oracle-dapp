@@ -4,10 +4,11 @@ import GlobalStyles from "./components/global-styles";
 import Navbar from "./components/navbar";
 import Request from "./components/request";
 import Layout from "./components/layout";
+import NotFound from "components/not-found";
+import TempIndex from "components/temp-index";
 import ChangeNetwork from "components/change-network/ChangeNetwork";
 import { ConnectionContext } from "context/ConnectionContext";
 import { RequestClientContext } from "context/RequestClientContext";
-import NotFound from "components/not-found";
 
 const Router = () => {
   const { isConnected, chainId, provider, account, signer } =
@@ -38,6 +39,7 @@ const Router = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Layout />}>
+          <Route index element={<TempIndex />} />
           <Route path="request" element={<Request />} />
         </Route>
         <Route path="*" element={<NotFound />} />
