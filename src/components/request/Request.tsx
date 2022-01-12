@@ -31,6 +31,7 @@ const Request = () => {
 
     client.setActiveRequest(request);
   }, [searchParams, client]);
+
   return (
     <Wrapper>
       <RequestHero chainId={Number(searchParams.get("chainId")) ?? 0} />
