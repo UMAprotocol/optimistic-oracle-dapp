@@ -5,8 +5,17 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-const nodeProvider = process.env.REACT_APP_CUSTOM_NODE_URL;
-assert(nodeProvider, "Requires provider url");
+
+// Make sure environment variables are defined.
+const ethProvider = process.env.REACT_APP_PROVIDER_URL_1;
+const onboardKey = process.env.REACT_APP_ONBOARD_API_KEY;
+const infuraId = process.env.REACT_APP_PUBLIC_INFURA_ID;
+const polygonProvider = process.env.REACT_APP_PROVIDER_URL_137;
+
+assert(ethProvider, "Requires REACT_APP_PROVIDER_URL_1");
+assert(polygonProvider, "Requires REACT_APP_PROVIDER_URL_137");
+assert(onboardKey, "Requires REACT_APP_ONBOARD_API_KEY");
+assert(infuraId, "Requires REACT_APP_PUBLIC_INFURA_ID");
 
 ReactDOM.render(
   <BrowserRouter>

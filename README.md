@@ -6,6 +6,10 @@
 
 - REACT_APP_PUBLIC_INFURA_ID
 
+- REACT_APP_PROVIDER_URL_1 (Ethereum Provider)
+
+- REACT_APP_PROVIDER_URL_137 (Polygon Provider)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
