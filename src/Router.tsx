@@ -23,7 +23,7 @@ const Router = () => {
     if (isConnected && account && signer && chainId) {
       client.setUser(account, chainId, signer);
     }
-  }, [isConnected, account, signer, chainId]);
+  }, [isConnected, account, signer, chainId, client]);
 
   return (
     <>
