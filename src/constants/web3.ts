@@ -1,5 +1,5 @@
 import ethereumLogo from "assets/ethereum-logo.svg";
-import polygonLogo from "assets/UMA-OO-Polygon-tag.svg";
+import polygonLogo from "assets/polygon-tag.svg";
 
 // Based on EIP, for adding into MM
 // https://eips.ethereum.org/EIPS/eip-3085
