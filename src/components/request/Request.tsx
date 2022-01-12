@@ -30,8 +30,6 @@ const Request = () => {
     };
 
     client.setActiveRequest(request);
-    const input = client.store.read().inputRequest();
-    console.log("input", input);
   }, [searchParams, client]);
   return (
     <Wrapper>
