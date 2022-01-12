@@ -1,11 +1,6 @@
 import ethereumLogo from "assets/ethereum-logo.svg";
 import polygonLogo from "assets/UMA-OO-Polygon-tag.svg";
 
-export enum ChainId {
-  MAINNET = 1,
-  POLYGON = 137,
-}
-
 // Based on EIP, for adding into MM
 // https://eips.ethereum.org/EIPS/eip-3085
 type ChainMetadata = {
@@ -21,6 +16,11 @@ type ChainMetadata = {
     decimals: number;
   };
 };
+
+export enum ChainId {
+  MAINNET = 1,
+  POLYGON = 137,
+}
 
 export const CHAINS: Record<ChainId, ChainMetadata> = {
   [ChainId.MAINNET]: {
