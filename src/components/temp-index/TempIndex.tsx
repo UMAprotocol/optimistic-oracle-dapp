@@ -15,7 +15,7 @@ const TempIndex: FC = () => {
             "/request?requester=0xb8b3583f143b3a4c2aa052828d8809b0818a16e9&identifier=0x554D415553440000000000000000000000000000000000000000000000000000&ancillaryData=0x747761704C656E6774683A33363030&timestamp=1638453600&chainId=1"
           }
         >
-          Back to Homepage
+          Example
         </Link>
       </ContentWrapper>
     </Wrapper>
