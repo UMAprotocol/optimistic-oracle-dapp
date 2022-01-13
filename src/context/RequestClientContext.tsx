@@ -76,14 +76,6 @@ export const RequestClientProvider: FC = ({ children }) => {
   const setUser = useCallback((user) => {
     dispatch({ type: SET_USER, payload: user });
   }, []);
-
-  /*{
-    requester: string;
-    identifier: string;
-    timestamp: number;
-    ancillaryData: string;
-    chainId: number;
-  } */
   const setActiveRequest = useCallback((request: oracle.types.state.Inputs) => {
     dispatch({
       type: SET_ACTIVE_REQUEST,
