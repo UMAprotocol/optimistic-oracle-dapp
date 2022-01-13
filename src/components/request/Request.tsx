@@ -19,7 +19,7 @@ import { oracle } from "@uma/sdk";
 */
 
 const Request = () => {
-  const { client, setActiveRequest } = useRequestClient();
+  const { setActiveRequest } = useRequestClient();
   const [searchParams] = useSearchParams();
   const { rows, headerCells } = useRequestTableData(searchParams);
   const [requestState, setRequestState] = useState<oracle.types.state.Request>(
