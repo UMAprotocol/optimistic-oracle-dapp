@@ -5,6 +5,7 @@ import useRequestTableData from "./useRequestTableData";
 import { Wrapper, TableContentWrapper, TableSection } from "./Request.styled";
 import RequestHero from "./RequestHero";
 import { RequestClientContext } from "context/RequestClientContext";
+import useRequestClient from "hooks/useRequestClient";
 /* Search Params:
   {
     requester: string;
@@ -16,7 +17,7 @@ import { RequestClientContext } from "context/RequestClientContext";
 */
 
 const Request = () => {
-  const client = useContext(RequestClientContext);
+  const { client } = useRequestClient();
   const [searchParams] = useSearchParams();
   const { rows, headerCells } = useRequestTableData(searchParams);
 

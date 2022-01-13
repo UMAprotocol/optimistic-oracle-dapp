@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { Routes, Route, useSearchParams } from "react-router-dom";
 import GlobalStyles from "./components/global-styles";
 import Navbar from "./components/navbar";
@@ -7,12 +7,11 @@ import Layout from "./components/layout";
 import NotFound from "components/not-found";
 import TempIndex from "components/temp-index";
 import ChangeNetwork from "components/change-network/ChangeNetwork";
-import { RequestClientContext } from "context/RequestClientContext";
 import useConnection from "hooks/useConnection";
-
+import useRequestClient from "hooks/useRequestClient";
 const Router = () => {
   const { isConnected, chainId, provider, account, signer } = useConnection();
-  const client = useContext(RequestClientContext);
+  const { client, setUser } = useRequestClient();
 
   const [searchParams] = useSearchParams();
   const wrongNetwork =
@@ -22,8 +21,11 @@ const Router = () => {
 
   useEffect(() => {
     if (isConnected && account && signer && chainId) {
-      client.setUser(account, chainId, signer);
-      client.update.all().catch((err) => undefined);
+      setUser({
+        address: account,
+        signer,
+        chainId,
+      });
     }
   }, [isConnected, account, signer, chainId, client]);
 
