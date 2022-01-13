@@ -18,7 +18,7 @@ import { oracle } from "@uma/sdk";
 */
 
 const Request = () => {
-  const { client, setActiveRequest } = useRequestClient();
+  const { setActiveRequest } = useRequestClient();
   const [searchParams] = useSearchParams();
   const { rows, headerCells } = useRequestTableData(searchParams);
 
@@ -34,7 +34,7 @@ const Request = () => {
     };
 
     setActiveRequest(request);
-  }, [searchParams, client, setActiveRequest]);
+  }, [searchParams, setActiveRequest]);
 
   return (
     <Wrapper>
