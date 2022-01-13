@@ -5,6 +5,8 @@ import useRequestTableData from "./useRequestTableData";
 import { Wrapper, TableContentWrapper, TableSection } from "./Request.styled";
 import RequestHero from "./RequestHero";
 import useRequestClient from "hooks/useRequestClient";
+import { oracle } from "@uma/sdk";
+
 /* Search Params:
   {
     requester: string;
@@ -21,12 +23,14 @@ const Request = () => {
   const { rows, headerCells } = useRequestTableData(searchParams);
 
   useEffect(() => {
-    const request = {
-      requester: searchParams.get("requester") ?? "",
-      identifier: searchParams.get("identifier") ?? "",
-      timestamp: Number(searchParams.get("timestamp")) ?? "",
-      ancillaryData: searchParams.get("ancillaryData") ?? "",
-      chainId: Number(searchParams.get("chainId")) ?? 1,
+    const request: oracle.types.state.Inputs = {
+      request: {
+        requester: searchParams.get("requester") ?? "",
+        identifier: searchParams.get("identifier") ?? "",
+        timestamp: Number(searchParams.get("timestamp")) ?? "",
+        ancillaryData: searchParams.get("ancillaryData") ?? "",
+        chainId: Number(searchParams.get("chainId")) ?? 1,
+      },
     };
 
     setActiveRequest(request);

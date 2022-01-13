@@ -7,9 +7,9 @@ const client = oracle.client.factory(config, () => undefined);
 interface ContextState {
   client: oracle.client.Client;
   user: Partial<oracle.types.state.User> | null;
-  request: Request | null;
+  request: Partial<oracle.types.state.Inputs> | undefined;
   setUser: (payload: oracle.types.state.User) => void;
-  setActiveRequest: (payload: Request) => void;
+  setActiveRequest: (payload: oracle.types.state.Inputs) => void;
 }
 export const RequestClientContext = createContext<ContextState>(
   {} as ContextState
@@ -34,17 +34,9 @@ type Action =
       type: typeof UPDATE_CLIENT_STATE;
     };
 
-interface Request {
-  requester: string;
-  identifier: string;
-  timestamp: number;
-  ancillaryData: string;
-  chainId: number;
-}
-
 interface ClientState {
   user: Partial<oracle.types.state.User> | null;
-  request: Request | null;
+  request: Partial<oracle.types.state.Inputs> | undefined;
 }
 
 function reducer(state: ClientState, action: Action): ClientState {
@@ -66,25 +58,36 @@ function reducer(state: ClientState, action: Action): ClientState {
     case SET_ACTIVE_REQUEST: {
       client.setActiveRequest(action.payload.request);
       client.update.all().catch((err: any) => undefined);
-      return { ...state, request: action.payload.request };
+      const request = client.store.get().inputs;
+      if (request) {
+        return { ...state, request: request };
+      }
     }
   }
   return state;
 }
 
 export const RequestClientProvider: FC = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, { user: null, request: null });
+  const [state, dispatch] = useReducer(reducer, {
+    user: null,
+    request: undefined,
+  });
 
   const setUser = useCallback((user) => {
     dispatch({ type: SET_USER, payload: user });
   }, []);
 
-  const setActiveRequest = useCallback((request: Request) => {
+  /*{
+    requester: string;
+    identifier: string;
+    timestamp: number;
+    ancillaryData: string;
+    chainId: number;
+  } */
+  const setActiveRequest = useCallback((request: oracle.types.state.Inputs) => {
     dispatch({
       type: SET_ACTIVE_REQUEST,
-      payload: {
-        request,
-      },
+      payload: request,
     });
   }, []);
 
