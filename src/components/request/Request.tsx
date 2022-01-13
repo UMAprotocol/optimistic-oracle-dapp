@@ -6,6 +6,8 @@ import { Wrapper, TableContentWrapper, TableSection } from "./Request.styled";
 import RequestHero from "./RequestHero";
 import { RequestClientContext } from "context/RequestClientContext";
 import useRequestClient from "hooks/useRequestClient";
+import { oracle } from "@uma/sdk";
+
 /* Search Params:
   {
     requester: string;
