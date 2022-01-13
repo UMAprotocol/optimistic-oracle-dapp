@@ -69,10 +69,11 @@ export const HeroButton = styled(Button)`
   font-family: "Halyard";
   font-weight: 400;
   font-size: 0.75rem;
-  cursor: pointer;
   &:hover {
-    background: #fff;
-    color: #272528;
+    cursor: initial;
+
+    background: #272528;
+    color: #fff;
   }
 `;
 

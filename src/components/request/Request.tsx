@@ -30,6 +30,7 @@ const Request = () => {
     };
 
     client.setActiveRequest(request);
+    client.update.all().catch((err) => undefined);
   }, [searchParams, client]);
 
   return (
