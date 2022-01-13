@@ -1,10 +1,10 @@
-import React from "react";
-import { useConnection } from "./useConnection";
+import { useCallback } from "react";
+import useConnection from "./useConnection";
 
 export function useOnboard() {
   const { connect, disconnect, setError, instance } = useConnection();
 
-  const connectWallet = React.useCallback(async () => {
+  const connectWallet = useCallback(async () => {
     try {
       await instance.walletSelect();
       connect({ connector: instance });
@@ -12,9 +12,11 @@ export function useOnboard() {
       setError(err);
     }
   }, [connect, instance, setError]);
-  const resetWallet = React.useCallback(() => {
+
+  const resetWallet = useCallback(() => {
     instance.walletReset();
     disconnect();
   }, [instance, disconnect]);
+
   return { connectWallet, resetWallet };
 }

@@ -7,12 +7,11 @@ import Layout from "./components/layout";
 import NotFound from "components/not-found";
 import TempIndex from "components/temp-index";
 import ChangeNetwork from "components/change-network/ChangeNetwork";
-import { ConnectionContext } from "context/ConnectionContext";
 import { RequestClientContext } from "context/RequestClientContext";
+import useConnection from "hooks/useConnection";
 
 const Router = () => {
-  const { isConnected, chainId, provider, account, signer } =
-    useContext(ConnectionContext);
+  const { isConnected, chainId, provider, account, signer } = useConnection();
   const client = useContext(RequestClientContext);
 
   const [searchParams] = useSearchParams();

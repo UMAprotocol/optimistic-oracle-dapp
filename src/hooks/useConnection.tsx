@@ -1,7 +1,7 @@
 import React from "react";
 import { ConnectionContext } from "context/ConnectionContext";
 
-export function useConnection() {
+function useConnection() {
   const context = React.useContext(ConnectionContext);
   if (!context) {
     throw new Error("UseConnection must be used within a <ConnectionProvider>");
@@ -9,3 +9,5 @@ export function useConnection() {
 
   return context;
 }
+
+export default useConnection;
