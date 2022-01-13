@@ -1,10 +1,9 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import Table from "../table/Table";
 import { useSearchParams } from "react-router-dom";
 import useRequestTableData from "./useRequestTableData";
 import { Wrapper, TableContentWrapper, TableSection } from "./Request.styled";
 import RequestHero from "./RequestHero";
-import { RequestClientContext } from "context/RequestClientContext";
 import useRequestClient from "hooks/useRequestClient";
 /* Search Params:
   {
@@ -17,7 +16,7 @@ import useRequestClient from "hooks/useRequestClient";
 */
 
 const Request = () => {
-  const { client } = useRequestClient();
+  const { client, setActiveRequest } = useRequestClient();
   const [searchParams] = useSearchParams();
   const { rows, headerCells } = useRequestTableData(searchParams);
 
@@ -30,9 +29,8 @@ const Request = () => {
       chainId: Number(searchParams.get("chainId")) ?? 1,
     };
 
-    client.setActiveRequest(request);
-    client.update.all().catch((err) => undefined);
-  }, [searchParams, client]);
+    setActiveRequest(request);
+  }, [searchParams, client, setActiveRequest]);
 
   return (
     <Wrapper>

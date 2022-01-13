@@ -27,7 +27,7 @@ const Router = () => {
         chainId,
       });
     }
-  }, [isConnected, account, signer, chainId, client]);
+  }, [isConnected, account, signer, chainId, client, setUser]);
 
   return (
     <>
