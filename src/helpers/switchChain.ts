@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { ChainId, CHAINS } from "constants/web3";
+import { ChainId, CHAINS } from "constants/blockchain";
 
 export async function switchChain(
   provider: ethers.providers.JsonRpcProvider,

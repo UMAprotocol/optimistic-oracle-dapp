@@ -2,7 +2,7 @@ import { FC } from "react";
 import { ethers } from "ethers";
 import StickyHeader from "components/sticky-header";
 import { switchChain } from "helpers/switchChain";
-import { ChainId, CHAINS } from "constants/web3";
+import { ChainId, CHAINS } from "constants/blockchain";
 import { Wrapper } from "./ChangeNetwork.styled";
 
 interface Props {

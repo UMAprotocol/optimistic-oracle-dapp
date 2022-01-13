@@ -12,7 +12,7 @@ import {
   HeroButtonText,
   HeroButtonFlex,
 } from "./Request.styled";
-import { CHAINS, ChainId } from "constants/web3";
+import { CHAINS, ChainId } from "constants/blockchain";
 
 interface Props {
   chainId: ChainId;
