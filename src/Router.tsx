@@ -30,7 +30,7 @@ const Router = () => {
         .all()
         .catch((err) => console.log("err in setuser effect?", err));
     }
-  }, [isConnected, account, signer, chainId, client]);
+  }, [isConnected, account, signer, chainId, client, setUser]);
   return (
     <>
       <GlobalStyles />
