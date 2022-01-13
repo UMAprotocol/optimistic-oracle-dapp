@@ -5,9 +5,6 @@ import useRequestTableData from "./useRequestTableData";
 import { Wrapper, TableContentWrapper, TableSection } from "./Request.styled";
 import RequestHero from "./RequestHero";
 import { RequestClientContext } from "context/RequestClientContext";
-import { ethers } from "ethers";
-import { oracle } from "@uma/sdk";
-
 /* Search Params:
   {
     requester: string;
@@ -19,7 +16,7 @@ import { oracle } from "@uma/sdk";
 */
 
 const Request = () => {
-  const client = useContext(RequestClientContext);
+  const { client } = useRequestClient();
   const [searchParams] = useSearchParams();
   const { rows, headerCells } = useRequestTableData(searchParams);
   const [requestState, setRequestState] = useState<oracle.types.state.Request>(
