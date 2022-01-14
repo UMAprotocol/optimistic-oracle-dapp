@@ -1,11 +1,8 @@
 import React from "react";
 import { ethers } from "ethers";
-import {
-  Wallet,
-  Initialization,
-  API as OnboardAPI,
-} from "bnc-onboard/dist/src/interfaces";
+import { Wallet, API as OnboardAPI } from "bnc-onboard/dist/src/interfaces";
 import Onboard from "bnc-onboard";
+import onboardBaseConfig from "helpers/onboardBaseConfig";
 
 enum ActionType {
   CONNECT,
@@ -78,25 +75,6 @@ function reducer(
       };
     }
   }
-}
-
-function onboardBaseConfig(_chainId?: number): Initialization {
-  return {
-    dappId: process.env.REACT_APP_ONBOARD_API_KEY || "",
-    hideBranding: true,
-    networkId: 1, // Default to main net. If on a different network will change with the subscription.
-    walletSelect: {
-      wallets: [{ walletName: "metamask", preferred: true }],
-    },
-    walletCheck: [
-      { checkName: "connect" },
-      { checkName: "accounts" },
-      { checkName: "network" },
-      { checkName: "balance", minimumBalance: "0" },
-    ],
-    // To prevent providers from requesting block numbers every 4 seconds (see https://github.com/WalletConnect/walletconnect-monorepo/issues/357)
-    blockPollingInterval: 1000 * 60 * 60,
-  };
 }
 
 type ConnectionState = {
