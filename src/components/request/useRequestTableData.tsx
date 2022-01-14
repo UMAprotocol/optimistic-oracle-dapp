@@ -59,8 +59,16 @@ function useRequestTableData(searchParams: URLSearchParams) {
       ],
     });
 
-    const nextIdentifier = searchParams.get("identifier");
-    // setIdentifier(nextIdentifier);
+    let nextIdentifier = searchParams.get("identifier");
+    let convertedIdentifier = "";
+    if (nextIdentifier) {
+      try {
+        convertedIdentifier = ethers.utils.toUtf8String(nextIdentifier);
+      } catch (err) {
+        convertedIdentifier = "Not convertible to UTF-8 string.";
+        console.log("not convertible to UTF8");
+      }
+    }
     nextRows.push({
       cells: [
         {
@@ -77,7 +85,7 @@ function useRequestTableData(searchParams: URLSearchParams) {
         },
         {
           size: "lg",
-          value: nextIdentifier ?? "",
+          value: convertedIdentifier,
         },
       ],
     });

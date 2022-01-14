@@ -51,7 +51,10 @@ export const HeaderTitle = styled.h2`
   font-weight: 700;
 `;
 
-export const HeaderButtonWrapper = styled.div``;
+export const HeaderButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 export const HeroButton = styled(Button)`
   background: #272528;
@@ -65,11 +68,30 @@ export const HeroButton = styled(Button)`
   text-transform: uppercase;
   font-family: "Halyard";
   font-weight: 400;
-  cursor: pointer;
+  font-size: 0.75rem;
   &:hover {
-    background: #fff;
-    color: #272528;
+    cursor: initial;
+
+    background: #272528;
+    color: #fff;
   }
+`;
+
+export const HeroButtonFlex = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
+
+export const HeroLogo = styled.img`
+  height: 20px;
+  margin-left: -4px;
+`;
+
+export const HeroButtonText = styled.div`
+  font-size: 0.75rem;
+  line-height: 1rem;
+  margin-right: 8px;
+  margin-top: 2px;
 `;
 
 /* Form */
@@ -168,4 +190,9 @@ export const RequestFormButton = styled(Button)<IRequestFormButton>`
   font-size: 1rem;
   font-weight: 700;
   line-height: 0.5rem;
+`;
+
+export const BondLogo = styled.img`
+  height: 14px;
+  padding-top: 2px;
 `;

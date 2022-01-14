@@ -199,7 +199,7 @@ export const DropdownContent = styled.div`
 `;
 
 export const ConnectButton = styled(Button)`
-  background-color: #272258;
+  background-color: #262529;
   height: 45px;
   width: 170px;
   font-size: 1rem;
@@ -208,7 +208,7 @@ export const ConnectButton = styled(Button)`
   border-radius: 30px;
   &:hover {
     opacity: 0.7;
-    background-color: #272258;
+    background-color: #262529;
   }
 `;
 
