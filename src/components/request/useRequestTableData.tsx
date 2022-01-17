@@ -118,13 +118,15 @@ function useRequestTableData(searchParams: URLSearchParams) {
 
     let nextAncillaryData = searchParams.get("ancillaryData");
     let convertedAncillaryData = "";
-    if (nextAncillaryData) {
+    if (nextAncillaryData && nextAncillaryData !== "0x") {
       try {
         convertedAncillaryData = ethers.utils.toUtf8String(nextAncillaryData);
       } catch (err) {
         convertedAncillaryData = "Not convertible to UTF-8 string.";
         console.log("not convertible to UTF8");
       }
+    } else {
+      convertedAncillaryData = "No ancillary data for this request.";
     }
 
     nextRows.push({
