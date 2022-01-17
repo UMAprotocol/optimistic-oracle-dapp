@@ -7,6 +7,7 @@ export function useOnboard() {
   const connectWallet = useCallback(async () => {
     try {
       await instance.walletSelect();
+      await instance.walletCheck();
       connect({ connector: instance });
     } catch (err: any) {
       setError(err);

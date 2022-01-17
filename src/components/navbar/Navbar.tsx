@@ -9,6 +9,7 @@ import { useOnboard } from "hooks/useOnboard";
 export const Navbar: React.FC = () => {
   const { account, isConnected } = useConnection();
   const { connectWallet, resetWallet } = useOnboard();
+
   return (
     <Wrapper>
       <MaxWidth>
