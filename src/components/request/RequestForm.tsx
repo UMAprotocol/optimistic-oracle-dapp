@@ -17,6 +17,7 @@ import {
 } from "./Request.styled";
 import usdcLogo from "assets/usdc-logo.png";
 import { IOORequest, RequestState } from "constants/blockchain";
+import { ethers } from "ethers";
 
 interface Props {
   requestState: IOORequest;
@@ -64,13 +65,19 @@ const RequestForm: FC<Props> = ({ requestState }) => {
           <ParametersValuesWrapper>
             <ParametersValueHeader>Proposal bond:</ParametersValueHeader>
             <ParametersValue>
-              <BondLogo src={usdcLogo} alt="bond_img" /> USDC 10000
+              <BondLogo src={usdcLogo} alt="bond_img" /> FAKE{" "}
+              {requestState.bond
+                ? ethers.utils.formatUnits(requestState.bond, 18)
+                : ""}
             </ParametersValue>
           </ParametersValuesWrapper>
           <ParametersValuesWrapper>
             <ParametersValueHeader>Proposal reward:</ParametersValueHeader>
             <ParametersValue>
-              <BondLogo src={usdcLogo} alt="bond_img" /> USDC 1000
+              <BondLogo src={usdcLogo} alt="bond_img" /> FAKE
+              {requestState.reward
+                ? ethers.utils.formatUnits(requestState.reward, 18)
+                : ""}
             </ParametersValue>
           </ParametersValuesWrapper>
           <ParametersValuesWrapper>

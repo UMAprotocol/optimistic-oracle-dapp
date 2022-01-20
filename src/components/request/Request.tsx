@@ -37,11 +37,6 @@ const Request = () => {
       chainId: Number(searchParams.get("chainId")) ?? 1,
     };
 
-    console.log(
-      "checksum",
-      ethers.utils.getAddress(searchParams.get("requester")?.trim() ?? "")
-    );
-
     client.setActiveRequest(r);
     client.update
       .all()
