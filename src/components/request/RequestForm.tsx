@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useCallback } from "react";
 import {
   RequestFormWrapper,
   RequestFormRow,
@@ -22,11 +22,19 @@ interface Props {
   requestState: RequestState;
 }
 
-const RequestForm: FC<Props> = () => {
+const RequestForm: FC<Props> = ({ requestState }) => {
   const [value, setValue] = useState("");
   const inputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
+
+  // Default to RequestState = 6 (Settled).
+  const setButtonText = useCallback(() => {
+    if (requestState === RequestState.Invalid) return <>Invalid request</>;
+    if (requestState === RequestState.Requested) return <>Submit proposal</>;
+    if (requestState === RequestState.Disputed) return <>Dispute proposal</>;
+    return <>Submit proposal</>;
+  }, [requestState]);
 
   return (
     <RequestFormWrapper>
@@ -41,7 +49,7 @@ const RequestForm: FC<Props> = () => {
                 onChange={inputOnChange}
               />
               <RequestFormButton disabled={true}>
-                Submit proposal
+                {setButtonText()}
               </RequestFormButton>
             </RequestInputButtonBlock>
           </RequestFormInputWrapper>

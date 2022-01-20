@@ -49,7 +49,7 @@ const Request = () => {
         console.log("err in set active request?", err);
       })
       .finally(() => {
-        console.log("log??", client.store.read().request().state);
+        console.log("log??", client.store.read().request());
         setRequestState(client.store.read().request().state);
       });
   }, [searchParams, client]);
