@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import ethereumLogo from "assets/ethereum-logo.svg";
 import polygonLogo from "assets/polygon-tag.svg";
 
@@ -74,4 +75,20 @@ export enum RequestState {
   Disputed, // 4 Disputed, but no DVM price returned yet.
   Resolved, // 5 Disputed and DVM price is available.
   Settled, // 6 Final price has been set in the contract (can get here from Expired or Resolved).
+}
+
+export interface IOORequest {
+  bond: ethers.BigNumber;
+  currency: string; // address
+  customLiveness: ethers.BigNumber;
+  disputer: string; // address
+  expirationTime: ethers.BigNumber;
+  finalFee: ethers.BigNumber;
+  proposedPrice: ethers.BigNumber;
+  proposer: string; // address
+  refundOnDispute: boolean;
+  resolvedPrice: ethers.BigNumber;
+  reward: ethers.BigNumber;
+  settled: boolean;
+  state: RequestState;
 }

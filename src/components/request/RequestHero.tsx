@@ -12,11 +12,11 @@ import {
   HeroButtonText,
   HeroButtonFlex,
 } from "./Request.styled";
-import { CHAINS, ChainId, RequestState } from "constants/blockchain";
+import { CHAINS, ChainId, IOORequest } from "constants/blockchain";
 
 interface Props {
   chainId: ChainId;
-  requestState: RequestState;
+  requestState: IOORequest;
 }
 
 const RequestHero: FC<Props> = ({ chainId, requestState }) => {

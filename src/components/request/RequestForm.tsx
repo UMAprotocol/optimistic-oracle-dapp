@@ -16,10 +16,10 @@ import {
   BondLogo,
 } from "./Request.styled";
 import usdcLogo from "assets/usdc-logo.png";
-import { RequestState } from "constants/blockchain";
+import { IOORequest, RequestState } from "constants/blockchain";
 
 interface Props {
-  requestState: RequestState;
+  requestState: IOORequest;
 }
 
 const RequestForm: FC<Props> = ({ requestState }) => {
@@ -28,11 +28,16 @@ const RequestForm: FC<Props> = ({ requestState }) => {
     setValue(event.target.value);
   };
 
+  console.log("RQ", requestState);
+
   // Default to RequestState = 6 (Settled).
   const setButtonText = useCallback(() => {
-    if (requestState === RequestState.Invalid) return <>Invalid request</>;
-    if (requestState === RequestState.Requested) return <>Submit proposal</>;
-    if (requestState === RequestState.Disputed) return <>Dispute proposal</>;
+    if (requestState.state === RequestState.Invalid)
+      return <>Invalid request</>;
+    if (requestState.state === RequestState.Requested)
+      return <>Submit proposal</>;
+    if (requestState.state === RequestState.Proposed)
+      return <>Dispute proposal</>;
     return <>Submit proposal</>;
   }, [requestState]);
 

@@ -6,7 +6,7 @@ import { Wrapper, TableContentWrapper, TableSection } from "./Request.styled";
 import RequestHero from "./RequestHero";
 import { RequestClientContext } from "context/RequestClientContext";
 import { ethers } from "ethers";
-import { RequestState } from "constants/blockchain";
+import { IOORequest } from "constants/blockchain";
 
 /* Search Params:
   {
@@ -22,8 +22,8 @@ const Request = () => {
   const client = useContext(RequestClientContext);
   const [searchParams] = useSearchParams();
   const { rows, headerCells } = useRequestTableData(searchParams);
-  const [requestState, setRequestState] = useState<RequestState>(
-    RequestState.Requested
+  const [requestState, setRequestState] = useState<IOORequest>(
+    {} as IOORequest
   );
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const Request = () => {
       })
       .finally(() => {
         console.log("log??", client.store.read().request());
-        setRequestState(client.store.read().request().state);
+        setRequestState(client.store.read().request());
       });
   }, [searchParams, client]);
 
