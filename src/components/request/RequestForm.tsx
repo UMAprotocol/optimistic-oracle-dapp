@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import {
   RequestFormWrapper,
   RequestFormRow,
@@ -16,8 +16,13 @@ import {
   BondLogo,
 } from "./Request.styled";
 import usdcLogo from "assets/usdc-logo.png";
+import { RequestState } from "constants/blockchain";
 
-const RequestForm = () => {
+interface Props {
+  requestState: RequestState;
+}
+
+const RequestForm: FC<Props> = () => {
   const [value, setValue] = useState("");
   const inputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);

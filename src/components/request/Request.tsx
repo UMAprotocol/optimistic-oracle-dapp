@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import Table from "../table/Table";
 import { useSearchParams } from "react-router-dom";
 import useRequestTableData from "./useRequestTableData";
@@ -6,6 +6,8 @@ import { Wrapper, TableContentWrapper, TableSection } from "./Request.styled";
 import RequestHero from "./RequestHero";
 import { RequestClientContext } from "context/RequestClientContext";
 import { ethers } from "ethers";
+import { RequestState } from "constants/blockchain";
+
 /* Search Params:
   {
     requester: string;
@@ -20,6 +22,9 @@ const Request = () => {
   const client = useContext(RequestClientContext);
   const [searchParams] = useSearchParams();
   const { rows, headerCells } = useRequestTableData(searchParams);
+  const [requestState, setRequestState] = useState<RequestState>(
+    RequestState.Requested
+  );
 
   useEffect(() => {
     const r = {
@@ -44,13 +49,18 @@ const Request = () => {
         console.log("err in set active request?", err);
       })
       .finally(() => {
-        console.log("log??", client.store.read().request());
+        console.log("log??", client.store.read().request().state);
+        setRequestState(client.store.read().request().state);
       });
   }, [searchParams, client]);
 
+  console.log("requestState", requestState);
   return (
     <Wrapper>
-      <RequestHero chainId={Number(searchParams.get("chainId")) ?? 0} />
+      <RequestHero
+        requestState={requestState}
+        chainId={Number(searchParams.get("chainId")) ?? 0}
+      />
       <TableSection>
         <TableContentWrapper>
           <Table title={"Input Data"} headerCells={headerCells} rows={rows} />

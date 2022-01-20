@@ -12,13 +12,14 @@ import {
   HeroButtonText,
   HeroButtonFlex,
 } from "./Request.styled";
-import { CHAINS, ChainId } from "constants/blockchain";
+import { CHAINS, ChainId, RequestState } from "constants/blockchain";
 
 interface Props {
   chainId: ChainId;
+  requestState: RequestState;
 }
 
-const RequestHero: FC<Props> = ({ chainId }) => {
+const RequestHero: FC<Props> = ({ chainId, requestState }) => {
   let logo = CHAINS[1].logoURI,
     chainName = CHAINS[1].name;
 
@@ -42,7 +43,7 @@ const RequestHero: FC<Props> = ({ chainId }) => {
             <HeroButton>Request</HeroButton>
           </HeaderButtonWrapper>
         </HeroHeaderRow>
-        <RequestForm />
+        <RequestForm requestState={requestState} />
       </HeroContentWrapper>
     </HeroSection>
   );
