@@ -17,10 +17,20 @@ const polygonChainConfig: oracle.types.state.ChainConfig = {
   providerUrl: process.env.REACT_APP_PROVIDER_URL_137 ?? "",
 };
 
+// Hardhat config
+const hardhatChainId = 31337;
+const hardhatChainConfig: oracle.types.state.ChainConfig = {
+  chainId: hardhatChainId,
+  multicall2Address: "0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696",
+  optimisticOracleAddress: "0xC43767F4592DF265B4a9F1a398B97fF24F38C6A6",
+  providerUrl: "http://127.0.0.1:8545",
+};
+
 const config = {
   chains: {
     [ethChainId]: ethChainConfig,
     [polygonChainId]: polygonChainConfig,
+    [hardhatChainId]: hardhatChainConfig,
   },
 };
 

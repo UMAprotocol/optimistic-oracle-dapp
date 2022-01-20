@@ -5,6 +5,7 @@ import useRequestTableData from "./useRequestTableData";
 import { Wrapper, TableContentWrapper, TableSection } from "./Request.styled";
 import RequestHero from "./RequestHero";
 import { RequestClientContext } from "context/RequestClientContext";
+import { ethers } from "ethers";
 /* Search Params:
   {
     requester: string;
@@ -21,16 +22,30 @@ const Request = () => {
   const { rows, headerCells } = useRequestTableData(searchParams);
 
   useEffect(() => {
-    const request = {
-      requester: searchParams.get("requester") ?? "",
+    const r = {
+      requester: ethers.utils.getAddress(
+        searchParams.get("requester")?.trim() ?? ""
+      ),
       identifier: searchParams.get("identifier") ?? "",
       timestamp: Number(searchParams.get("timestamp")) ?? "",
       ancillaryData: searchParams.get("ancillaryData") ?? "",
       chainId: Number(searchParams.get("chainId")) ?? 1,
     };
 
-    client.setActiveRequest(request);
-    client.update.all().catch((err) => undefined);
+    console.log(
+      "checksum",
+      ethers.utils.getAddress(searchParams.get("requester")?.trim() ?? "")
+    );
+
+    client.setActiveRequest(r);
+    client.update
+      .all()
+      .catch((err) => {
+        console.log("err in set active request?", err);
+      })
+      .finally(() => {
+        console.log("log??", client.store.read().request());
+      });
   }, [searchParams, client]);
 
   return (

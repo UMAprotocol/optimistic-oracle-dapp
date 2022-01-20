@@ -10,6 +10,17 @@ import ChangeNetwork from "components/change-network/ChangeNetwork";
 import { RequestClientContext } from "context/RequestClientContext";
 import useConnection from "hooks/useConnection";
 
+/* export enum RequestState {
+  Invalid = 0, // Never requested.
+  Requested, // Requested, no other actions taken.
+  Proposed, // Proposed, but not expired or disputed yet.
+  Expired, // Proposed, not disputed, past liveness.
+  Disputed, // Disputed, but no DVM price returned yet.
+  Resolved, // Disputed and DVM price is available.
+  Settled, // Final price has been set in the contract (can get here from Expired or Resolved).
+}
+*/
+
 const Router = () => {
   const { isConnected, chainId, provider, account, signer } = useConnection();
   const client = useContext(RequestClientContext);
@@ -22,11 +33,14 @@ const Router = () => {
 
   useEffect(() => {
     if (isConnected && account && signer && chainId) {
+      console.log("in here?", chainId);
       client.setUser(account, chainId, signer);
-      client.update.all().catch((err) => undefined);
+      client.update
+        .all()
+        .then(() => client.store.read().userChainId)
+        .catch((err) => console.log("err in setuser effect?", err));
     }
   }, [isConnected, account, signer, chainId, client]);
-
   return (
     <>
       <GlobalStyles />
