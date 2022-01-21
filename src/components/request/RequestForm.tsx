@@ -36,8 +36,6 @@ const RequestForm: FC<Props> = ({ requestState }) => {
 
   const { isConnected } = useConnection();
 
-  console.log("RQ", requestState);
-
   let startTime = 0;
   if (requestState.expirationTime && requestState.customLiveness) {
     if (requestState.customLiveness.toNumber() === 0) {
@@ -46,13 +44,6 @@ const RequestForm: FC<Props> = ({ requestState }) => {
       startTime = requestState.customLiveness.toNumber();
     }
   }
-
-  console.log("value in request", startTime);
-
-  // const currentTime = useCountdownTimer(
-  //   startTime,
-  //   requestState.expirationTime ? requestState.expirationTime.toNumber() : 0
-  // );
 
   const [currentTime, setCurrentTime] = useState(0);
   useEffect(() => {
