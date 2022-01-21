@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Routes, Route, useSearchParams } from "react-router-dom";
 import GlobalStyles from "./components/global-styles";
 import Navbar from "./components/navbar";
@@ -8,35 +7,18 @@ import NotFound from "components/not-found";
 import TempIndex from "components/temp-index";
 import ChangeNetwork from "components/change-network/ChangeNetwork";
 import useConnection from "hooks/useConnection";
-import useRequestClient from "hooks/useRequestClient";
+import useClient from "hooks/useOracleClient";
+
 const Router = () => {
-  const { isConnected, chainId, provider, account, signer } = useConnection();
-  const { client, setUser } = useRequestClient();
-
+  const { wrongNetwork } = useConnection();
+  const { client } = useClient();
   const [searchParams] = useSearchParams();
-  const wrongNetwork =
-    isConnected &&
-    searchParams.get("chainId") &&
-    Number(searchParams.get("chainId")) !== chainId;
-
-  useEffect(() => {
-    if (isConnected && account && signer && chainId) {
-      setUser({
-        address: account,
-        signer,
-        chainId,
-      });
-      client.update
-        .all()
-        .catch((err) => console.log("err in setuser effect?", err));
-    }
-  }, [isConnected, account, signer, chainId, client, setUser]);
   return (
     <>
       <GlobalStyles />
-      {wrongNetwork && provider && searchParams.get("chainId") && (
+      {wrongNetwork && searchParams.get("chainId") && (
         <ChangeNetwork
-          provider={provider}
+          switchChain={() => client.switchOrAddChain()}
           chainId={Number(searchParams.get("chainId"))}
         />
       )}

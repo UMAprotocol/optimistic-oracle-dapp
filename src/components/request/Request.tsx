@@ -1,12 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect } from "react";
 import Table from "../table/Table";
 import { useSearchParams } from "react-router-dom";
 import useRequestTableData from "./useRequestTableData";
 import { Wrapper, TableContentWrapper, TableSection } from "./Request.styled";
 import RequestHero from "./RequestHero";
-import { RequestClientContext } from "context/RequestClientContext";
-import useRequestClient from "hooks/useRequestClient";
-import { oracle } from "@uma/sdk";
+import useClient from "hooks/useOracleClient";
 
 /* Search Params:
   {
@@ -19,41 +17,33 @@ import { oracle } from "@uma/sdk";
 */
 
 const Request = () => {
-  const { setActiveRequest } = useRequestClient();
+  const { client } = useClient();
   const [searchParams] = useSearchParams();
   const { rows, headerCells } = useRequestTableData(searchParams);
-  const [requestState, setRequestState] = useState<oracle.types.state.Request>(
-    {} as oracle.types.state.Request
-  );
 
   useEffect(() => {
-    const r = {
-      requester: ethers.utils.getAddress(
-        searchParams.get("requester")?.trim() ?? ""
-      ),
-      identifier: searchParams.get("identifier") ?? "",
-      timestamp: Number(searchParams.get("timestamp")) ?? "",
-      ancillaryData: searchParams.get("ancillaryData") ?? "",
-      chainId: Number(searchParams.get("chainId")) ?? 1,
-    };
+    const requester = searchParams.get("requester")?.trim();
+    const identifier = searchParams.get("identifier");
+    const timestamp =
+      searchParams.get("timestamp") && Number(searchParams.get("timestamp"));
+    const ancillaryData = searchParams.get("ancillaryData");
+    const chainId =
+      searchParams.get("chainId") && Number(searchParams.get("chainId"));
 
-    client.setActiveRequest(r);
-    client.update
-      .all()
-      .catch((err) => {
-        console.log("err in set active request?", err);
-      })
-      .finally(() => {
-        setRequestState(client.store.read().request());
+    if (requester && identifier && timestamp && ancillaryData && chainId) {
+      client.setActiveRequest({
+        requester,
+        identifier,
+        timestamp,
+        ancillaryData,
+        chainId,
       });
+    }
   }, [searchParams, client]);
 
   return (
     <Wrapper>
-      <RequestHero
-        requestState={requestState}
-        chainId={Number(searchParams.get("chainId")) ?? 0}
-      />
+      <RequestHero chainId={Number(searchParams.get("chainId")) ?? 0} />
       <TableSection>
         <TableContentWrapper>
           <Table title={"Input Data"} headerCells={headerCells} rows={rows} />

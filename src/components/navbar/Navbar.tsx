@@ -4,12 +4,9 @@ import { Link } from "react-router-dom";
 import logo from "assets/logo.svg";
 import { Wrapper, MaxWidth, Navigation, ConnectButton } from "./Navbar.styled";
 import useConnection from "hooks/useConnection";
-import { useOnboard } from "hooks/useOnboard";
 
 export const Navbar: React.FC = () => {
-  const { account, isConnected } = useConnection();
-  const { connectWallet, resetWallet } = useOnboard();
-
+  const { account, isConnected, connect, disconnect } = useConnection();
   return (
     <Wrapper>
       <MaxWidth>
@@ -19,8 +16,8 @@ export const Navbar: React.FC = () => {
         <Navigation>
           <ConnectButton
             onClick={() => {
-              if (!isConnected) return connectWallet();
-              if (isConnected) return resetWallet();
+              if (!isConnected) return connect();
+              if (isConnected) return disconnect();
             }}
           >
             {!isConnected

@@ -13,14 +13,12 @@ import {
   HeroButtonFlex,
 } from "./Request.styled";
 import { CHAINS, ChainId } from "constants/blockchain";
-import { oracle } from "@uma/sdk";
 
 interface Props {
   chainId: ChainId;
-  requestState: oracle.types.state.Request;
 }
 
-const RequestHero: FC<Props> = ({ chainId, requestState }) => {
+const RequestHero: FC<Props> = ({ chainId }) => {
   let logo = CHAINS[1].logoURI,
     chainName = CHAINS[1].name;
 
@@ -44,7 +42,7 @@ const RequestHero: FC<Props> = ({ chainId, requestState }) => {
             <HeroButton>Request</HeroButton>
           </HeaderButtonWrapper>
         </HeroHeaderRow>
-        <RequestForm requestState={requestState} />
+        <RequestForm />
       </HeroContentWrapper>
     </HeroSection>
   );

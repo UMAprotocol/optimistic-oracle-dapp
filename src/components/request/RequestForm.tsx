@@ -1,4 +1,4 @@
-import { FC, useState, useCallback, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 import {
   RequestFormWrapper,
   RequestFormRow,
@@ -15,59 +15,166 @@ import {
   RequestFormButton,
   BondLogo,
 } from "./Request.styled";
-import usdcLogo from "assets/usdc-logo.png";
-import { RequestState } from "constants/blockchain";
-import { ethers } from "ethers";
-import { DateTime, Duration } from "luxon";
+import { Duration } from "luxon";
 import calculateTimeRemaining from "helpers/calculateTimeRemaining";
+import useClient from "hooks/useOracleClient";
 import useConnection from "hooks/useConnection";
-import { oracle } from "@uma/sdk";
+import useReader from "hooks/useOracleReader";
 
-interface Props {
-  requestState: oracle.types.state.Request;
-}
-
-const RequestForm: FC<Props> = ({ requestState }) => {
+const RequestForm: FC = () => {
+  const [currentTime, setCurrentTime] = useState(0);
   const [value, setValue] = useState("");
   const inputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
+  const { flags, client, state } = useClient();
+  const { connect } = useConnection();
+  const {
+    totalBond,
+    reward,
+    collateralSymbol,
+    liveness,
+    logo,
+    expirationTime,
+  } = useReader(state);
 
-  const { isConnected } = useConnection();
+  // TODO: update these to the correct design for text and button state
+  const getProposalState = (value: string) => {
+    if (flags.MissingUser)
+      return {
+        label: "Login",
+        onClick: () => connect(),
+        disabled: false,
+      };
+    if (flags.InsufficientBalance)
+      return {
+        label: "Balance Low",
+        onClick: undefined,
+        disabled: true,
+      };
+    if (flags.ChainChangeInProgress)
+      return {
+        label: "Changing Networks...",
+        onClick: undefined,
+        disabled: true,
+      };
+    if (flags.WrongChain)
+      return {
+        label: "Switch Networks",
+        onClick: () => client.switchOrAddChain(),
+        disabled: false,
+      };
+    if (flags.ApprovalInProgress)
+      return {
+        label: "Approving...",
+        onClick: undefined,
+        disabled: true,
+      };
+    if (flags.ProposalInProgress)
+      return {
+        label: "Proposing...",
+        onClick: undefined,
+        disabled: true,
+      };
+    if (flags.InsufficientApproval)
+      return {
+        label: "Approve",
+        onClick: () => client.approveCollateral(),
+        disabled: false,
+      };
+    return {
+      label: "Submit proposal",
+      disabled: false,
+      onClick: () => client.proposePrice(value),
+    };
+  };
 
-  const [currentTime, setCurrentTime] = useState(0);
+  const getDisputeState = () => {
+    if (flags.MissingUser)
+      return {
+        label: "Login",
+        onClick: connect,
+        disabled: false,
+      };
+    if (flags.InsufficientBalance)
+      return {
+        label: "Balance Low",
+        onClick: undefined,
+        disabled: true,
+      };
+    if (flags.ChainChangeInProgress)
+      return {
+        label: "Changing Networks...",
+        onClick: undefined,
+        disabled: true,
+      };
+    if (flags.WrongChain)
+      return {
+        label: "Switch Networks",
+        onClick: () => client.switchOrAddChain(),
+        disabled: false,
+      };
+    if (flags.ApprovalInProgress)
+      return {
+        label: "Approving...",
+        onClick: undefined,
+        disabled: true,
+      };
+    if (flags.DisputeInProgress)
+      return {
+        label: "Disputing...",
+        onClick: undefined,
+        disabled: true,
+      };
+    if (flags.InsufficientApproval)
+      return {
+        label: "Approve",
+        onClick: () => client.approveCollateral(),
+        disabled: false,
+      };
+    return {
+      label: "Submit Dispute",
+      disabled: false,
+      onClick: () => client.disputePrice(),
+    };
+  };
+
+  const getButton = (value: string) => {
+    if (flags.InProposeState) {
+      const result = getProposalState(value);
+      return <RequestFormButton {...result}>{result.label}</RequestFormButton>;
+    } else if (flags.InDisputeState) {
+      const result = getDisputeState();
+      return <RequestFormButton {...result}>{result.label}</RequestFormButton>;
+    } else {
+      return <RequestFormButton disabled={true}>Resolved</RequestFormButton>;
+    }
+  };
+
   useEffect(() => {
-    if (requestState.expirationTime) {
-      setCurrentTime(
-        calculateTimeRemaining(
-          Date.now(),
-          requestState.expirationTime.toNumber() * 1000
-        )
-      );
+    if (expirationTime) {
+      setCurrentTime(calculateTimeRemaining(Date.now(), expirationTime * 1000));
       const timer = setInterval(
         () =>
           setCurrentTime(
-            calculateTimeRemaining(
-              Date.now(),
-              requestState.expirationTime.toNumber() * 1000
-            )
+            calculateTimeRemaining(Date.now(), expirationTime * 1000)
           ),
         1000
       );
       return () => clearInterval(timer);
     }
-  }, [requestState.expirationTime, requestState.customLiveness]);
+  }, [expirationTime, liveness]);
 
-  // Default to RequestState = 6 (Settled).
-  const setButtonText = useCallback(() => {
-    if (requestState.state === RequestState.Invalid)
-      return <>Invalid request</>;
-    if (requestState.state === RequestState.Requested)
-      return <>Submit proposal</>;
-    if (requestState.state === RequestState.Proposed)
-      return <>Dispute proposal</>;
-    return <>Submit proposal</>;
-  }, [requestState]);
+  // // Default to RequestState = 6 (Settled).
+  // const setButtonText = useCallback(() => {
+  //   if (requestState.state === RequestState.Invalid)
+  //     return <>Invalid request</>;
+  //   if (requestState.state === RequestState.Requested)
+  //     return <>Submit proposal</>;
+  //   if (requestState.state === RequestState.Proposed)
+  //     return <>Dispute proposal</>;
+  //   return <>Submit proposal</>;
+  // }, [requestState]);
 
   return (
     <RequestFormWrapper>
@@ -81,9 +188,7 @@ const RequestForm: FC<Props> = ({ requestState }) => {
                 value={value}
                 onChange={inputOnChange}
               />
-              <RequestFormButton disabled={isConnected ? false : true}>
-                {setButtonText()}
-              </RequestFormButton>
+              {getButton(value)}
             </RequestInputButtonBlock>
           </RequestFormInputWrapper>
         </RequestFormHeaderAndFormWrapper>
@@ -92,32 +197,23 @@ const RequestForm: FC<Props> = ({ requestState }) => {
           <ParametersValuesWrapper>
             <ParametersValueHeader>Proposal bond:</ParametersValueHeader>
             <ParametersValue>
-              <BondLogo src={usdcLogo} alt="bond_img" /> FAKE{" "}
-              {requestState.bond
-                ? ethers.utils.formatUnits(requestState.bond, 18)
-                : ""}
+              <BondLogo src={logo} alt="bond_img" /> {collateralSymbol}{" "}
+              {totalBond}
             </ParametersValue>
           </ParametersValuesWrapper>
           <ParametersValuesWrapper>
             <ParametersValueHeader>Proposal reward:</ParametersValueHeader>
             <ParametersValue>
-              <BondLogo src={usdcLogo} alt="bond_img" /> FAKE
-              {requestState.reward
-                ? ethers.utils.formatUnits(requestState.reward, 18)
-                : ""}
+              <BondLogo src={logo} alt="bond_img" /> {collateralSymbol} {reward}
             </ParametersValue>
           </ParametersValuesWrapper>
           <ParametersValuesWrapper>
-            <ParametersValueHeader>Liveness period:</ParametersValueHeader>
+            <ParametersValueHeader>Liveness period: </ParametersValueHeader>
             <ParametersValue>
-              {requestState.customLiveness &&
-              requestState.customLiveness.toString() !== "0"
-                ? `${DateTime.fromSeconds(
-                    requestState.customLiveness.toNumber()
-                  )}`
-                : `2 hours (Time remaining: ${Duration.fromMillis(
-                    currentTime
-                  ).toFormat("hh'h':mm'min' s'sec' left")})`}
+              {liveness} :{" "}
+              {`Time remaining: ${Duration.fromMillis(currentTime).toFormat(
+                "hh'h':mm' min' s' sec' left"
+              )})`}
             </ParametersValue>
           </ParametersValuesWrapper>
         </RequestFormParametersWrapper>

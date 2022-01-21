@@ -12,7 +12,6 @@ export default function onboardBaseConfig(_chainId?: ChainId): Initialization {
     walletCheck: [
       { checkName: "connect" },
       { checkName: "accounts" },
-      { checkName: "network" },
       { checkName: "balance", minimumBalance: "0" },
     ],
     // To prevent providers from requesting block numbers every 4 seconds (see https://github.com/WalletConnect/walletconnect-monorepo/issues/357)
