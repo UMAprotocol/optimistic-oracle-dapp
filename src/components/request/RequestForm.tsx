@@ -26,8 +26,6 @@ interface Props {
   requestState: IOORequest;
 }
 
-const TWO_HOURS = 60 * 60 * 2;
-
 const RequestForm: FC<Props> = ({ requestState }) => {
   const [value, setValue] = useState("");
   const inputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,15 +33,6 @@ const RequestForm: FC<Props> = ({ requestState }) => {
   };
 
   const { isConnected } = useConnection();
-
-  let startTime = 0;
-  if (requestState.expirationTime && requestState.customLiveness) {
-    if (requestState.customLiveness.toNumber() === 0) {
-      startTime = requestState.expirationTime.toNumber() + TWO_HOURS;
-    } else {
-      startTime = requestState.customLiveness.toNumber();
-    }
-  }
 
   const [currentTime, setCurrentTime] = useState(0);
   useEffect(() => {

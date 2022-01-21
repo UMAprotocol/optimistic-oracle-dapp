@@ -22,7 +22,6 @@ const Router = () => {
 
   useEffect(() => {
     if (isConnected && account && signer && chainId) {
-      console.log("in here?", chainId);
       client.setUser(account, chainId, signer);
       client.update
         .all()
