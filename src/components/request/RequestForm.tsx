@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState, useCallback, useEffect } from "react";
 import {
   RequestFormWrapper,
   RequestFormRow,
@@ -16,12 +16,58 @@ import {
   BondLogo,
 } from "./Request.styled";
 import usdcLogo from "assets/usdc-logo.png";
+import { RequestState } from "constants/blockchain";
+import { ethers } from "ethers";
+import { DateTime, Duration } from "luxon";
+import calculateTimeRemaining from "helpers/calculateTimeRemaining";
+import useConnection from "hooks/useConnection";
+import { oracle } from "@uma/sdk";
 
-const RequestForm = () => {
+interface Props {
+  requestState: oracle.types.state.Request;
+}
+
+const RequestForm: FC<Props> = ({ requestState }) => {
   const [value, setValue] = useState("");
   const inputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
+
+  const { isConnected } = useConnection();
+
+  const [currentTime, setCurrentTime] = useState(0);
+  useEffect(() => {
+    if (requestState.expirationTime) {
+      setCurrentTime(
+        calculateTimeRemaining(
+          Date.now(),
+          requestState.expirationTime.toNumber() * 1000
+        )
+      );
+      const timer = setInterval(
+        () =>
+          setCurrentTime(
+            calculateTimeRemaining(
+              Date.now(),
+              requestState.expirationTime.toNumber() * 1000
+            )
+          ),
+        1000
+      );
+      return () => clearInterval(timer);
+    }
+  }, [requestState.expirationTime, requestState.customLiveness]);
+
+  // Default to RequestState = 6 (Settled).
+  const setButtonText = useCallback(() => {
+    if (requestState.state === RequestState.Invalid)
+      return <>Invalid request</>;
+    if (requestState.state === RequestState.Requested)
+      return <>Submit proposal</>;
+    if (requestState.state === RequestState.Proposed)
+      return <>Dispute proposal</>;
+    return <>Submit proposal</>;
+  }, [requestState]);
 
   return (
     <RequestFormWrapper>
@@ -35,8 +81,8 @@ const RequestForm = () => {
                 value={value}
                 onChange={inputOnChange}
               />
-              <RequestFormButton disabled={true}>
-                Submit proposal
+              <RequestFormButton disabled={isConnected ? false : true}>
+                {setButtonText()}
               </RequestFormButton>
             </RequestInputButtonBlock>
           </RequestFormInputWrapper>
@@ -46,18 +92,33 @@ const RequestForm = () => {
           <ParametersValuesWrapper>
             <ParametersValueHeader>Proposal bond:</ParametersValueHeader>
             <ParametersValue>
-              <BondLogo src={usdcLogo} alt="bond_img" /> USDC 10000
+              <BondLogo src={usdcLogo} alt="bond_img" /> FAKE{" "}
+              {requestState.bond
+                ? ethers.utils.formatUnits(requestState.bond, 18)
+                : ""}
             </ParametersValue>
           </ParametersValuesWrapper>
           <ParametersValuesWrapper>
             <ParametersValueHeader>Proposal reward:</ParametersValueHeader>
             <ParametersValue>
-              <BondLogo src={usdcLogo} alt="bond_img" /> USDC 1000
+              <BondLogo src={usdcLogo} alt="bond_img" /> FAKE
+              {requestState.reward
+                ? ethers.utils.formatUnits(requestState.reward, 18)
+                : ""}
             </ParametersValue>
           </ParametersValuesWrapper>
           <ParametersValuesWrapper>
             <ParametersValueHeader>Liveness period:</ParametersValueHeader>
-            <ParametersValue>48 hours</ParametersValue>
+            <ParametersValue>
+              {requestState.customLiveness &&
+              requestState.customLiveness.toString() !== "0"
+                ? `${DateTime.fromSeconds(
+                    requestState.customLiveness.toNumber()
+                  )}`
+                : `2 hours (Time remaining: ${Duration.fromMillis(
+                    currentTime
+                  ).toFormat("hh'h':mm'min' s'sec' left")})`}
+            </ParametersValue>
           </ParametersValuesWrapper>
         </RequestFormParametersWrapper>
       </RequestFormRow>

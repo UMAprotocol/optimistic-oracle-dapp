@@ -158,7 +158,7 @@ export const ParametersValuesWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 1rem;
-  max-width: 400px;
+  max-width: 500px;
   &:nth-of-type(1) {
     margin-top: 0.25rem;
   }

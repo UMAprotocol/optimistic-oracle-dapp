@@ -23,10 +23,11 @@ const Router = () => {
   useEffect(() => {
     if (isConnected && account && signer && chainId) {
       client.setUser(account, chainId, signer);
-      client.update.all().catch((err) => undefined);
+      client.update
+        .all()
+        .catch((err) => console.log("err in setuser effect?", err));
     }
   }, [isConnected, account, signer, chainId, client]);
-
   return (
     <>
       <GlobalStyles />
