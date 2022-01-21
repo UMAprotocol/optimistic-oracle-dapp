@@ -18,6 +18,7 @@ import {
 import usdcLogo from "assets/usdc-logo.png";
 import { IOORequest, RequestState } from "constants/blockchain";
 import { ethers } from "ethers";
+import { DateTime } from "luxon";
 
 interface Props {
   requestState: IOORequest;
@@ -82,7 +83,14 @@ const RequestForm: FC<Props> = ({ requestState }) => {
           </ParametersValuesWrapper>
           <ParametersValuesWrapper>
             <ParametersValueHeader>Liveness period:</ParametersValueHeader>
-            <ParametersValue>48 hours</ParametersValue>
+            <ParametersValue>
+              {requestState.customLiveness &&
+              requestState.customLiveness.toString() !== "0"
+                ? `${DateTime.fromSeconds(
+                    requestState.customLiveness.toNumber()
+                  )}`
+                : `2 hours (Time remaining: )`}
+            </ParametersValue>
           </ParametersValuesWrapper>
         </RequestFormParametersWrapper>
       </RequestFormRow>
