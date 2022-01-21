@@ -1,21 +1,21 @@
 import { FC } from "react";
-import { ethers } from "ethers";
 import StickyHeader from "components/sticky-header";
-import { switchChain } from "helpers/switchChain";
 import { ChainId, CHAINS } from "constants/blockchain";
 import { Wrapper } from "./ChangeNetwork.styled";
+import useClient from 'hooks/useOracleClient'
 
 interface Props {
-  provider: ethers.providers.Web3Provider;
+  switchChain: ()=>void;
   chainId: ChainId;
 }
 
-const ChangeNetwork: FC<Props> = ({ provider, chainId }) => {
+const ChangeNetwork: FC<Props> = ({ switchChain, chainId }) => {
+  const {client} = useClient()
   return (
     <StickyHeader>
       <Wrapper>
         You are on an incorrect network. Please{" "}
-        <button onClick={() => switchChain(provider, chainId)}>
+        <button onClick={switchChain}>
           switch to {CHAINS[chainId].name}
         </button>
       </Wrapper>

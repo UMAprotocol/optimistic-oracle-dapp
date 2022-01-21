@@ -4,8 +4,8 @@ import { useSearchParams } from "react-router-dom";
 import useRequestTableData from "./useRequestTableData";
 import { Wrapper, TableContentWrapper, TableSection } from "./Request.styled";
 import RequestHero from "./RequestHero";
-import useRequestClient from "hooks/useRequestClient";
-import { oracle } from "@uma/sdk";
+// import useRequestClient from "hooks/useRequestClient";
+import { client } from "../../helpers/oracleClient";
 
 /* Search Params:
   {
@@ -18,23 +18,28 @@ import { oracle } from "@uma/sdk";
 */
 
 const Request = () => {
-  const { setActiveRequest } = useRequestClient();
+  // const { setActiveRequest } = useRequestClient();
   const [searchParams] = useSearchParams();
   const { rows, headerCells } = useRequestTableData(searchParams);
 
   useEffect(() => {
-    const request: oracle.types.state.Inputs = {
-      request: {
-        requester: searchParams.get("requester") ?? "",
-        identifier: searchParams.get("identifier") ?? "",
-        timestamp: Number(searchParams.get("timestamp")) ?? "",
-        ancillaryData: searchParams.get("ancillaryData") ?? "",
-        chainId: Number(searchParams.get("chainId")) ?? 1,
-      },
-    };
 
-    setActiveRequest(request);
-  }, [searchParams, setActiveRequest]);
+    const requester= searchParams.get("requester")
+    const identifier= searchParams.get("identifier")
+    const timestamp= searchParams.get("timestamp") && Number(searchParams.get("timestamp"))
+    const ancillaryData= searchParams.get("ancillaryData")
+    const chainId= searchParams.get("chainId") && Number(searchParams.get("chainId"))
+
+    if( 
+      requester &&
+      identifier && 
+      timestamp && 
+      ancillaryData && 
+      chainId
+    ){
+      client.setActiveRequest({requester,identifier,timestamp,ancillaryData,chainId})
+    }
+  }, [searchParams]);
 
   return (
     <Wrapper>
