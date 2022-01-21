@@ -126,6 +126,4 @@ const RequestForm: FC<Props> = ({ requestState }) => {
   );
 };
 
-//       text = Duration.fromMillis(timeLeft).toFormat("hh'h':mm'min' s'sec' left");
-
 export default RequestForm;
