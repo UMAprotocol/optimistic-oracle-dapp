@@ -1,4 +1,4 @@
-import { FC, useState, useCallback } from "react";
+import { FC, useState, useCallback, useEffect } from "react";
 import {
   RequestFormWrapper,
   RequestFormRow,
@@ -18,11 +18,14 @@ import {
 import usdcLogo from "assets/usdc-logo.png";
 import { IOORequest, RequestState } from "constants/blockchain";
 import { ethers } from "ethers";
-import { DateTime } from "luxon";
+import { DateTime, Duration } from "luxon";
+import calculateTimeRemaining from "helpers/calculateTimeRemaining";
 
 interface Props {
   requestState: IOORequest;
 }
+
+const TWO_HOURS = 60 * 60 * 2;
 
 const RequestForm: FC<Props> = ({ requestState }) => {
   const [value, setValue] = useState("");
@@ -31,6 +34,45 @@ const RequestForm: FC<Props> = ({ requestState }) => {
   };
 
   console.log("RQ", requestState);
+
+  let startTime = 0;
+  if (requestState.expirationTime && requestState.customLiveness) {
+    if (requestState.customLiveness.toNumber() === 0) {
+      startTime = requestState.expirationTime.toNumber() + TWO_HOURS;
+    } else {
+      startTime = requestState.customLiveness.toNumber();
+    }
+  }
+
+  console.log("value in request", startTime);
+
+  // const currentTime = useCountdownTimer(
+  //   startTime,
+  //   requestState.expirationTime ? requestState.expirationTime.toNumber() : 0
+  // );
+
+  const [currentTime, setCurrentTime] = useState(0);
+  useEffect(() => {
+    if (requestState.expirationTime) {
+      setCurrentTime(
+        calculateTimeRemaining(
+          Date.now(),
+          requestState.expirationTime.toNumber() * 1000
+        )
+      );
+      const timer = setInterval(
+        () =>
+          setCurrentTime(
+            calculateTimeRemaining(
+              Date.now(),
+              requestState.expirationTime.toNumber() * 1000
+            )
+          ),
+        1000
+      );
+      return () => clearInterval(timer);
+    }
+  }, [requestState.expirationTime, requestState.customLiveness]);
 
   // Default to RequestState = 6 (Settled).
   const setButtonText = useCallback(() => {
@@ -89,7 +131,9 @@ const RequestForm: FC<Props> = ({ requestState }) => {
                 ? `${DateTime.fromSeconds(
                     requestState.customLiveness.toNumber()
                   )}`
-                : `2 hours (Time remaining: )`}
+                : `2 hours (Time remaining: ${Duration.fromMillis(
+                    currentTime
+                  ).toFormat("hh'h':mm'min' s'sec' left")})`}
             </ParametersValue>
           </ParametersValuesWrapper>
         </RequestFormParametersWrapper>
@@ -97,5 +141,7 @@ const RequestForm: FC<Props> = ({ requestState }) => {
     </RequestFormWrapper>
   );
 };
+
+//       text = Duration.fromMillis(timeLeft).toFormat("hh'h':mm'min' s'sec' left");
 
 export default RequestForm;
