@@ -6,7 +6,7 @@ import { Wrapper, TableContentWrapper, TableSection } from "./Request.styled";
 import RequestHero from "./RequestHero";
 import { RequestClientContext } from "context/RequestClientContext";
 import { ethers } from "ethers";
-import { IOORequest } from "constants/blockchain";
+import { oracle } from "@uma/sdk";
 
 /* Search Params:
   {
@@ -22,8 +22,8 @@ const Request = () => {
   const client = useContext(RequestClientContext);
   const [searchParams] = useSearchParams();
   const { rows, headerCells } = useRequestTableData(searchParams);
-  const [requestState, setRequestState] = useState<IOORequest>(
-    {} as IOORequest
+  const [requestState, setRequestState] = useState<oracle.types.state.Request>(
+    {} as oracle.types.state.Request
   );
 
   useEffect(() => {

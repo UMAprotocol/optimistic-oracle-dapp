@@ -12,11 +12,12 @@ import {
   HeroButtonText,
   HeroButtonFlex,
 } from "./Request.styled";
-import { CHAINS, ChainId, IOORequest } from "constants/blockchain";
+import { CHAINS, ChainId } from "constants/blockchain";
+import { oracle } from "@uma/sdk";
 
 interface Props {
   chainId: ChainId;
-  requestState: IOORequest;
+  requestState: oracle.types.state.Request;
 }
 
 const RequestHero: FC<Props> = ({ chainId, requestState }) => {

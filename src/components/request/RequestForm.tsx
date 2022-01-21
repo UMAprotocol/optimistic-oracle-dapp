@@ -16,14 +16,15 @@ import {
   BondLogo,
 } from "./Request.styled";
 import usdcLogo from "assets/usdc-logo.png";
-import { IOORequest, RequestState } from "constants/blockchain";
+import { RequestState } from "constants/blockchain";
 import { ethers } from "ethers";
 import { DateTime, Duration } from "luxon";
 import calculateTimeRemaining from "helpers/calculateTimeRemaining";
 import useConnection from "hooks/useConnection";
+import { oracle } from "@uma/sdk";
 
 interface Props {
-  requestState: IOORequest;
+  requestState: oracle.types.state.Request;
 }
 
 const RequestForm: FC<Props> = ({ requestState }) => {
