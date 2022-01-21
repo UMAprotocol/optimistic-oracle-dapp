@@ -20,6 +20,7 @@ import { IOORequest, RequestState } from "constants/blockchain";
 import { ethers } from "ethers";
 import { DateTime, Duration } from "luxon";
 import calculateTimeRemaining from "helpers/calculateTimeRemaining";
+import useConnection from "hooks/useConnection";
 
 interface Props {
   requestState: IOORequest;
@@ -32,6 +33,8 @@ const RequestForm: FC<Props> = ({ requestState }) => {
   const inputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
+
+  const { isConnected } = useConnection();
 
   console.log("RQ", requestState);
 
@@ -97,7 +100,7 @@ const RequestForm: FC<Props> = ({ requestState }) => {
                 value={value}
                 onChange={inputOnChange}
               />
-              <RequestFormButton disabled={true}>
+              <RequestFormButton disabled={isConnected ? false : true}>
                 {setButtonText()}
               </RequestFormButton>
             </RequestInputButtonBlock>
