@@ -95,6 +95,7 @@ export const Cell = styled.div<ICellStyled>`
   }
   &:nth-of-type(4) {
     flex: 1 2 550px;
+    word-break: break-word;
     @media ${QUERIES.tabletAndUp} {
       min-width: 250px;
     }
