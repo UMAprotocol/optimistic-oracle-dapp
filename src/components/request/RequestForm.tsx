@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useCallback } from "react";
 import {
   RequestFormWrapper,
   RequestFormRow,
@@ -21,6 +21,8 @@ import useClient from "hooks/useOracleClient";
 import useConnection from "hooks/useConnection";
 import useReader from "hooks/useOracleReader";
 
+const TEN_HOURS_IN_MILLSECONDS = 60 * 60 * 10 * 1000;
+const TWENTY_FOUR_HOURS_IN_MILLISECONDS = 60 * 60 * 24 * 1000;
 const RequestForm: FC = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [value, setValue] = useState("");
@@ -176,6 +178,22 @@ const RequestForm: FC = () => {
   //   return <>Submit proposal</>;
   // }, [requestState]);
 
+  const formatLiveness = useCallback((time) => {
+    if (time) {
+      const millisecondsLiveness = time * 1000;
+      let format = "h'h'";
+      if (millisecondsLiveness >= TEN_HOURS_IN_MILLSECONDS) {
+        format = "hh'h'";
+      }
+      if (millisecondsLiveness >= TWENTY_FOUR_HOURS_IN_MILLISECONDS) {
+        format = "dd'd'hh'h'";
+      }
+      return Duration.fromMillis(millisecondsLiveness).toFormat(format);
+    } else {
+      return "";
+    }
+  }, []);
+
   return (
     <RequestFormWrapper>
       <RequestFormRow>
@@ -210,7 +228,7 @@ const RequestForm: FC = () => {
           <ParametersValuesWrapper>
             <ParametersValueHeader>Liveness period: </ParametersValueHeader>
             <ParametersValue>
-              {liveness} :{" "}
+              {formatLiveness(liveness)}{" "}
               {`Time remaining: ${Duration.fromMillis(currentTime).toFormat(
                 "hh'h':mm' min' s' sec' left"
               )})`}
