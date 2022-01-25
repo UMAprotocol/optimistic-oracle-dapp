@@ -167,17 +167,6 @@ const RequestForm: FC = () => {
     }
   }, [expirationTime, liveness]);
 
-  // // Default to RequestState = 6 (Settled).
-  // const setButtonText = useCallback(() => {
-  //   if (requestState.state === RequestState.Invalid)
-  //     return <>Invalid request</>;
-  //   if (requestState.state === RequestState.Requested)
-  //     return <>Submit proposal</>;
-  //   if (requestState.state === RequestState.Proposed)
-  //     return <>Dispute proposal</>;
-  //   return <>Submit proposal</>;
-  // }, [requestState]);
-
   const formatLiveness = useCallback((time) => {
     if (time) {
       const millisecondsLiveness = time * 1000;
@@ -193,6 +182,7 @@ const RequestForm: FC = () => {
       return "";
     }
   }, []);
+
 
   return (
     <RequestFormWrapper>
