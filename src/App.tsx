@@ -1,14 +1,11 @@
-import { ConnectionProvider } from "./context/ConnectionContext";
-import { RequestClientProvider } from "./context/RequestClientContext";
+import { OracleClientProvider } from "./context/OracleClientContext";
 import Router from "./Router";
 function App() {
   return (
     <div className="App">
-      <ConnectionProvider>
-        <RequestClientProvider>
-          <Router />
-        </RequestClientProvider>
-      </ConnectionProvider>
+      <OracleClientProvider>
+        <Router />
+      </OracleClientProvider>
     </div>
   );
 }

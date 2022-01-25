@@ -63,7 +63,8 @@ function useRequestTableData(searchParams: URLSearchParams) {
     let convertedIdentifier = "";
     if (nextIdentifier) {
       try {
-        convertedIdentifier = ethers.utils.toUtf8String(nextIdentifier);
+        // replace non ascii chars
+        convertedIdentifier = ethers.utils.toUtf8String(nextIdentifier).replace(/[^\x20-\x7E]+/g, "");
       } catch (err) {
         convertedIdentifier = "Not convertible to UTF-8 string.";
         console.log("not convertible to UTF8");
