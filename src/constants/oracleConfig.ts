@@ -20,7 +20,7 @@ const polygonChainConfig: oracle.types.state.PartialChainConfig = {
 };
 
 // Hardhat config
-const hardhatChainId = 31337;
+const hardhatChainId = 1337;
 const hardhatChainConfig: oracle.types.state.PartialChainConfig = {
   chainId: hardhatChainId,
   nativeCurrency: CHAINS[ethChainId].nativeCurrency,

@@ -20,6 +20,7 @@ type ChainMetadata = {
 export enum ChainId {
   MAINNET = 1,
   POLYGON = 137,
+  MM_TESTNET = 1337,
   HARDHAT = 31337,
 }
 
@@ -48,6 +49,19 @@ export const CHAINS: Record<ChainId, ChainMetadata> = {
     nativeCurrency: {
       name: "Polygon",
       symbol: "MATIC",
+      decimals: 18,
+    },
+  },
+  [ChainId.MM_TESTNET]: {
+    name: "MM Testnet",
+    chainId: ChainId.MM_TESTNET,
+    logoURI: ethereumLogo,
+    explorerUrl: "https://etherscan.io",
+    constructExplorerLink: (txHash: string) =>
+      `https://etherscan.io/tx/${txHash}`,
+    nativeCurrency: {
+      name: "Ether",
+      symbol: "ETH",
       decimals: 18,
     },
   },

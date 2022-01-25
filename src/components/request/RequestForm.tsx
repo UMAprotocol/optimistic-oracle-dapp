@@ -142,6 +142,7 @@ const RequestForm: FC = () => {
   };
 
   const getButton = (value: string) => {
+    console.log("flags", flags);
     if (flags.InProposeState) {
       const result = getProposalState(value);
       return <RequestFormButton {...result}>{result.label}</RequestFormButton>;
