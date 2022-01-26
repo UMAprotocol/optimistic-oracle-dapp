@@ -22,7 +22,6 @@ import calculateTimeRemaining from "helpers/calculateTimeRemaining";
 import useClient from "hooks/useOracleClient";
 import useConnection from "hooks/useConnection";
 import useReader from "hooks/useOracleReader";
-import { ChainId, CHAINS } from "constants/blockchain";
 import { ethers } from "ethers";
 import { prettyFormatNumber } from "helpers/format";
 
@@ -65,6 +64,9 @@ const RequestForm: FC = () => {
     logo,
     expirationTime,
     proposedPrice,
+    disputer,
+    proposer,
+    explorerUrl,
   } = useReader(state);
 
   // TODO: update these to the correct design for text and button state
@@ -253,12 +255,9 @@ const RequestForm: FC = () => {
                 <a
                   target="_blank"
                   rel="noreferrer"
-                  href={`${
-                    CHAINS[(state.inputs?.request?.chainId || 1) as ChainId]
-                      .explorerUrl
-                  }/tx/${read().request().proposer}`}
+                  href={`${explorerUrl}/tx/${proposer}`}
                 >
-                  {read().request().proposer}
+                  {proposer}
                 </a>
               </ProposerAddress>
             )}
@@ -268,12 +267,9 @@ const RequestForm: FC = () => {
                 <a
                   target="_blank"
                   rel="noreferrer"
-                  href={`${
-                    CHAINS[(state.inputs?.request?.chainId || 1) as ChainId]
-                      .explorerUrl
-                  }/tx/${read().request().disputer}`}
+                  href={`${explorerUrl}/tx/${disputer}`}
                 >
-                  {read().request().disputer}
+                  {disputer}
                 </a>
               </ProposerAddress>
             )}
