@@ -64,7 +64,7 @@ export const HeroButton = styled(Button)`
   padding: 4px 10px;
   border-radius: 16px;
   margin: 0 0.5rem;
-  min-width: 115px;
+  min-width: 125px;
   text-transform: uppercase;
   font-family: "Halyard";
   font-weight: 400;

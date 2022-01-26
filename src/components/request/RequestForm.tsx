@@ -22,6 +22,7 @@ import useClient from "hooks/useOracleClient";
 import useConnection from "hooks/useConnection";
 import useReader from "hooks/useOracleReader";
 import { ChainId, CHAINS } from "constants/blockchain";
+import { ethers } from "ethers";
 
 const TEN_HOURS_IN_MILLSECONDS = 60 * 60 * 10 * 1000;
 const TWENTY_FOUR_HOURS_IN_MILLISECONDS = 60 * 60 * 24 * 1000;
@@ -193,7 +194,7 @@ const RequestForm: FC = () => {
     }
   }, []);
 
-  console.log("state", state);
+  console.log("state", state, "flags", flags);
   return (
     <RequestFormWrapper>
       <RequestFormRow>
@@ -201,11 +202,24 @@ const RequestForm: FC = () => {
           <FormHeader>Proposal</FormHeader>
           <RequestFormInputWrapper>
             <RequestInputButtonBlock>
-              <RequestFormInput
-                label="Propose: "
-                value={value}
-                onChange={inputOnChange}
-              />
+              {flags.InProposeState && (
+                <RequestFormInput
+                  label="Propose: "
+                  value={value}
+                  onChange={inputOnChange}
+                />
+              )}
+              {flags.InDisputeState && (
+                <RequestFormInput
+                  disabled={true}
+                  label="Proposed answer: "
+                  value={ethers.utils.formatUnits(
+                    read().request().proposedPrice,
+                    read().collateralProps().decimals
+                  )}
+                  onChange={() => null}
+                />
+              )}
               {getButton(value)}
             </RequestInputButtonBlock>
             {flags.InDisputeState && (
