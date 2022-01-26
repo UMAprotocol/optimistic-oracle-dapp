@@ -19,8 +19,8 @@ const polygonChainConfig: oracle.types.state.PartialChainConfig = {
   blockExplorerUrls: [CHAINS[polygonChainId].explorerUrl],
 };
 
-// Hardhat config
-const hardhatChainId = 1337;
+// Default Hardhat config
+const hardhatChainId = 31337;
 const hardhatChainConfig: oracle.types.state.PartialChainConfig = {
   chainId: hardhatChainId,
   nativeCurrency: CHAINS[ethChainId].nativeCurrency,
@@ -31,11 +31,15 @@ const hardhatChainConfig: oracle.types.state.PartialChainConfig = {
   rpcUrls: ["http://127.0.0.1:8545"],
 };
 
+// MM defaults to 1337.
+const mmChainId = 1337;
+
 const config = {
   chains: {
     [ethChainId]: ethChainConfig,
     [polygonChainId]: polygonChainConfig,
     [hardhatChainId]: hardhatChainConfig,
+    [mmChainId]: hardhatChainConfig,
   },
 };
 
