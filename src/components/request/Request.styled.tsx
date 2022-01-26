@@ -64,7 +64,7 @@ export const HeroButton = styled(Button)`
   padding: 4px 10px;
   border-radius: 16px;
   margin: 0 0.5rem;
-  min-width: 115px;
+  min-width: 125px;
   text-transform: uppercase;
   font-family: "Halyard";
   font-weight: 400;
@@ -182,12 +182,12 @@ export const RequestFormButton = styled(Button)<IRequestFormButton>`
     if (props.disabled) return "0.35";
     return "1";
   }};
-  background-color: #272258;
+  background-color: #ff4a4a;
   height: 50px;
-  width: 225px;
+  width: 230px;
   margin-top: 2.6rem;
   margin-left: 1rem;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 700;
   line-height: 0.5rem;
 `;
@@ -195,4 +195,36 @@ export const RequestFormButton = styled(Button)<IRequestFormButton>`
 export const BondLogo = styled.img`
   height: 14px;
   padding-top: 2px;
+`;
+
+export const ProposerAddress = styled.div`
+  margin-left: 2px;
+  margin-top: 4px;
+
+  a {
+    color: #ff4a4a;
+
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+      opacity: 0.7;
+    }
+  }
+`;
+
+export const InputError = styled.div`
+  background-color: #fff0f0;
+  border: 1px solid #ff4a4a;
+  color: #ff4a4a;
+  font-weight: 600;
+  font-size: 0.875rem;
+  display: block;
+  margin: 0 auto;
+  text-align: left;
+  text-indent: 8px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  padding: 0.5rem;
+  font-weight: 700;
 `;

@@ -1,7 +1,8 @@
 import { oracle } from "../helpers/oracleClient";
 import { ethers } from "ethers";
 import usdcLogo from "assets/usdc-logo.png";
-
+import umaLogo from "assets/uma-logo.png";
+import { CHAINS, ChainId } from "constants/blockchain";
 const { formatUnits } = ethers.utils;
 
 function ignoreError<X extends () => any>(call: X): ReturnType<X> | undefined {
@@ -33,14 +34,23 @@ export default function useOracleReader(state: oracle.types.state.State) {
       : defaultLiveness && defaultLiveness.toNumber();
   const expirationTime = request && request.expirationTime.toNumber();
   const requestState = request && request.state;
+  const proposedPrice = request && request.proposedPrice;
+  const disputer = request && request.disputer;
+  const proposer = request && request.proposer;
+  const chainId: ChainId = state.inputs?.request?.chainId || 1;
+  const explorerUrl = CHAINS[chainId].explorerUrl;
 
   return {
     totalBond,
     reward,
     liveness,
     collateralSymbol: collateralProps && collateralProps.symbol,
-    logo: usdcLogo,
+    logo: collateralProps?.symbol === "UMA" ? umaLogo : usdcLogo,
     expirationTime,
     requestState,
+    proposedPrice,
+    disputer,
+    proposer,
+    explorerUrl,
   };
 }

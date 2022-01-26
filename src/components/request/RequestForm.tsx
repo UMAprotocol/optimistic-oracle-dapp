@@ -14,21 +14,50 @@ import {
   RequestInputButtonBlock,
   RequestFormButton,
   BondLogo,
+  ProposerAddress,
+  InputError,
 } from "./Request.styled";
 import { Duration } from "luxon";
 import calculateTimeRemaining from "helpers/calculateTimeRemaining";
 import useClient from "hooks/useOracleClient";
 import useConnection from "hooks/useConnection";
 import useReader from "hooks/useOracleReader";
+import { ethers } from "ethers";
+import { prettyFormatNumber } from "helpers/format";
+import BouncingDotsLoader from "components/bouncing-dots-loader";
 
 const TEN_HOURS_IN_MILLSECONDS = 60 * 60 * 10 * 1000;
 const TWENTY_FOUR_HOURS_IN_MILLISECONDS = 60 * 60 * 24 * 1000;
 const RequestForm: FC = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [value, setValue] = useState("");
+  const [inputError, setInputError] = useState("");
   const inputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
+    const v = event.target.value;
+    setValue(v);
+    setInputError("");
+    try {
+      checkForInputError(v);
+    } catch (err: any) {
+      setInputError(err.message);
+    }
   };
+  const checkForInputError = (v: string) => {
+    if (isNaN(Number(v))) {
+      throw new Error("Must be a valid number.");
+    }
+    if (Number(v) < 0) {
+      throw new Error("Must be a positive number.");
+    }
+    if (v.includes(".")) {
+      const split = v.split(".");
+      if (split[1].length > 18) {
+        throw new Error("Value must not exceed currency decimals.");
+      }
+    }
+    return false;
+  };
+
   const { flags, client, state } = useClient();
   const { connect } = useConnection();
   const {
@@ -38,10 +67,14 @@ const RequestForm: FC = () => {
     liveness,
     logo,
     expirationTime,
+    proposedPrice,
+    disputer,
+    proposer,
+    explorerUrl,
   } = useReader(state);
 
   // TODO: update these to the correct design for text and button state
-  const getProposalState = (value: string) => {
+  const getProposeButtonProps = (value: string) => {
     if (flags.MissingUser)
       return {
         label: "Login",
@@ -66,12 +99,6 @@ const RequestForm: FC = () => {
         onClick: () => client.switchOrAddChain(),
         disabled: false,
       };
-    if (flags.ApprovalInProgress)
-      return {
-        label: "Approving...",
-        onClick: undefined,
-        disabled: true,
-      };
     if (flags.ProposalInProgress)
       return {
         label: "Proposing...",
@@ -80,18 +107,18 @@ const RequestForm: FC = () => {
       };
     if (flags.InsufficientApproval)
       return {
-        label: "Approve",
+        label: "Approve Proposal Bond",
         onClick: () => client.approveCollateral(),
         disabled: false,
       };
     return {
-      label: "Submit proposal",
-      disabled: false,
+      label: "Submit Proposal",
+      disabled: inputError ? true : false,
       onClick: () => client.proposePrice(value),
     };
   };
 
-  const getDisputeState = () => {
+  const getDisputeButtonProps = () => {
     if (flags.MissingUser)
       return {
         label: "Login",
@@ -116,12 +143,6 @@ const RequestForm: FC = () => {
         onClick: () => client.switchOrAddChain(),
         disabled: false,
       };
-    if (flags.ApprovalInProgress)
-      return {
-        label: "Approving...",
-        onClick: undefined,
-        disabled: true,
-      };
     if (flags.DisputeInProgress)
       return {
         label: "Disputing...",
@@ -130,7 +151,7 @@ const RequestForm: FC = () => {
       };
     if (flags.InsufficientApproval)
       return {
-        label: "Approve",
+        label: "Approve Dispute Bond",
         onClick: () => client.approveCollateral(),
         disabled: false,
       };
@@ -142,12 +163,27 @@ const RequestForm: FC = () => {
   };
 
   const getButton = (value: string) => {
+    if (flags.MissingRequest) return <div>Loading Request State...</div>;
+    if (flags.ApprovalInProgress)
+      return (
+        <RequestFormButton>
+          <BouncingDotsLoader />
+        </RequestFormButton>
+      );
     if (flags.InProposeState) {
-      const result = getProposalState(value);
-      return <RequestFormButton {...result}>{result.label}</RequestFormButton>;
+      const buttonProps = getProposeButtonProps(value);
+      return (
+        <RequestFormButton {...buttonProps}>
+          {buttonProps.label}
+        </RequestFormButton>
+      );
     } else if (flags.InDisputeState) {
-      const result = getDisputeState();
-      return <RequestFormButton {...result}>{result.label}</RequestFormButton>;
+      const buttonProps = getDisputeButtonProps();
+      return (
+        <RequestFormButton {...buttonProps}>
+          {buttonProps.label}
+        </RequestFormButton>
+      );
     } else {
       return <RequestFormButton disabled={true}>Resolved</RequestFormButton>;
     }
@@ -166,17 +202,6 @@ const RequestForm: FC = () => {
       return () => clearInterval(timer);
     }
   }, [expirationTime, liveness]);
-
-  // // Default to RequestState = 6 (Settled).
-  // const setButtonText = useCallback(() => {
-  //   if (requestState.state === RequestState.Invalid)
-  //     return <>Invalid request</>;
-  //   if (requestState.state === RequestState.Requested)
-  //     return <>Submit proposal</>;
-  //   if (requestState.state === RequestState.Proposed)
-  //     return <>Dispute proposal</>;
-  //   return <>Submit proposal</>;
-  // }, [requestState]);
 
   const formatLiveness = useCallback((time) => {
     if (time) {
@@ -198,16 +223,55 @@ const RequestForm: FC = () => {
     <RequestFormWrapper>
       <RequestFormRow>
         <RequestFormHeaderAndFormWrapper>
-          <FormHeader>Proposal</FormHeader>
+          <FormHeader>
+            {flags.InProposeState && "Proposal"}
+            {(flags.InDisputeState || flags.DisputeInProgress) &&
+              "Dispute Period"}
+          </FormHeader>
           <RequestFormInputWrapper>
             <RequestInputButtonBlock>
-              <RequestFormInput
-                label="Propose: "
-                value={value}
-                onChange={inputOnChange}
-              />
+              {flags.InProposeState && (
+                <RequestFormInput
+                  label="Propose: "
+                  value={value}
+                  onChange={inputOnChange}
+                />
+              )}
+              {flags.InDisputeState && proposedPrice && (
+                <RequestFormInput
+                  disabled={true}
+                  label="Proposed answer: "
+                  value={ethers.utils.formatUnits(proposedPrice, 18)}
+                  onChange={() => null}
+                />
+              )}
               {getButton(value)}
             </RequestInputButtonBlock>
+            {inputError && <InputError>{inputError}</InputError>}
+            {flags.InDisputeState && (
+              <ProposerAddress>
+                Proposer:{" "}
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={`${explorerUrl}/tx/${proposer}`}
+                >
+                  {proposer}
+                </a>
+              </ProposerAddress>
+            )}
+            {flags.DisputeInProgress && (
+              <ProposerAddress>
+                Disputer:{" "}
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={`${explorerUrl}/tx/${disputer}`}
+                >
+                  {disputer}
+                </a>
+              </ProposerAddress>
+            )}
           </RequestFormInputWrapper>
         </RequestFormHeaderAndFormWrapper>
         <RequestFormParametersWrapper>
@@ -216,13 +280,14 @@ const RequestForm: FC = () => {
             <ParametersValueHeader>Proposal bond:</ParametersValueHeader>
             <ParametersValue>
               <BondLogo src={logo} alt="bond_img" /> {collateralSymbol}{" "}
-              {totalBond}
+              {totalBond ? prettyFormatNumber(Number(totalBond)) : ""}
             </ParametersValue>
           </ParametersValuesWrapper>
           <ParametersValuesWrapper>
             <ParametersValueHeader>Proposal reward:</ParametersValueHeader>
             <ParametersValue>
-              <BondLogo src={logo} alt="bond_img" /> {collateralSymbol} {reward}
+              <BondLogo src={logo} alt="bond_img" /> {collateralSymbol}{" "}
+              {reward ? prettyFormatNumber(Number(reward)) : ""}
             </ParametersValue>
           </ParametersValuesWrapper>
           <ParametersValuesWrapper>
