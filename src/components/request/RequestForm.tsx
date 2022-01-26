@@ -15,6 +15,7 @@ import {
   RequestFormButton,
   BondLogo,
   ProposerAddress,
+  InputError,
 } from "./Request.styled";
 import { Duration } from "luxon";
 import calculateTimeRemaining from "helpers/calculateTimeRemaining";
@@ -30,8 +31,25 @@ const TWENTY_FOUR_HOURS_IN_MILLISECONDS = 60 * 60 * 24 * 1000;
 const RequestForm: FC = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [value, setValue] = useState("");
+  const [inputError, setInputError] = useState("");
   const inputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
+    const v = event.target.value;
+    setValue(v);
+    setInputError("");
+    checkForInputError(v);
+  };
+  const checkForInputError = (v: string) => {
+    if (isNaN(Number(v))) {
+      return setInputError("Must be a valid number.");
+    }
+    if (v.includes(".") && read().collateralProps().decimals) {
+      const split = v.split(".");
+      const decs = read().collateralProps().decimals;
+      if (decs && split[1].length > decs) {
+        return setInputError("Value must not exceed currency decimals.");
+      }
+    }
+    return false;
   };
   const { flags, client, state, read } = useClient();
   const { connect } = useConnection();
@@ -92,7 +110,7 @@ const RequestForm: FC = () => {
       };
     return {
       label: "Submit proposal",
-      disabled: false,
+      disabled: inputError ? true : false,
       onClick: () => client.proposePrice(value),
     };
   };
@@ -197,13 +215,14 @@ const RequestForm: FC = () => {
     }
   }, []);
 
+  // Temp. This throws if you try to read certain values too quickly.
+  // TODO: Add proper loader.
   useEffect(() => {
     setTimeout(() => {
       setRaceCond(true);
-    }, 1000);
+    }, 2000);
   }, []);
 
-  // console.log("state", state, "flags", flags);
   return (
     <RequestFormWrapper>
       <RequestFormRow>
@@ -231,6 +250,7 @@ const RequestForm: FC = () => {
               )}
               {getButton(value)}
             </RequestInputButtonBlock>
+            {inputError && <InputError>{inputError}</InputError>}
             {flags.InDisputeState && (
               <ProposerAddress>
                 Proposer:{" "}
@@ -240,9 +260,24 @@ const RequestForm: FC = () => {
                   href={`${
                     CHAINS[(state.inputs?.request?.chainId || 1) as ChainId]
                       .explorerUrl
-                  }/address/${read().request().proposer}`}
+                  }/tx/${read().request().proposer}`}
                 >
                   {read().request().proposer}
+                </a>
+              </ProposerAddress>
+            )}
+            {flags.DisputeInProgress && (
+              <ProposerAddress>
+                Disputer:{" "}
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={`${
+                    CHAINS[(state.inputs?.request?.chainId || 1) as ChainId]
+                      .explorerUrl
+                  }/tx/${read().request().disputer}`}
+                >
+                  {read().request().disputer}
                 </a>
               </ProposerAddress>
             )}

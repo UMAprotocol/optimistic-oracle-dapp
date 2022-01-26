@@ -208,3 +208,17 @@ export const ProposerAddress = styled.div`
     }
   }
 `;
+
+export const InputError = styled.div`
+  background-color: #ff4a4a;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  padding: 0.5rem;
+`;
