@@ -64,6 +64,7 @@ const RequestForm: FC = () => {
     liveness,
     logo,
     expirationTime,
+    proposedPrice,
   } = useReader(state);
 
   // TODO: update these to the correct design for text and button state
@@ -235,14 +236,11 @@ const RequestForm: FC = () => {
                   onChange={inputOnChange}
                 />
               )}
-              {flags.InDisputeState && (
+              {flags.InDisputeState && proposedPrice && (
                 <RequestFormInput
                   disabled={true}
                   label="Proposed answer: "
-                  value={ethers.utils.formatUnits(
-                    read().request().proposedPrice,
-                    read().collateralProps().decimals
-                  )}
+                  value={ethers.utils.formatUnits(proposedPrice, 18)}
                   onChange={() => null}
                 />
               )}

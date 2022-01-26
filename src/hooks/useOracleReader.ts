@@ -33,6 +33,7 @@ export default function useOracleReader(state: oracle.types.state.State) {
       : defaultLiveness && defaultLiveness.toNumber();
   const expirationTime = request && request.expirationTime.toNumber();
   const requestState = request && request.state;
+  const proposedPrice = request && request.proposedPrice;
 
   return {
     totalBond,
@@ -42,5 +43,6 @@ export default function useOracleReader(state: oracle.types.state.State) {
     logo: collateralProps?.symbol === "UMA" ? umaLogo : usdcLogo,
     expirationTime,
     requestState,
+    proposedPrice,
   };
 }
