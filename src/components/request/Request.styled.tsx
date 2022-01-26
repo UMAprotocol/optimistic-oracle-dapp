@@ -184,10 +184,10 @@ export const RequestFormButton = styled(Button)<IRequestFormButton>`
   }};
   background-color: #ff4a4a;
   height: 50px;
-  width: 225px;
+  width: 230px;
   margin-top: 2.6rem;
   margin-left: 1rem;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 700;
   line-height: 0.5rem;
 `;

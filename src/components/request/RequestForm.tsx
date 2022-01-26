@@ -24,6 +24,7 @@ import useConnection from "hooks/useConnection";
 import useReader from "hooks/useOracleReader";
 import { ethers } from "ethers";
 import { prettyFormatNumber } from "helpers/format";
+import BouncingDotsLoader from "components/bouncing-dots-loader";
 
 const TEN_HOURS_IN_MILLSECONDS = 60 * 60 * 10 * 1000;
 const TWENTY_FOUR_HOURS_IN_MILLISECONDS = 60 * 60 * 24 * 1000;
@@ -98,12 +99,6 @@ const RequestForm: FC = () => {
         onClick: () => client.switchOrAddChain(),
         disabled: false,
       };
-    if (flags.ApprovalInProgress)
-      return {
-        label: "Approving...",
-        onClick: undefined,
-        disabled: true,
-      };
     if (flags.ProposalInProgress)
       return {
         label: "Proposing...",
@@ -112,12 +107,12 @@ const RequestForm: FC = () => {
       };
     if (flags.InsufficientApproval)
       return {
-        label: "Approve",
+        label: "Approve Proposal Bond",
         onClick: () => client.approveCollateral(),
         disabled: false,
       };
     return {
-      label: "Submit proposal",
+      label: "Submit Proposal",
       disabled: inputError ? true : false,
       onClick: () => client.proposePrice(value),
     };
@@ -148,12 +143,6 @@ const RequestForm: FC = () => {
         onClick: () => client.switchOrAddChain(),
         disabled: false,
       };
-    if (flags.ApprovalInProgress)
-      return {
-        label: "Approving...",
-        onClick: undefined,
-        disabled: true,
-      };
     if (flags.DisputeInProgress)
       return {
         label: "Disputing...",
@@ -162,7 +151,7 @@ const RequestForm: FC = () => {
       };
     if (flags.InsufficientApproval)
       return {
-        label: "Approve",
+        label: "Approve Dispute Bond",
         onClick: () => client.approveCollateral(),
         disabled: false,
       };
@@ -175,6 +164,12 @@ const RequestForm: FC = () => {
 
   const getButton = (value: string) => {
     if (flags.MissingRequest) return <div>Loading Request State...</div>;
+    if (flags.ApprovalInProgress)
+      return (
+        <RequestFormButton>
+          <BouncingDotsLoader />
+        </RequestFormButton>
+      );
     if (flags.InProposeState) {
       const buttonProps = getProposeButtonProps(value);
       return (
