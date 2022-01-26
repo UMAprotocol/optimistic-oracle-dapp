@@ -23,6 +23,7 @@ import useConnection from "hooks/useConnection";
 import useReader from "hooks/useOracleReader";
 import { ChainId, CHAINS } from "constants/blockchain";
 import { ethers } from "ethers";
+import { prettyFormatNumber } from "helpers/format";
 
 const TEN_HOURS_IN_MILLSECONDS = 60 * 60 * 10 * 1000;
 const TWENTY_FOUR_HOURS_IN_MILLISECONDS = 60 * 60 * 24 * 1000;
@@ -194,7 +195,7 @@ const RequestForm: FC = () => {
     }
   }, []);
 
-  console.log("state", state, "flags", flags);
+  // console.log("state", state, "flags", flags);
   return (
     <RequestFormWrapper>
       <RequestFormRow>
@@ -245,13 +246,14 @@ const RequestForm: FC = () => {
             <ParametersValueHeader>Proposal bond:</ParametersValueHeader>
             <ParametersValue>
               <BondLogo src={logo} alt="bond_img" /> {collateralSymbol}{" "}
-              {totalBond}
+              {totalBond ? prettyFormatNumber(Number(totalBond)) : ""}
             </ParametersValue>
           </ParametersValuesWrapper>
           <ParametersValuesWrapper>
             <ParametersValueHeader>Proposal reward:</ParametersValueHeader>
             <ParametersValue>
-              <BondLogo src={logo} alt="bond_img" /> {collateralSymbol} {reward}
+              <BondLogo src={logo} alt="bond_img" /> {collateralSymbol}{" "}
+              {reward ? prettyFormatNumber(Number(reward)) : ""}
             </ParametersValue>
           </ParametersValuesWrapper>
           <ParametersValuesWrapper>
