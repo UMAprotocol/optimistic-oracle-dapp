@@ -49,7 +49,7 @@ const RequestForm: FC = () => {
     if (Number(v) < 0) {
       throw new Error("Must be a positive number.");
     }
-    if (v.includes(".") && read().collateralProps().decimals) {
+    if (v.includes(".")) {
       const split = v.split(".");
       if (split[1].length > 18) {
         throw new Error("Value must not exceed currency decimals.");
@@ -58,7 +58,7 @@ const RequestForm: FC = () => {
     return false;
   };
 
-  const { flags, client, state, read } = useClient();
+  const { flags, client, state } = useClient();
   const { connect } = useConnection();
   const {
     totalBond,
