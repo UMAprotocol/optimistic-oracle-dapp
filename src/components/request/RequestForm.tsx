@@ -44,6 +44,8 @@ const RequestForm: FC = () => {
     expirationTime,
   } = useReader(state);
 
+  const [raceCond, setRaceCond] = useState(false);
+
   // TODO: update these to the correct design for text and button state
   const getProposeButtonProps = (value: string) => {
     if (flags.MissingUser)
@@ -195,6 +197,12 @@ const RequestForm: FC = () => {
     }
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setRaceCond(true);
+    }, 1000);
+  }, []);
+
   // console.log("state", state, "flags", flags);
   return (
     <RequestFormWrapper>
@@ -210,7 +218,7 @@ const RequestForm: FC = () => {
                   onChange={inputOnChange}
                 />
               )}
-              {flags.InDisputeState && (
+              {flags.InDisputeState && raceCond && (
                 <RequestFormInput
                   disabled={true}
                   label="Proposed answer: "
