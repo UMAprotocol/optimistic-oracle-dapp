@@ -20,6 +20,7 @@ import calculateTimeRemaining from "helpers/calculateTimeRemaining";
 import useClient from "hooks/useOracleClient";
 import useConnection from "hooks/useConnection";
 import useReader from "hooks/useOracleReader";
+import { ChainId, CHAINS } from "constants/blockchain";
 
 const TEN_HOURS_IN_MILLSECONDS = 60 * 60 * 10 * 1000;
 const TWENTY_FOUR_HOURS_IN_MILLISECONDS = 60 * 60 * 24 * 1000;
@@ -29,7 +30,7 @@ const RequestForm: FC = () => {
   const inputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
-  const { flags, client, state } = useClient();
+  const { flags, client, state, read } = useClient();
   const { connect } = useConnection();
   const {
     totalBond,
@@ -41,7 +42,7 @@ const RequestForm: FC = () => {
   } = useReader(state);
 
   // TODO: update these to the correct design for text and button state
-  const getProposalState = (value: string) => {
+  const getProposeButtonProps = (value: string) => {
     if (flags.MissingUser)
       return {
         label: "Login",
@@ -91,7 +92,7 @@ const RequestForm: FC = () => {
     };
   };
 
-  const getDisputeState = () => {
+  const getDisputeButtonProps = () => {
     if (flags.MissingUser)
       return {
         label: "Login",
@@ -142,13 +143,20 @@ const RequestForm: FC = () => {
   };
 
   const getButton = (value: string) => {
-    console.log("flags", flags);
     if (flags.InProposeState) {
-      const result = getProposalState(value);
-      return <RequestFormButton {...result}>{result.label}</RequestFormButton>;
+      const buttonProps = getProposeButtonProps(value);
+      return (
+        <RequestFormButton {...buttonProps}>
+          {buttonProps.label}
+        </RequestFormButton>
+      );
     } else if (flags.InDisputeState) {
-      const result = getDisputeState();
-      return <RequestFormButton {...result}>{result.label}</RequestFormButton>;
+      const buttonProps = getDisputeButtonProps();
+      return (
+        <RequestFormButton {...buttonProps}>
+          {buttonProps.label}
+        </RequestFormButton>
+      );
     } else {
       return <RequestFormButton disabled={true}>Resolved</RequestFormButton>;
     }
@@ -184,7 +192,8 @@ const RequestForm: FC = () => {
     }
   }, []);
 
-
+  console.log("state", state);
+  // console.log(client.store.read().request().proposer)
   return (
     <RequestFormWrapper>
       <RequestFormRow>
@@ -199,6 +208,21 @@ const RequestForm: FC = () => {
               />
               {getButton(value)}
             </RequestInputButtonBlock>
+            {flags.InDisputeState && (
+              <div>
+                Proposer:{" "}
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={`${
+                    CHAINS[(state.inputs?.request?.chainId || 1) as ChainId]
+                      .explorerUrl
+                  }/address/${read().request().proposer}`}
+                >
+                  {read().request().proposer}
+                </a>
+              </div>
+            )}
           </RequestFormInputWrapper>
         </RequestFormHeaderAndFormWrapper>
         <RequestFormParametersWrapper>
