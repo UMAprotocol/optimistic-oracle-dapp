@@ -36,21 +36,25 @@ const RequestForm: FC = () => {
     const v = event.target.value;
     setValue(v);
     setInputError("");
-    checkForInputError(v);
+    try {
+      checkForInputError(v);
+    } catch (err: any) {
+      setInputError(err.message);
+    }
   };
   const checkForInputError = (v: string) => {
     if (isNaN(Number(v))) {
-      return setInputError("Must be a valid number.");
+      throw new Error("Must be a valid number.");
     }
     if (v.includes(".") && read().collateralProps().decimals) {
       const split = v.split(".");
-      const decs = read().collateralProps().decimals;
-      if (decs && split[1].length > decs) {
-        return setInputError("Value must not exceed currency decimals.");
+      if (split[1].length > 18) {
+        throw new Error("Value must not exceed currency decimals.");
       }
     }
     return false;
   };
+
   const { flags, client, state, read } = useClient();
   const { connect } = useConnection();
   const {
@@ -61,8 +65,6 @@ const RequestForm: FC = () => {
     logo,
     expirationTime,
   } = useReader(state);
-
-  const [raceCond, setRaceCond] = useState(false);
 
   // TODO: update these to the correct design for text and button state
   const getProposeButtonProps = (value: string) => {
@@ -215,14 +217,6 @@ const RequestForm: FC = () => {
     }
   }, []);
 
-  // Temp. This throws if you try to read certain values too quickly.
-  // TODO: Add proper loader.
-  useEffect(() => {
-    setTimeout(() => {
-      setRaceCond(true);
-    }, 2000);
-  }, []);
-
   return (
     <RequestFormWrapper>
       <RequestFormRow>
@@ -241,7 +235,7 @@ const RequestForm: FC = () => {
                   onChange={inputOnChange}
                 />
               )}
-              {flags.InDisputeState && raceCond && (
+              {flags.InDisputeState && (
                 <RequestFormInput
                   disabled={true}
                   label="Proposed answer: "
