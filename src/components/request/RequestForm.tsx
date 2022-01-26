@@ -14,6 +14,7 @@ import {
   RequestInputButtonBlock,
   RequestFormButton,
   BondLogo,
+  ProposerAddress,
 } from "./Request.styled";
 import { Duration } from "luxon";
 import calculateTimeRemaining from "helpers/calculateTimeRemaining";
@@ -193,7 +194,6 @@ const RequestForm: FC = () => {
   }, []);
 
   console.log("state", state);
-  // console.log(client.store.read().request().proposer)
   return (
     <RequestFormWrapper>
       <RequestFormRow>
@@ -209,7 +209,7 @@ const RequestForm: FC = () => {
               {getButton(value)}
             </RequestInputButtonBlock>
             {flags.InDisputeState && (
-              <div>
+              <ProposerAddress>
                 Proposer:{" "}
                 <a
                   target="_blank"
@@ -221,7 +221,7 @@ const RequestForm: FC = () => {
                 >
                   {read().request().proposer}
                 </a>
-              </div>
+              </ProposerAddress>
             )}
           </RequestFormInputWrapper>
         </RequestFormHeaderAndFormWrapper>

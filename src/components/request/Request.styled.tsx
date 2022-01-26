@@ -182,7 +182,7 @@ export const RequestFormButton = styled(Button)<IRequestFormButton>`
     if (props.disabled) return "0.35";
     return "1";
   }};
-  background-color: #272258;
+  background-color: #ff4a4a;
   height: 50px;
   width: 225px;
   margin-top: 2.6rem;
@@ -195,4 +195,16 @@ export const RequestFormButton = styled(Button)<IRequestFormButton>`
 export const BondLogo = styled.img`
   height: 14px;
   padding-top: 2px;
+`;
+
+export const ProposerAddress = styled.div`
+  color: #ff4a4a;
+  margin-left: 2px;
+  margin-top: 4px;
+  a {
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `;
