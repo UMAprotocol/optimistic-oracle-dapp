@@ -227,7 +227,11 @@ const RequestForm: FC = () => {
     <RequestFormWrapper>
       <RequestFormRow>
         <RequestFormHeaderAndFormWrapper>
-          <FormHeader>Proposal</FormHeader>
+          <FormHeader>
+            {flags.InProposeState && "Proposal"}
+            {(flags.InDisputeState || flags.DisputeInProgress) &&
+              "Dispute Period"}
+          </FormHeader>
           <RequestFormInputWrapper>
             <RequestInputButtonBlock>
               {flags.InProposeState && (

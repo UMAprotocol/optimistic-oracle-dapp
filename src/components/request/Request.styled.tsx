@@ -198,13 +198,16 @@ export const BondLogo = styled.img`
 `;
 
 export const ProposerAddress = styled.div`
-  color: #ff4a4a;
   margin-left: 2px;
   margin-top: 4px;
+
   a {
-    cursor: pointer;
+    color: #ff4a4a;
+
     &:hover {
       text-decoration: underline;
+      cursor: pointer;
+      opacity: 0.7;
     }
   }
 `;
