@@ -171,6 +171,7 @@ const RequestForm: FC = () => {
   };
 
   const getButton = (value: string) => {
+    if (flags.MissingRequest) return <div>Loading Request State...</div>;
     if (flags.InProposeState) {
       const buttonProps = getProposeButtonProps(value);
       return (
