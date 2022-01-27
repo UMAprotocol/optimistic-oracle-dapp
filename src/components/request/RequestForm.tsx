@@ -25,6 +25,7 @@ import useReader from "hooks/useOracleReader";
 import { ethers } from "ethers";
 import { prettyFormatNumber } from "helpers/format";
 import BouncingDotsLoader from "components/bouncing-dots-loader";
+import { oracle } from "@uma/sdk";
 
 const TEN_HOURS_IN_MILLSECONDS = 60 * 60 * 10 * 1000;
 const TWENTY_FOUR_HOURS_IN_MILLISECONDS = 60 * 60 * 24 * 1000;
@@ -233,7 +234,7 @@ const RequestForm: FC = () => {
           <FormHeader>
             {flags.InProposeState && "Proposal"}
             {flags.InDisputeState && "Dispute Period"}
-            {requestState === 4 && (
+            {requestState === oracle.types.state.RequestState.Disputed && (
               <>
                 <div>Proposal</div>
                 <div>
