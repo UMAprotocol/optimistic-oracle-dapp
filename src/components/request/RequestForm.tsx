@@ -225,8 +225,6 @@ const RequestForm: FC = () => {
     }
   }, []);
 
-  console.log("flags", flags, "RQ", requestState);
-
   return (
     <RequestFormWrapper>
       <RequestFormRow>
