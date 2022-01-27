@@ -13,6 +13,7 @@ function useSettledTableData() {
           {
             size: "md",
             value: "Proposed answer",
+            cellClassName: "first-cell",
           },
           {
             size: "lg",
@@ -25,6 +26,7 @@ function useSettledTableData() {
           {
             size: "md",
             value: "Proposer",
+            cellClassName: "first-cell",
           },
           {
             size: "lg",
@@ -37,6 +39,7 @@ function useSettledTableData() {
           {
             size: "md",
             value: "Disputed?",
+            cellClassName: "first-cell",
           },
           {
             size: "lg",
