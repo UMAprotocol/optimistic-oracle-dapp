@@ -41,13 +41,13 @@ const SettledTable: FC = () => {
             <Row key={ridx}>
               {row.cells.map((cell, cidx) => {
                 return (
-                  <Cell
+                  <StyledCellBody
                     className={cell.cellClassName ?? ""}
                     key={cidx}
                     size={cell.size}
                   >
                     {cell.value}
-                  </Cell>
+                  </StyledCellBody>
                 );
               })}
             </Row>
@@ -57,5 +57,12 @@ const SettledTable: FC = () => {
     </TableWrapper>
   );
 };
+
+const StyledCellBody = styled(Cell)`
+  &.first-cell {
+    font-weight: 700;
+    flex: 0 0 280px;
+  }
+`;
 
 export default SettledTable;
