@@ -190,7 +190,7 @@ const RequestForm: FC = () => {
   };
 
   useEffect(() => {
-    if (expirationTime) {
+    if (expirationTime && flags.InDisputeState) {
       setCurrentTime(calculateTimeRemaining(Date.now(), expirationTime * 1000));
       const timer = setInterval(
         () =>
@@ -201,17 +201,17 @@ const RequestForm: FC = () => {
       );
       return () => clearInterval(timer);
     }
-  }, [expirationTime, liveness]);
+  }, [expirationTime, liveness, flags.InDisputeState]);
 
   const formatLiveness = useCallback((time) => {
     if (time) {
       const millisecondsLiveness = time * 1000;
-      let format = "h'h'";
+      let format = "h 'hour(s)'";
       if (millisecondsLiveness >= TEN_HOURS_IN_MILLSECONDS) {
-        format = "hh'h'";
+        format = "hh 'hours'";
       }
       if (millisecondsLiveness >= TWENTY_FOUR_HOURS_IN_MILLISECONDS) {
-        format = "dd'd'hh'h'";
+        format = "dd 'days' hh 'hours'";
       }
       return Duration.fromMillis(millisecondsLiveness).toFormat(format);
     } else {
@@ -294,9 +294,14 @@ const RequestForm: FC = () => {
             <ParametersValueHeader>Liveness period: </ParametersValueHeader>
             <ParametersValue>
               {formatLiveness(liveness)}{" "}
-              {`Time remaining: ${Duration.fromMillis(currentTime).toFormat(
-                "hh'h':mm' min' s' sec' left"
-              )})`}
+              {flags.InDisputeState && (
+                <>
+                  Time remaining:{" "}
+                  {Duration.fromMillis(currentTime).toFormat(
+                    "hh'h':mm' min' s' sec' left"
+                  )}
+                </>
+              )}
             </ParametersValue>
           </ParametersValuesWrapper>
         </RequestFormParametersWrapper>
