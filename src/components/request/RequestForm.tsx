@@ -190,6 +190,8 @@ const RequestForm: FC = () => {
           {buttonProps.label}
         </RequestFormButton>
       );
+    } else if (requestState === oracle.types.state.RequestState.Disputed) {
+      return <RequestFormButton disabled={true}>Disputed</RequestFormButton>;
     } else {
       return <RequestFormButton disabled={true}>Resolved</RequestFormButton>;
     }
@@ -258,14 +260,16 @@ const RequestForm: FC = () => {
                   onChange={inputOnChange}
                 />
               )}
-              {flags.InDisputeState && proposedPrice && (
-                <RequestFormInput
-                  disabled={true}
-                  label="Proposed answer: "
-                  value={ethers.utils.formatUnits(proposedPrice, 18)}
-                  onChange={() => null}
-                />
-              )}
+              {(flags.InDisputeState ||
+                requestState === oracle.types.state.RequestState.Disputed) &&
+                proposedPrice && (
+                  <RequestFormInput
+                    disabled={true}
+                    label="Proposed answer: "
+                    value={ethers.utils.formatUnits(proposedPrice, 18)}
+                    onChange={() => null}
+                  />
+                )}
               {getButton(value)}
             </RequestInputButtonBlock>
             {inputError && <InputError>{inputError}</InputError>}
