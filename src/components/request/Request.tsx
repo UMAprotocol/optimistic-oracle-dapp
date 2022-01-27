@@ -7,6 +7,7 @@ import RequestHero from "./RequestHero";
 import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
 import { oracle } from "@uma/sdk";
+import SettledTable from "./SettledTable";
 import useSettledTableData from "./useSettledTableData";
 /* Search Params:
   {
@@ -47,8 +48,6 @@ const Request = () => {
     }
   }, [searchParams, client]);
 
-  console.log("requestState", requestState);
-
   return (
     <Wrapper>
       {requestState !== oracle.types.state.RequestState.Settled && (
@@ -58,7 +57,7 @@ const Request = () => {
       <TableSection>
         {requestState === oracle.types.state.RequestState.Settled && (
           <TableContentWrapper>
-            <Table title="Resolution" headerCells={hc} rows={settleRows} />
+            <SettledTable />
           </TableContentWrapper>
         )}
         <TableContentWrapper>

@@ -6,6 +6,7 @@ export interface TableProps {
   rows: IRow[];
   // Optional Title component
   title?: string | ReactElement;
+  className?: string;
 }
 
 export type CellSize = "xs" | "sm" | "md" | "lg";
@@ -14,6 +15,7 @@ export interface ICell {
   // if undefined, defaults to "sm"
   size?: CellSize;
   value: string | ReactElement;
+  cellClassName?: string;
 }
 
 export interface IRow {
@@ -31,7 +33,11 @@ const Table: FC<TableProps> = ({ headerCells, rows, title }) => {
       <HeadRow>
         {headerCells.map((cell, index) => {
           return (
-            <Cell key={index} size={cell.size}>
+            <Cell
+              key={index}
+              className={cell.cellClassName ?? ""}
+              size={cell.size}
+            >
               {cell.value}
             </Cell>
           );
@@ -43,7 +49,11 @@ const Table: FC<TableProps> = ({ headerCells, rows, title }) => {
             <Row key={ridx}>
               {row.cells.map((cell, cidx) => {
                 return (
-                  <Cell key={cidx} size={cell.size}>
+                  <Cell
+                    className={cell.cellClassName ?? ""}
+                    key={cidx}
+                    size={cell.size}
+                  >
                     {cell.value}
                   </Cell>
                 );
