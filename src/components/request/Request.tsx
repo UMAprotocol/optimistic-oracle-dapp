@@ -7,6 +7,8 @@ import RequestHero from "./RequestHero";
 import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
 import { oracle } from "@uma/sdk";
+import { IRow } from "../table/Table";
+
 /* Search Params:
   {
     requester: string;
@@ -16,6 +18,45 @@ import { oracle } from "@uma/sdk";
     chainId: number;
   } 
 */
+
+const stubRows = [
+  {
+    cells: [
+      {
+        size: "md",
+        value: "Proposed answer",
+      },
+      {
+        size: "lg",
+        value: "0.3456",
+      },
+    ],
+  },
+  {
+    cells: [
+      {
+        size: "md",
+        value: "Proposer",
+      },
+      {
+        size: "lg",
+        value: "0x123456789",
+      },
+    ],
+  },
+  {
+    cells: [
+      {
+        size: "md",
+        value: "Disputed?",
+      },
+      {
+        size: "lg",
+        value: "No",
+      },
+    ],
+  },
+] as IRow[];
 
 const Request = () => {
   const { client, state } = useClient();
@@ -51,7 +92,13 @@ const Request = () => {
       {requestState !== oracle.types.state.RequestState.Settled && (
         <RequestHero chainId={Number(searchParams.get("chainId")) ?? 0} />
       )}
+
       <TableSection>
+        {requestState === oracle.types.state.RequestState.Settled && (
+          <TableContentWrapper>
+            <Table title="Resolution" headerCells={[]} rows={stubRows} />
+          </TableContentWrapper>
+        )}
         <TableContentWrapper>
           <Table title={"Input Data"} headerCells={headerCells} rows={rows} />
         </TableContentWrapper>
