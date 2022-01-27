@@ -5,7 +5,8 @@ import useRequestTableData from "./useRequestTableData";
 import { Wrapper, TableContentWrapper, TableSection } from "./Request.styled";
 import RequestHero from "./RequestHero";
 import useClient from "hooks/useOracleClient";
-
+import useReader from "hooks/useOracleReader";
+import { oracle } from "@uma/sdk";
 /* Search Params:
   {
     requester: string;
@@ -17,9 +18,11 @@ import useClient from "hooks/useOracleClient";
 */
 
 const Request = () => {
-  const { client } = useClient();
+  const { client, state } = useClient();
   const [searchParams] = useSearchParams();
   const { rows, headerCells } = useRequestTableData(searchParams);
+
+  const { requestState } = useReader(state);
 
   useEffect(() => {
     const requester = searchParams.get("requester")?.trim();
@@ -41,9 +44,13 @@ const Request = () => {
     }
   }, [searchParams, client]);
 
+  console.log("requestState", requestState);
+
   return (
     <Wrapper>
-      <RequestHero chainId={Number(searchParams.get("chainId")) ?? 0} />
+      {requestState !== oracle.types.state.RequestState.Settled && (
+        <RequestHero chainId={Number(searchParams.get("chainId")) ?? 0} />
+      )}
       <TableSection>
         <TableContentWrapper>
           <Table title={"Input Data"} headerCells={headerCells} rows={rows} />
