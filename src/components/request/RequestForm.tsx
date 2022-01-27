@@ -70,6 +70,7 @@ const RequestForm: FC = () => {
     proposedPrice,
     disputer,
     proposer,
+    requestState,
     explorerUrl,
   } = useReader(state);
 
@@ -164,7 +165,11 @@ const RequestForm: FC = () => {
 
   const getButton = (value: string) => {
     if (flags.MissingRequest) return <div>Loading Request State...</div>;
-    if (flags.ApprovalInProgress)
+    if (
+      flags.ApprovalInProgress ||
+      flags.ProposalInProgress ||
+      flags.DisputeInProgress
+    )
       return (
         <RequestFormButton>
           <BouncingDotsLoader />
@@ -219,14 +224,31 @@ const RequestForm: FC = () => {
     }
   }, []);
 
+  console.log("flags", flags, "RQ", requestState);
+
   return (
     <RequestFormWrapper>
       <RequestFormRow>
         <RequestFormHeaderAndFormWrapper>
           <FormHeader>
             {flags.InProposeState && "Proposal"}
-            {(flags.InDisputeState || flags.DisputeInProgress) &&
-              "Dispute Period"}
+            {flags.InDisputeState && "Dispute Period"}
+            {requestState === 4 && (
+              <>
+                <div>Proposal</div>
+                <div>
+                  Disputed and sent to UMA's Data Verification Mechanism (DVM)
+                  for resolution.{" "}
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://docs.umaproject.org/getting-started/oracle"
+                  >
+                    View here
+                  </a>
+                </div>
+              </>
+            )}
           </FormHeader>
           <RequestFormInputWrapper>
             <RequestInputButtonBlock>
