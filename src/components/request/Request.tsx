@@ -7,8 +7,7 @@ import RequestHero from "./RequestHero";
 import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
 import { oracle } from "@uma/sdk";
-import { IRow } from "../table/Table";
-
+import useSettledTableData from "./useSettledTableData";
 /* Search Params:
   {
     requester: string;
@@ -19,51 +18,14 @@ import { IRow } from "../table/Table";
   } 
 */
 
-const stubRows = [
-  {
-    cells: [
-      {
-        size: "md",
-        value: "Proposed answer",
-      },
-      {
-        size: "lg",
-        value: "0.3456",
-      },
-    ],
-  },
-  {
-    cells: [
-      {
-        size: "md",
-        value: "Proposer",
-      },
-      {
-        size: "lg",
-        value: "0x123456789",
-      },
-    ],
-  },
-  {
-    cells: [
-      {
-        size: "md",
-        value: "Disputed?",
-      },
-      {
-        size: "lg",
-        value: "No",
-      },
-    ],
-  },
-] as IRow[];
-
 const Request = () => {
   const { client, state } = useClient();
   const [searchParams] = useSearchParams();
   const { rows, headerCells } = useRequestTableData(searchParams);
 
   const { requestState } = useReader(state);
+
+  const { rows: settleRows, headerCells: hc } = useSettledTableData();
 
   useEffect(() => {
     const requester = searchParams.get("requester")?.trim();
@@ -96,7 +58,7 @@ const Request = () => {
       <TableSection>
         {requestState === oracle.types.state.RequestState.Settled && (
           <TableContentWrapper>
-            <Table title="Resolution" headerCells={[]} rows={stubRows} />
+            <Table title="Resolution" headerCells={hc} rows={settleRows} />
           </TableContentWrapper>
         )}
         <TableContentWrapper>
