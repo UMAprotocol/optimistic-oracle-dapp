@@ -47,24 +47,17 @@ export const CloseButton = styled(Button)`
 
 export const Wrapper = styled.header`
   height: 75px;
-  padding: 40px 0 30px;
-  @media ${QUERIES.laptopAndUp} {
-    padding: 30px 0 75px;
-  }
+  padding: 30px 0 75px;
 `;
 
 export const MaxWidth = styled(MaxWidthWrapper)`
   display: flex;
   align-items: center;
-  padding: 0;
 `;
 
 export const Navigation = styled.nav`
-  display: none;
+  display: revert;
   margin-left: auto;
-  @media ${QUERIES.laptopAndUp} {
-    display: revert;
-  }
 `;
 
 export const LinkList = styled.ol`
