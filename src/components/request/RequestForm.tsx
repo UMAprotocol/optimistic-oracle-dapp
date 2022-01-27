@@ -25,6 +25,7 @@ import useReader from "hooks/useOracleReader";
 import { ethers } from "ethers";
 import { prettyFormatNumber } from "helpers/format";
 import BouncingDotsLoader from "components/bouncing-dots-loader";
+import { oracle } from "@uma/sdk";
 
 const TEN_HOURS_IN_MILLSECONDS = 60 * 60 * 10 * 1000;
 const TWENTY_FOUR_HOURS_IN_MILLISECONDS = 60 * 60 * 24 * 1000;
@@ -70,6 +71,7 @@ const RequestForm: FC = () => {
     proposedPrice,
     disputer,
     proposer,
+    requestState,
     explorerUrl,
   } = useReader(state);
 
@@ -164,7 +166,11 @@ const RequestForm: FC = () => {
 
   const getButton = (value: string) => {
     if (flags.MissingRequest) return <div>Loading Request State...</div>;
-    if (flags.ApprovalInProgress)
+    if (
+      flags.ApprovalInProgress ||
+      flags.ProposalInProgress ||
+      flags.DisputeInProgress
+    )
       return (
         <RequestFormButton>
           <BouncingDotsLoader />
@@ -184,13 +190,15 @@ const RequestForm: FC = () => {
           {buttonProps.label}
         </RequestFormButton>
       );
+    } else if (requestState === oracle.types.state.RequestState.Disputed) {
+      return <RequestFormButton disabled={true}>Disputed</RequestFormButton>;
     } else {
       return <RequestFormButton disabled={true}>Resolved</RequestFormButton>;
     }
   };
 
   useEffect(() => {
-    if (expirationTime) {
+    if (expirationTime && flags.InDisputeState) {
       setCurrentTime(calculateTimeRemaining(Date.now(), expirationTime * 1000));
       const timer = setInterval(
         () =>
@@ -201,17 +209,17 @@ const RequestForm: FC = () => {
       );
       return () => clearInterval(timer);
     }
-  }, [expirationTime, liveness]);
+  }, [expirationTime, liveness, flags.InDisputeState]);
 
   const formatLiveness = useCallback((time) => {
     if (time) {
       const millisecondsLiveness = time * 1000;
-      let format = "h'h'";
+      let format = "h 'hour(s)'";
       if (millisecondsLiveness >= TEN_HOURS_IN_MILLSECONDS) {
-        format = "hh'h'";
+        format = "hh 'hours'";
       }
       if (millisecondsLiveness >= TWENTY_FOUR_HOURS_IN_MILLISECONDS) {
-        format = "dd'd'hh'h'";
+        format = "dd 'days' hh 'hours'";
       }
       return Duration.fromMillis(millisecondsLiveness).toFormat(format);
     } else {
@@ -225,8 +233,23 @@ const RequestForm: FC = () => {
         <RequestFormHeaderAndFormWrapper>
           <FormHeader>
             {flags.InProposeState && "Proposal"}
-            {(flags.InDisputeState || flags.DisputeInProgress) &&
-              "Dispute Period"}
+            {flags.InDisputeState && "Dispute Period"}
+            {requestState === oracle.types.state.RequestState.Disputed && (
+              <>
+                <div>Proposal</div>
+                <div>
+                  Disputed and sent to UMA's Data Verification Mechanism (DVM)
+                  for resolution.{" "}
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://docs.umaproject.org/getting-started/oracle"
+                  >
+                    View here
+                  </a>
+                </div>
+              </>
+            )}
           </FormHeader>
           <RequestFormInputWrapper>
             <RequestInputButtonBlock>
@@ -237,14 +260,16 @@ const RequestForm: FC = () => {
                   onChange={inputOnChange}
                 />
               )}
-              {flags.InDisputeState && proposedPrice && (
-                <RequestFormInput
-                  disabled={true}
-                  label="Proposed answer: "
-                  value={ethers.utils.formatUnits(proposedPrice, 18)}
-                  onChange={() => null}
-                />
-              )}
+              {(flags.InDisputeState ||
+                requestState === oracle.types.state.RequestState.Disputed) &&
+                proposedPrice && (
+                  <RequestFormInput
+                    disabled={true}
+                    label="Proposed answer: "
+                    value={ethers.utils.formatUnits(proposedPrice, 18)}
+                    onChange={() => null}
+                  />
+                )}
               {getButton(value)}
             </RequestInputButtonBlock>
             {inputError && <InputError>{inputError}</InputError>}
@@ -294,9 +319,14 @@ const RequestForm: FC = () => {
             <ParametersValueHeader>Liveness period: </ParametersValueHeader>
             <ParametersValue>
               {formatLiveness(liveness)}{" "}
-              {`Time remaining: ${Duration.fromMillis(currentTime).toFormat(
-                "hh'h':mm' min' s' sec' left"
-              )})`}
+              {flags.InDisputeState && (
+                <>
+                  Time remaining:{" "}
+                  {Duration.fromMillis(currentTime).toFormat(
+                    "hh'h':mm' min' s' sec' left"
+                  )}
+                </>
+              )}
             </ParametersValue>
           </ParametersValuesWrapper>
         </RequestFormParametersWrapper>

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ICell, IRow } from "../table/Table";
 import { DateTime } from "luxon";
 import { ethers } from "ethers";
+import { CHAINS, ChainId } from "constants/blockchain";
 
 const hc: ICell[] = [
   {
@@ -30,6 +31,7 @@ function useRequestTableData(searchParams: URLSearchParams) {
     const nextRows = [] as IRow[];
 
     const nextRequester = searchParams.get("requester");
+    const chainId: ChainId = Number(searchParams.get("chainId")) || 1;
     nextRows.push({
       cells: [
         {
@@ -50,7 +52,7 @@ function useRequestTableData(searchParams: URLSearchParams) {
             <a
               target="_blank"
               rel="noreferrer"
-              href={`https://etherscan.io/address/${nextRequester}`}
+              href={`${CHAINS[chainId].explorerUrl}/address/${nextRequester}`}
             >
               {nextRequester}
             </a>
@@ -64,7 +66,9 @@ function useRequestTableData(searchParams: URLSearchParams) {
     if (nextIdentifier) {
       try {
         // replace non ascii chars
-        convertedIdentifier = ethers.utils.toUtf8String(nextIdentifier).replace(/[^\x20-\x7E]+/g, "");
+        convertedIdentifier = ethers.utils
+          .toUtf8String(nextIdentifier)
+          .replace(/[^\x20-\x7E]+/g, "");
       } catch (err) {
         convertedIdentifier = "Not convertible to UTF-8 string.";
         console.log("not convertible to UTF8");

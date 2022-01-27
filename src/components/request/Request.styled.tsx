@@ -133,11 +133,27 @@ export const RequestInputButtonBlock = styled.div`
   justify-content: space-between;
 `;
 
-export const FormHeader = styled.h2`
+export const FormHeader = styled.div`
   font-family: "Halyard";
   font-weight: 700;
   font-size: 1.25rem;
   margin-bottom: 1rem;
+  > div:first-of-type {
+    font-family: "Halyard";
+    font-weight: 700;
+    font-size: 1.25rem;
+  }
+  > div:nth-of-type(2) {
+    font-size: 0.875rem;
+    font-weight: 400;
+    a {
+      cursor: pointer;
+      color: #ff4a4a;
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+  }
 `;
 
 export const RequestFormInput = styled(Input)``;
