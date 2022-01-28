@@ -1,7 +1,7 @@
 import React from "react";
 import { Context } from "context/OracleClientContext";
 
-function useContext() {
+function useOracleClient() {
   const context = React.useContext(Context);
   if (!context) {
     throw new Error(
@@ -12,4 +12,4 @@ function useContext() {
   return context;
 }
 
-export default useContext;
+export default useOracleClient;

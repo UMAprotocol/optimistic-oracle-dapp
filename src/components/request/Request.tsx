@@ -11,9 +11,9 @@ import {
 import RequestHero from "./RequestHero";
 import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
-import { oracle } from "@uma/sdk";
 import SettledTable from "./SettledTable";
 import dataIcon from "assets/data-icon.svg";
+import useOracleClient from "hooks/useOracleClient";
 /* Search Params:
   {
     requester: string;
@@ -30,6 +30,7 @@ const Request = () => {
   const { rows, headerCells } = useRequestTableData(searchParams);
 
   const { requestState, proposer, disputer, proposedPrice } = useReader(state);
+  const oracleContext = useOracleClient();
 
   useEffect(() => {
     const requester = searchParams.get("requester")?.trim();
@@ -53,12 +54,14 @@ const Request = () => {
 
   return (
     <Wrapper>
-      {requestState !== oracle.types.state.RequestState.Settled && (
+      {requestState !==
+        oracleContext.oracle.types.state.RequestState.Settled && (
         <RequestHero chainId={Number(searchParams.get("chainId")) ?? 0} />
       )}
 
       <TableSection>
-        {requestState === oracle.types.state.RequestState.Settled && (
+        {requestState ===
+          oracleContext.oracle.types.state.RequestState.Settled && (
           <TableContentWrapper>
             <SettledTable
               proposer={proposer}
