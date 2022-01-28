@@ -77,13 +77,13 @@ const RequestForm: FC = () => {
   const getProposeButtonProps = (value: string) => {
     if (flags.MissingUser)
       return {
-        label: "Login",
+        label: "Connect wallet",
         onClick: () => connect(),
         disabled: false,
       };
     if (flags.InsufficientBalance)
       return {
-        label: "Balance Low",
+        label: "Insufficient funds",
         onClick: undefined,
         disabled: true,
       };
@@ -121,13 +121,13 @@ const RequestForm: FC = () => {
   const getDisputeButtonProps = () => {
     if (flags.MissingUser)
       return {
-        label: "Login",
+        label: "Connect wallet",
         onClick: connect,
         disabled: false,
       };
     if (flags.InsufficientBalance)
       return {
-        label: "Balance Low",
+        label: "Insufficient funds",
         onClick: undefined,
         disabled: true,
       };
