@@ -8,7 +8,6 @@ import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
 import { oracle } from "@uma/sdk";
 import SettledTable from "./SettledTable";
-import useSettledTableData from "./useSettledTableData";
 /* Search Params:
   {
     requester: string;
@@ -24,9 +23,7 @@ const Request = () => {
   const [searchParams] = useSearchParams();
   const { rows, headerCells } = useRequestTableData(searchParams);
 
-  const { requestState } = useReader(state);
-
-  const { rows: settleRows, headerCells: hc } = useSettledTableData();
+  const { requestState, proposer, disputer, proposedPrice } = useReader(state);
 
   useEffect(() => {
     const requester = searchParams.get("requester")?.trim();
@@ -57,7 +54,11 @@ const Request = () => {
       <TableSection>
         {requestState === oracle.types.state.RequestState.Settled && (
           <TableContentWrapper>
-            <SettledTable />
+            <SettledTable
+              proposer={proposer}
+              disputer={disputer}
+              proposedPrice={proposedPrice}
+            />
           </TableContentWrapper>
         )}
         <TableContentWrapper>

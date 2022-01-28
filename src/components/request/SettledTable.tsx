@@ -8,11 +8,20 @@ import {
   Cell,
   Title,
 } from "components/table/Table.styled";
-
+import { oracle } from "@uma/sdk";
 import useSettledTableData from "./useSettledTableData";
 
-const SettledTable: FC = () => {
-  const { rows, headerCells } = useSettledTableData();
+interface Props {
+  proposer: string | undefined;
+  disputer: string | undefined;
+  proposedPrice: oracle.types.ethers.BigNumber | undefined;
+}
+const SettledTable: FC<Props> = ({ proposer, disputer, proposedPrice }) => {
+  const { rows, headerCells } = useSettledTableData(
+    proposer,
+    disputer,
+    proposedPrice
+  );
   const title = "Resolution";
 
   return (
