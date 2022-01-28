@@ -21,6 +21,23 @@ export const TableContentWrapper = styled.div`
   margin: 0 auto;
 `;
 
+export const TableTitle = styled.div`
+  padding-left: 1.5rem;
+  padding-top: 1rem;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  background: #fff;
+  img {
+    height: 24px;
+    width: 24px;
+    margin-bottom: 4px;
+  }
+  span {
+    margin-left: 1.25rem;
+    font-weight: 700;
+  }
+`;
 /* Hero Components */
 
 export const HeroSection = styled.section`

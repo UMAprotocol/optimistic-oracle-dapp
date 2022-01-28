@@ -2,12 +2,18 @@ import { useEffect } from "react";
 import Table from "../table/Table";
 import { useSearchParams } from "react-router-dom";
 import useRequestTableData from "./useRequestTableData";
-import { Wrapper, TableContentWrapper, TableSection } from "./Request.styled";
+import {
+  Wrapper,
+  TableContentWrapper,
+  TableSection,
+  TableTitle,
+} from "./Request.styled";
 import RequestHero from "./RequestHero";
 import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
 import { oracle } from "@uma/sdk";
 import SettledTable from "./SettledTable";
+import dataIcon from "assets/data-icon.svg";
 /* Search Params:
   {
     requester: string;
@@ -66,7 +72,16 @@ const Request = () => {
           </TableContentWrapper>
         )}
         <TableContentWrapper>
-          <Table title={"Input Data"} headerCells={headerCells} rows={rows} />
+          <Table
+            title={
+              <TableTitle>
+                <img src={dataIcon} alt="data_icon" />
+                <span>Input Data</span>
+              </TableTitle>
+            }
+            headerCells={headerCells}
+            rows={rows}
+          />
         </TableContentWrapper>
       </TableSection>
     </Wrapper>

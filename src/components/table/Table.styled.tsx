@@ -85,10 +85,6 @@ export const Cell = styled.div<ICellStyled>`
   margin: 0 8px;
   &:first-of-type {
     margin-left: 24px;
-    margin-right: 25px;
-    @media ${QUERIES.tabletAndUp} {
-      margin-right: 50px;
-    }
   }
   &:not(:first-of-type) {
     min-width: 150px;
