@@ -243,7 +243,7 @@ const RequestForm: FC = () => {
                   <a
                     target="_blank"
                     rel="noreferrer"
-                    href="https://docs.umaproject.org/getting-started/oracle"
+                    href="https://vote.umaproject.org"
                   >
                     View here
                   </a>
