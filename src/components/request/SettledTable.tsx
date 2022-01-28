@@ -10,6 +10,8 @@ import {
 } from "components/table/Table.styled";
 import { oracle } from "@uma/sdk";
 import useSettledTableData from "./useSettledTableData";
+import { TableTitle } from "./Request.styled";
+import dataIcon from "assets/data-icon.svg";
 
 interface Props {
   proposer: string | undefined;
@@ -29,7 +31,12 @@ const SettledTable: FC<Props> = ({
     proposedPrice,
     chainId
   );
-  const title = "Resolution";
+  const title = (
+    <SettleTitle>
+      <img src={dataIcon} alt="data_icon" />
+      <span>Resolution</span>
+    </SettleTitle>
+  );
 
   return (
     <TableWrapper>
@@ -78,6 +85,12 @@ const StyledCellBody = styled(Cell)`
   &.first-cell {
     font-weight: 700;
     flex: 0 0 280px;
+  }
+`;
+
+const SettleTitle = styled(TableTitle)`
+  span {
+    margin-left: 0.75rem;
   }
 `;
 

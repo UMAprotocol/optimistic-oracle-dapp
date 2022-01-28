@@ -4,6 +4,7 @@ import { oracle } from "@uma/sdk";
 import { ethers } from "ethers";
 import { CHAINS, ChainId } from "constants/blockchain";
 const hc: ICell[] = [];
+const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 function useSettledTableData(
   proposer: string | undefined,
@@ -59,13 +60,13 @@ function useSettledTableData(
           },
           {
             size: "lg",
-            value: disputer ? "Yes" : "No",
+            value: disputer && disputer !== NULL_ADDRESS ? "Yes" : "No",
           },
         ],
       },
     ] as IRow[];
 
-    if (disputer) {
+    if (disputer && disputer !== NULL_ADDRESS) {
       nextRows.push({
         cells: [
           {
