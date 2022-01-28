@@ -2,16 +2,18 @@ import { useState, useEffect } from "react";
 import { ICell, IRow } from "../table/Table";
 import { oracle } from "@uma/sdk";
 import { ethers } from "ethers";
+import { CHAINS, ChainId } from "constants/blockchain";
 const hc: ICell[] = [];
 
 function useSettledTableData(
   proposer: string | undefined,
   disputer: string | undefined,
-  proposedPrice: oracle.types.ethers.BigNumber | undefined
+  proposedPrice: oracle.types.ethers.BigNumber | undefined,
+  chainId: number | "" | null
 ) {
   const [rows, setRows] = useState<IRow[]>([]);
   const [headerCells] = useState<ICell[]>(hc);
-
+  const cid: ChainId = chainId ? chainId : 1;
   useEffect(() => {
     let nextRows = [
       {
@@ -36,7 +38,15 @@ function useSettledTableData(
           },
           {
             size: "lg",
-            value: proposer,
+            value: (
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={`${CHAINS[cid].explorerUrl}/address/${proposer}`}
+              >
+                {proposer}
+              </a>
+            ),
           },
         ],
       },
@@ -65,13 +75,21 @@ function useSettledTableData(
           },
           {
             size: "lg",
-            value: disputer,
+            value: (
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={`${CHAINS[cid].explorerUrl}/address/${disputer}`}
+              >
+                {disputer}
+              </a>
+            ),
           },
         ],
       });
     }
     setRows(nextRows);
-  }, [proposer, disputer, proposedPrice]);
+  }, [proposer, disputer, proposedPrice, cid]);
 
   return { rows, headerCells };
 }

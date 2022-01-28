@@ -58,6 +58,10 @@ const Request = () => {
               proposer={proposer}
               disputer={disputer}
               proposedPrice={proposedPrice}
+              chainId={
+                searchParams.get("chainId") &&
+                Number(searchParams.get("chainId"))
+              }
             />
           </TableContentWrapper>
         )}
