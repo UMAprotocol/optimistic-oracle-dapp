@@ -6,7 +6,6 @@ import {
   Body,
   HeadRow,
   Cell,
-  Title,
 } from "components/table/Table.styled";
 import { oracle } from "@uma/sdk";
 import useSettledTableData from "./useSettledTableData";
@@ -31,20 +30,13 @@ const SettledTable: FC<Props> = ({
     proposedPrice,
     chainId
   );
-  const title = (
-    <SettleTitle>
-      <img src={dataIcon} alt="data_icon" />
-      <span>Resolution</span>
-    </SettleTitle>
-  );
 
   return (
     <TableWrapper>
-      {title && typeof title === "string" ? (
-        <Title>{title}</Title>
-      ) : title ? (
-        title
-      ) : null}
+      <SettleTitle>
+        <img src={dataIcon} alt="data_icon" />
+        <span>Resolution</span>
+      </SettleTitle>
       <HeadRow>
         {headerCells.map((cell, index) => {
           return (
