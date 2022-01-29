@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useCallback } from "react";
+import { FC, useState, useEffect } from "react";
 import {
   RequestFormWrapper,
   RequestFormRow,
@@ -27,8 +27,6 @@ import { prettyFormatNumber } from "helpers/format";
 import BouncingDotsLoader from "components/bouncing-dots-loader";
 import { oracle } from "@uma/sdk";
 
-const TEN_HOURS_IN_MILLSECONDS = 60 * 60 * 10 * 1000;
-const TWENTY_FOUR_HOURS_IN_MILLISECONDS = 60 * 60 * 24 * 1000;
 const RequestForm: FC = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [value, setValue] = useState("");
@@ -79,13 +77,13 @@ const RequestForm: FC = () => {
   const getProposeButtonProps = (value: string) => {
     if (flags.MissingUser)
       return {
-        label: "Login",
+        label: "Connect wallet",
         onClick: () => connect(),
         disabled: false,
       };
     if (flags.InsufficientBalance)
       return {
-        label: "Balance Low",
+        label: "Insufficient funds",
         onClick: undefined,
         disabled: true,
       };
@@ -123,13 +121,13 @@ const RequestForm: FC = () => {
   const getDisputeButtonProps = () => {
     if (flags.MissingUser)
       return {
-        label: "Login",
+        label: "Connect wallet",
         onClick: connect,
         disabled: false,
       };
     if (flags.InsufficientBalance)
       return {
-        label: "Balance Low",
+        label: "Insufficient funds",
         onClick: undefined,
         disabled: true,
       };
@@ -211,22 +209,6 @@ const RequestForm: FC = () => {
     }
   }, [expirationTime, liveness, flags.InDisputeState]);
 
-  const formatLiveness = useCallback((time) => {
-    if (time) {
-      const millisecondsLiveness = time * 1000;
-      let format = "h 'hour(s)'";
-      if (millisecondsLiveness >= TEN_HOURS_IN_MILLSECONDS) {
-        format = "hh 'hours'";
-      }
-      if (millisecondsLiveness >= TWENTY_FOUR_HOURS_IN_MILLISECONDS) {
-        format = "dd 'days' hh 'hours'";
-      }
-      return Duration.fromMillis(millisecondsLiveness).toFormat(format);
-    } else {
-      return "";
-    }
-  }, []);
-
   return (
     <RequestFormWrapper>
       <RequestFormRow>
@@ -243,7 +225,7 @@ const RequestForm: FC = () => {
                   <a
                     target="_blank"
                     rel="noreferrer"
-                    href="https://docs.umaproject.org/getting-started/oracle"
+                    href="https://vote.umaproject.org"
                   >
                     View here
                   </a>
@@ -318,12 +300,11 @@ const RequestForm: FC = () => {
           <ParametersValuesWrapper>
             <ParametersValueHeader>Liveness period: </ParametersValueHeader>
             <ParametersValue>
-              {formatLiveness(liveness)}{" "}
               {flags.InDisputeState && (
                 <>
                   Time remaining:{" "}
                   {Duration.fromMillis(currentTime).toFormat(
-                    "hh'h':mm' min' s' sec' left"
+                    "hh 'h' mm' min' s' sec' left"
                   )}
                 </>
               )}

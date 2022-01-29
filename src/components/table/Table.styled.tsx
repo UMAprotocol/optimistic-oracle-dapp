@@ -78,17 +78,13 @@ export const Cell = styled.div<ICellStyled>`
   flex: ${({ size = "sm" }) => {
     if (size === "xs") return "0 0 30px";
     if (size === "sm" || size === undefined) return "0 0 60px";
-    if (size === "md") return "1 1 120px";
+    if (size === "md") return "0 0 130px";
     if (size === "lg") return "flex: 1 2 550px";
     return "0 0 60px";
   }};
   margin: 0 8px;
   &:first-of-type {
     margin-left: 24px;
-    margin-right: 25px;
-    @media ${QUERIES.tabletAndUp} {
-      margin-right: 50px;
-    }
   }
   &:not(:first-of-type) {
     min-width: 150px;

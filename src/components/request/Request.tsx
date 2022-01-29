@@ -2,10 +2,18 @@ import { useEffect } from "react";
 import Table from "../table/Table";
 import { useSearchParams } from "react-router-dom";
 import useRequestTableData from "./useRequestTableData";
-import { Wrapper, TableContentWrapper, TableSection } from "./Request.styled";
+import {
+  Wrapper,
+  TableContentWrapper,
+  TableSection,
+  TableTitle,
+} from "./Request.styled";
 import RequestHero from "./RequestHero";
 import useClient from "hooks/useOracleClient";
-
+import useReader from "hooks/useOracleReader";
+import SettledTable from "./SettledTable";
+import dataIcon from "assets/data-icon.svg";
+import useOracleClient from "hooks/useOracleClient";
 /* Search Params:
   {
     requester: string;
@@ -17,9 +25,12 @@ import useClient from "hooks/useOracleClient";
 */
 
 const Request = () => {
-  const { client } = useClient();
+  const { client, state } = useClient();
   const [searchParams] = useSearchParams();
   const { rows, headerCells } = useRequestTableData(searchParams);
+
+  const { requestState, proposer, disputer, proposedPrice } = useReader(state);
+  const oracleContext = useOracleClient();
 
   useEffect(() => {
     const requester = searchParams.get("requester")?.trim();
@@ -43,10 +54,37 @@ const Request = () => {
 
   return (
     <Wrapper>
-      <RequestHero chainId={Number(searchParams.get("chainId")) ?? 0} />
+      {requestState !==
+        oracleContext.oracle.types.state.RequestState.Settled && (
+        <RequestHero chainId={Number(searchParams.get("chainId")) ?? 0} />
+      )}
+
       <TableSection>
+        {requestState ===
+          oracleContext.oracle.types.state.RequestState.Settled && (
+          <TableContentWrapper>
+            <SettledTable
+              proposer={proposer}
+              disputer={disputer}
+              proposedPrice={proposedPrice}
+              chainId={
+                searchParams.get("chainId") &&
+                Number(searchParams.get("chainId"))
+              }
+            />
+          </TableContentWrapper>
+        )}
         <TableContentWrapper>
-          <Table title={"Input Data"} headerCells={headerCells} rows={rows} />
+          <Table
+            title={
+              <TableTitle>
+                <img src={dataIcon} alt="data_icon" />
+                <span>Input Data</span>
+              </TableTitle>
+            }
+            headerCells={headerCells}
+            rows={rows}
+          />
         </TableContentWrapper>
       </TableSection>
     </Wrapper>
