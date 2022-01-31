@@ -260,7 +260,7 @@ const RequestForm: FC = () => {
                 <a
                   target="_blank"
                   rel="noreferrer"
-                  href={`${explorerUrl}/address/${proposer}`}
+                  href={`${explorerUrl}address/${proposer}`}
                 >
                   {proposer}
                 </a>
@@ -272,7 +272,7 @@ const RequestForm: FC = () => {
                 <a
                   target="_blank"
                   rel="noreferrer"
-                  href={`${explorerUrl}/address/${disputer}`}
+                  href={`${explorerUrl}address/${disputer}`}
                 >
                   {disputer}
                 </a>
