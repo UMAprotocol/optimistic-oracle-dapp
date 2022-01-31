@@ -217,7 +217,7 @@ const RequestForm: FC = () => {
             {flags.CanDispute && "Dispute Period"}
             {flags.InDvmVote && (
               <>
-                <div>Proposal</div>
+                <div>Dispute Period</div>
                 <div>
                   Disputed and sent to UMA's Data Verification Mechanism (DVM)
                   for resolution.{" "}
