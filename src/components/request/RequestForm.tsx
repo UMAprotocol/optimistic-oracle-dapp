@@ -25,7 +25,6 @@ import useReader from "hooks/useOracleReader";
 import { ethers } from "ethers";
 import { prettyFormatNumber } from "helpers/format";
 import BouncingDotsLoader from "components/bouncing-dots-loader";
-import { oracle } from "@uma/sdk";
 
 const RequestForm: FC = () => {
   const [currentTime, setCurrentTime] = useState(0);
@@ -69,7 +68,6 @@ const RequestForm: FC = () => {
     proposedPrice,
     disputer,
     proposer,
-    requestState,
     explorerUrl,
   } = useReader(state);
 
@@ -188,10 +186,11 @@ const RequestForm: FC = () => {
           {buttonProps.label}
         </RequestFormButton>
       );
-    } else if (requestState === oracle.types.state.RequestState.Disputed) {
+    } else if (flags.InDvmVote) {
       return <RequestFormButton disabled={true}>Disputed</RequestFormButton>;
     } else {
-      return <RequestFormButton disabled={true}>Resolved</RequestFormButton>;
+      // TODO later: Settle functionality.
+      return <RequestFormButton disabled={true}>Settle</RequestFormButton>;
     }
   };
 
@@ -216,7 +215,7 @@ const RequestForm: FC = () => {
           <FormHeader>
             {flags.CanPropose && "Proposal"}
             {flags.CanDispute && "Dispute Period"}
-            {requestState === oracle.types.state.RequestState.Disputed && (
+            {flags.InDvmVote && (
               <>
                 <div>Proposal</div>
                 <div>
@@ -232,6 +231,7 @@ const RequestForm: FC = () => {
                 </div>
               </>
             )}
+            {flags.CanSettle && "Settle"}
           </FormHeader>
           <RequestFormInputWrapper>
             <RequestInputButtonBlock>
@@ -242,8 +242,7 @@ const RequestForm: FC = () => {
                   onChange={inputOnChange}
                 />
               )}
-              {(flags.CanDispute ||
-                requestState === oracle.types.state.RequestState.Disputed) &&
+              {(flags.CanDispute || flags.InDvmVote || flags.CanSettle) &&
                 proposedPrice && (
                   <RequestFormInput
                     disabled={true}
@@ -255,7 +254,7 @@ const RequestForm: FC = () => {
               {getButton(value)}
             </RequestInputButtonBlock>
             {inputError && <InputError>{inputError}</InputError>}
-            {flags.CanDispute && (
+            {(flags.CanDispute || flags.InDvmVote) && (
               <ProposerAddress>
                 Proposer:{" "}
                 <a
@@ -267,7 +266,7 @@ const RequestForm: FC = () => {
                 </a>
               </ProposerAddress>
             )}
-            {flags.CanDispute && disputer && (
+            {(flags.CanDispute || flags.InDvmVote) && disputer && (
               <ProposerAddress>
                 Disputer:{" "}
                 <a
