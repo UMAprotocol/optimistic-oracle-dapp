@@ -25,8 +25,7 @@ import useReader from "hooks/useOracleReader";
 import { ethers } from "ethers";
 import { prettyFormatNumber } from "helpers/format";
 import BouncingDotsLoader from "components/bouncing-dots-loader";
-import { oracle } from "@uma/sdk";
-
+import { NULL_ADDRESS } from "constants/blockchain";
 const RequestForm: FC = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [value, setValue] = useState("");
@@ -69,7 +68,6 @@ const RequestForm: FC = () => {
     proposedPrice,
     disputer,
     proposer,
-    requestState,
     explorerUrl,
   } = useReader(state);
 
@@ -99,7 +97,7 @@ const RequestForm: FC = () => {
         onClick: () => client.switchOrAddChain(),
         disabled: false,
       };
-    if (flags.ProposalInProgress)
+    if (flags.ProposalTxInProgress)
       return {
         label: "Proposing...",
         onClick: undefined,
@@ -143,7 +141,7 @@ const RequestForm: FC = () => {
         onClick: () => client.switchOrAddChain(),
         disabled: false,
       };
-    if (flags.DisputeInProgress)
+    if (flags.DisputeTxInProgress)
       return {
         label: "Disputing...",
         onClick: undefined,
@@ -165,38 +163,39 @@ const RequestForm: FC = () => {
   const getButton = (value: string) => {
     if (flags.MissingRequest) return <div>Loading Request State...</div>;
     if (
-      flags.ApprovalInProgress ||
-      flags.ProposalInProgress ||
-      flags.DisputeInProgress
+      flags.ApprovalTxInProgress ||
+      flags.ProposalTxInProgress ||
+      flags.DisputeTxInProgress
     )
       return (
         <RequestFormButton>
           <BouncingDotsLoader />
         </RequestFormButton>
       );
-    if (flags.InProposeState) {
+    if (flags.CanPropose) {
       const buttonProps = getProposeButtonProps(value);
       return (
         <RequestFormButton {...buttonProps}>
           {buttonProps.label}
         </RequestFormButton>
       );
-    } else if (flags.InDisputeState) {
+    } else if (flags.CanDispute) {
       const buttonProps = getDisputeButtonProps();
       return (
         <RequestFormButton {...buttonProps}>
           {buttonProps.label}
         </RequestFormButton>
       );
-    } else if (requestState === oracle.types.state.RequestState.Disputed) {
+    } else if (flags.InDvmVote) {
       return <RequestFormButton disabled={true}>Disputed</RequestFormButton>;
     } else {
-      return <RequestFormButton disabled={true}>Resolved</RequestFormButton>;
+      // TODO later: Settle functionality.
+      return <RequestFormButton disabled={true}>Settle</RequestFormButton>;
     }
   };
 
   useEffect(() => {
-    if (expirationTime && flags.InDisputeState) {
+    if (expirationTime && flags.CanDispute) {
       setCurrentTime(calculateTimeRemaining(Date.now(), expirationTime * 1000));
       const timer = setInterval(
         () =>
@@ -207,16 +206,16 @@ const RequestForm: FC = () => {
       );
       return () => clearInterval(timer);
     }
-  }, [expirationTime, liveness, flags.InDisputeState]);
+  }, [expirationTime, liveness, flags.CanDispute]);
 
   return (
     <RequestFormWrapper>
       <RequestFormRow>
         <RequestFormHeaderAndFormWrapper>
           <FormHeader>
-            {flags.InProposeState && "Proposal"}
-            {flags.InDisputeState && "Dispute Period"}
-            {requestState === oracle.types.state.RequestState.Disputed && (
+            {flags.CanPropose && "Proposal"}
+            {flags.CanDispute && "Dispute Period"}
+            {flags.InDvmVote && (
               <>
                 <div>Proposal</div>
                 <div>
@@ -232,18 +231,18 @@ const RequestForm: FC = () => {
                 </div>
               </>
             )}
+            {flags.CanSettle && "Settle"}
           </FormHeader>
           <RequestFormInputWrapper>
             <RequestInputButtonBlock>
-              {flags.InProposeState && (
+              {flags.CanPropose && (
                 <RequestFormInput
                   label="Propose: "
                   value={value}
                   onChange={inputOnChange}
                 />
               )}
-              {(flags.InDisputeState ||
-                requestState === oracle.types.state.RequestState.Disputed) &&
+              {(flags.CanDispute || flags.InDvmVote || flags.CanSettle) &&
                 proposedPrice && (
                   <RequestFormInput
                     disabled={true}
@@ -255,30 +254,32 @@ const RequestForm: FC = () => {
               {getButton(value)}
             </RequestInputButtonBlock>
             {inputError && <InputError>{inputError}</InputError>}
-            {flags.InDisputeState && (
+            {(flags.CanDispute || flags.InDvmVote) && (
               <ProposerAddress>
                 Proposer:{" "}
                 <a
                   target="_blank"
                   rel="noreferrer"
-                  href={`${explorerUrl}/tx/${proposer}`}
+                  href={`${explorerUrl}/address/${proposer}`}
                 >
                   {proposer}
                 </a>
               </ProposerAddress>
             )}
-            {flags.DisputeInProgress && (
-              <ProposerAddress>
-                Disputer:{" "}
-                <a
-                  target="_blank"
-                  rel="noreferrer"
-                  href={`${explorerUrl}/tx/${disputer}`}
-                >
-                  {disputer}
-                </a>
-              </ProposerAddress>
-            )}
+            {(flags.CanDispute || flags.InDvmVote) &&
+              disputer &&
+              disputer !== NULL_ADDRESS && (
+                <ProposerAddress>
+                  Disputer:{" "}
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href={`${explorerUrl}/address/${disputer}`}
+                  >
+                    {disputer}
+                  </a>
+                </ProposerAddress>
+              )}
           </RequestFormInputWrapper>
         </RequestFormHeaderAndFormWrapper>
         <RequestFormParametersWrapper>
@@ -300,7 +301,7 @@ const RequestForm: FC = () => {
           <ParametersValuesWrapper>
             <ParametersValueHeader>Liveness period: </ParametersValueHeader>
             <ParametersValue>
-              {flags.InDisputeState && (
+              {flags.CanDispute && (
                 <>
                   Time remaining:{" "}
                   {Duration.fromMillis(currentTime).toFormat(

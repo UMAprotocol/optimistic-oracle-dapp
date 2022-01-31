@@ -43,7 +43,7 @@ export const CHAINS: Record<ChainId, ChainMetadata> = {
     chainId: ChainId.POLYGON,
     logoURI: polygonLogo,
     rpcUrl: "https://polygon-rpc.com/",
-    explorerUrl: "https://polygonscan.com/",
+    explorerUrl: "https://polygonscan.com",
     constructExplorerLink: (txHash: string) =>
       `https://polygonscan.com/tx/${txHash}`,
     nativeCurrency: {
@@ -89,3 +89,5 @@ export enum RequestState {
   Resolved, // 5 Disputed and DVM price is available.
   Settled, // 6 Final price has been set in the contract (can get here from Expired or Resolved).
 }
+
+export const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
