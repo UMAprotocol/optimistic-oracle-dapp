@@ -99,7 +99,7 @@ const RequestForm: FC = () => {
         onClick: () => client.switchOrAddChain(),
         disabled: false,
       };
-    if (flags.ProposalInProgress)
+    if (flags.ProposalTxInProgress)
       return {
         label: "Proposing...",
         onClick: undefined,
@@ -143,7 +143,7 @@ const RequestForm: FC = () => {
         onClick: () => client.switchOrAddChain(),
         disabled: false,
       };
-    if (flags.DisputeInProgress)
+    if (flags.DisputeTxInProgress)
       return {
         label: "Disputing...",
         onClick: undefined,
@@ -165,23 +165,23 @@ const RequestForm: FC = () => {
   const getButton = (value: string) => {
     if (flags.MissingRequest) return <div>Loading Request State...</div>;
     if (
-      flags.ApprovalInProgress ||
-      flags.ProposalInProgress ||
-      flags.DisputeInProgress
+      flags.ApprovalTxInProgress ||
+      flags.ProposalTxInProgress ||
+      flags.DisputeTxInProgress
     )
       return (
         <RequestFormButton>
           <BouncingDotsLoader />
         </RequestFormButton>
       );
-    if (flags.InProposeState) {
+    if (flags.CanPropose) {
       const buttonProps = getProposeButtonProps(value);
       return (
         <RequestFormButton {...buttonProps}>
           {buttonProps.label}
         </RequestFormButton>
       );
-    } else if (flags.InDisputeState) {
+    } else if (flags.CanDispute) {
       const buttonProps = getDisputeButtonProps();
       return (
         <RequestFormButton {...buttonProps}>
@@ -196,7 +196,7 @@ const RequestForm: FC = () => {
   };
 
   useEffect(() => {
-    if (expirationTime && flags.InDisputeState) {
+    if (expirationTime && flags.CanDispute) {
       setCurrentTime(calculateTimeRemaining(Date.now(), expirationTime * 1000));
       const timer = setInterval(
         () =>
@@ -207,15 +207,15 @@ const RequestForm: FC = () => {
       );
       return () => clearInterval(timer);
     }
-  }, [expirationTime, liveness, flags.InDisputeState]);
+  }, [expirationTime, liveness, flags.CanDispute]);
 
   return (
     <RequestFormWrapper>
       <RequestFormRow>
         <RequestFormHeaderAndFormWrapper>
           <FormHeader>
-            {flags.InProposeState && "Proposal"}
-            {flags.InDisputeState && "Dispute Period"}
+            {flags.CanPropose && "Proposal"}
+            {flags.CanDispute && "Dispute Period"}
             {requestState === oracle.types.state.RequestState.Disputed && (
               <>
                 <div>Proposal</div>
@@ -235,14 +235,14 @@ const RequestForm: FC = () => {
           </FormHeader>
           <RequestFormInputWrapper>
             <RequestInputButtonBlock>
-              {flags.InProposeState && (
+              {flags.CanPropose && (
                 <RequestFormInput
                   label="Propose: "
                   value={value}
                   onChange={inputOnChange}
                 />
               )}
-              {(flags.InDisputeState ||
+              {(flags.CanDispute ||
                 requestState === oracle.types.state.RequestState.Disputed) &&
                 proposedPrice && (
                   <RequestFormInput
@@ -255,7 +255,7 @@ const RequestForm: FC = () => {
               {getButton(value)}
             </RequestInputButtonBlock>
             {inputError && <InputError>{inputError}</InputError>}
-            {flags.InDisputeState && (
+            {flags.CanDispute && (
               <ProposerAddress>
                 Proposer:{" "}
                 <a
@@ -267,7 +267,7 @@ const RequestForm: FC = () => {
                 </a>
               </ProposerAddress>
             )}
-            {flags.DisputeInProgress && (
+            {flags.CanDispute && disputer && (
               <ProposerAddress>
                 Disputer:{" "}
                 <a
@@ -300,7 +300,7 @@ const RequestForm: FC = () => {
           <ParametersValuesWrapper>
             <ParametersValueHeader>Liveness period: </ParametersValueHeader>
             <ParametersValue>
-              {flags.InDisputeState && (
+              {flags.CanDispute && (
                 <>
                   Time remaining:{" "}
                   {Duration.fromMillis(currentTime).toFormat(

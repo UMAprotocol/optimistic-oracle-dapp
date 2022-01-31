@@ -3246,10 +3246,10 @@
   resolved "https://registry.yarnpkg.com/@uma/contracts-node/-/contracts-node-0.2.1.tgz#29ebba6b2ecba7f0d2dc9b484bc34f0abbdefdaa"
   integrity sha512-7wPkH/m8tD8UMLYUjSXN5gSp/5NsuPRF1icmwXNTWlhp/Mg4qmJHeANjsWP9JCDxlgdSDixA4hJ5qhVOPXFniA==
 
-"@uma/sdk@^0.20.0":
-  version "0.20.0"
-  resolved "https://registry.yarnpkg.com/@uma/sdk/-/sdk-0.20.0.tgz#ba5ed86a67d7546ed78c84bd681fdfe4c7b7fec0"
-  integrity sha512-BkBb8TdWQwahSLaj34+1IIZKWxnwCE9k4/xyAoMOqycw8AkgzG4sR8XYkwVdrtTXoe8vrD0LZ2JQyKhMiMZkkQ==
+"@uma/sdk@^0.21.0":
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/@uma/sdk/-/sdk-0.21.0.tgz#632b8aaf20be21b698306f020724fa2517765285"
+  integrity sha512-L62KTN20ria+Aw2H0SPcaAqBPIWTknOkGqgtI9xCf31M40db4uun9mKvpJkeL5RkaVM2Mr85Vo+3cRD9KesERg==
   dependencies:
     "@google-cloud/datastore" "^6.6.0"
     "@types/lodash-es" "^4.17.5"
