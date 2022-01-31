@@ -260,3 +260,7 @@ export const InputError = styled.div`
   padding: 0.5rem;
   font-weight: 700;
 `;
+
+export const HeroLogoSmall = styled(HeroLogo)`
+  height: 16px;
+`;

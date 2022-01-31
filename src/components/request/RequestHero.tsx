@@ -11,10 +11,12 @@ import {
   HeroLogo,
   HeroButtonText,
   HeroButtonFlex,
+  HeroLogoSmall,
 } from "./Request.styled";
 import { CHAINS, ChainId } from "constants/blockchain";
 import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
+import alertIcon from "assets/alert-icon.svg";
 
 interface Props {
   chainId: ChainId;
@@ -45,11 +47,16 @@ const RequestHero: FC<Props> = ({ chainId }) => {
             </HeroButton>
 
             <HeroButton>
-              {requestState === oracle.types.state.RequestState.Requested
-                ? "Request"
-                : requestState === oracle.types.state.RequestState.Disputed
-                ? "Disputed"
-                : "Proposal"}
+              {requestState === oracle.types.state.RequestState.Requested ? (
+                "Request"
+              ) : requestState === oracle.types.state.RequestState.Disputed ? (
+                <HeroButtonFlex>
+                  <HeroLogoSmall src={alertIcon} alt="alert_icon" />
+                  <HeroButtonText>Disputed</HeroButtonText>
+                </HeroButtonFlex>
+              ) : (
+                "Proposal"
+              )}
             </HeroButton>
           </HeaderButtonWrapper>
         </HeroHeaderRow>
