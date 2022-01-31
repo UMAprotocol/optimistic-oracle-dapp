@@ -25,7 +25,7 @@ import useReader from "hooks/useOracleReader";
 import { ethers } from "ethers";
 import { prettyFormatNumber } from "helpers/format";
 import BouncingDotsLoader from "components/bouncing-dots-loader";
-
+import { NULL_ADDRESS } from "constants/blockchain";
 const RequestForm: FC = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [value, setValue] = useState("");
@@ -266,18 +266,20 @@ const RequestForm: FC = () => {
                 </a>
               </ProposerAddress>
             )}
-            {(flags.CanDispute || flags.InDvmVote) && disputer && (
-              <ProposerAddress>
-                Disputer:{" "}
-                <a
-                  target="_blank"
-                  rel="noreferrer"
-                  href={`${explorerUrl}/address/${disputer}`}
-                >
-                  {disputer}
-                </a>
-              </ProposerAddress>
-            )}
+            {(flags.CanDispute || flags.InDvmVote) &&
+              disputer &&
+              disputer !== NULL_ADDRESS && (
+                <ProposerAddress>
+                  Disputer:{" "}
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href={`${explorerUrl}/address/${disputer}`}
+                  >
+                    {disputer}
+                  </a>
+                </ProposerAddress>
+              )}
           </RequestFormInputWrapper>
         </RequestFormHeaderAndFormWrapper>
         <RequestFormParametersWrapper>
