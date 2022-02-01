@@ -248,7 +248,7 @@ const RequestForm: FC = () => {
                   onChange={inputOnChange}
                   placeholder="Your input"
                 />
-              ) : (
+              ) : flags.CanPropose ? (
                 <RequestFormInput
                   disabled={true}
                   label="Propose "
@@ -256,7 +256,7 @@ const RequestForm: FC = () => {
                   onChange={() => null}
                   placeholder="Your input"
                 />
-              )}
+              ) : null}
               {(flags.CanDispute || flags.InDvmVote || flags.CanSettle) &&
                 proposedPrice && (
                   <RequestFormInput
