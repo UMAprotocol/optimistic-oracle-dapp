@@ -79,12 +79,13 @@ const RequestForm: FC = () => {
         onClick: () => connect(),
         disabled: false,
       };
-    if (flags.InsufficientBalance)
+    if (flags.InsufficientBalance) {
       return {
         label: "Insufficient funds",
         onClick: undefined,
         disabled: true,
       };
+    }
     if (flags.ChainChangeInProgress)
       return {
         label: "Changing Networks...",
@@ -116,19 +117,29 @@ const RequestForm: FC = () => {
     };
   };
 
+  useEffect(() => {
+    if (flags.InsufficientBalance) {
+      setInputError("You don't have enough funds to approve the bond.");
+    } else {
+      setInputError("");
+    }
+  }, [flags.InsufficientBalance]);
+
   const getDisputeButtonProps = () => {
+    // setInputError("");
     if (flags.MissingUser)
       return {
         label: "Connect wallet",
         onClick: connect,
         disabled: false,
       };
-    if (flags.InsufficientBalance)
+    if (flags.InsufficientBalance) {
       return {
         label: "Insufficient funds",
         onClick: undefined,
         disabled: true,
       };
+    }
     if (flags.ChainChangeInProgress)
       return {
         label: "Changing Networks...",
@@ -220,14 +231,7 @@ const RequestForm: FC = () => {
                 <div>Dispute Period</div>
                 <div>
                   Disputed and sent to UMA's Data Verification Mechanism (DVM)
-                  for resolution.{" "}
-                  <a
-                    target="_blank"
-                    rel="noreferrer"
-                    href="https://vote.umaproject.org"
-                  >
-                    View here
-                  </a>
+                  for resolution.
                 </div>
               </>
             )}
@@ -235,13 +239,24 @@ const RequestForm: FC = () => {
           </FormHeader>
           <RequestFormInputWrapper>
             <RequestInputButtonBlock>
-              {flags.CanPropose && (
+              {flags.CanPropose &&
+              !flags.InsufficientBalance &&
+              !flags.MissingUser ? (
                 <RequestFormInput
                   label="Propose: "
                   value={value}
                   onChange={inputOnChange}
+                  placeholder="Your input"
                 />
-              )}
+              ) : flags.CanPropose ? (
+                <RequestFormInput
+                  disabled={true}
+                  label="Propose "
+                  value={""}
+                  onChange={() => null}
+                  placeholder="Your input"
+                />
+              ) : null}
               {(flags.CanDispute || flags.InDvmVote || flags.CanSettle) &&
                 proposedPrice && (
                   <RequestFormInput
