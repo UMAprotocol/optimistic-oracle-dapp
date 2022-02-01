@@ -11,8 +11,12 @@ import {
   HeroLogo,
   HeroButtonText,
   HeroButtonFlex,
+  HeroLogoSmall,
 } from "./Request.styled";
 import { CHAINS, ChainId } from "constants/blockchain";
+import useClient from "hooks/useOracleClient";
+import useReader from "hooks/useOracleReader";
+import alertIcon from "assets/alert-icon.svg";
 
 interface Props {
   chainId: ChainId;
@@ -26,6 +30,9 @@ const RequestHero: FC<Props> = ({ chainId }) => {
     logo = CHAINS[chainId].logoURI;
     chainName = CHAINS[chainId].name;
   }
+  const { oracle, state } = useClient();
+  const { requestState } = useReader(state);
+
   return (
     <HeroSection>
       <HeroContentWrapper>
@@ -39,7 +46,20 @@ const RequestHero: FC<Props> = ({ chainId }) => {
               </HeroButtonFlex>
             </HeroButton>
 
-            <HeroButton>Request</HeroButton>
+            <HeroButton>
+              {requestState === oracle.types.state.RequestState.Requested ? (
+                "Request"
+              ) : requestState === oracle.types.state.RequestState.Disputed ||
+                requestState === oracle.types.state.RequestState.Proposed ||
+                requestState === oracle.types.state.RequestState.Resolved ? (
+                <HeroButtonFlex>
+                  <HeroLogoSmall src={alertIcon} alt="alert_icon" />
+                  <HeroButtonText>Disputed</HeroButtonText>
+                </HeroButtonFlex>
+              ) : (
+                "Proposal"
+              )}
+            </HeroButton>
           </HeaderButtonWrapper>
         </HeroHeaderRow>
         <RequestForm />
