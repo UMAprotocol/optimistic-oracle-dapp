@@ -217,7 +217,7 @@ const RequestForm: FC = () => {
             {flags.CanDispute && "Dispute Period"}
             {flags.InDvmVote && (
               <>
-                <div>Proposal</div>
+                <div>Dispute Period</div>
                 <div>
                   Disputed and sent to UMA's Data Verification Mechanism (DVM)
                   for resolution.{" "}
@@ -285,32 +285,53 @@ const RequestForm: FC = () => {
         <RequestFormParametersWrapper>
           <ParametersHeader>Parameters</ParametersHeader>
           <ParametersValuesWrapper>
-            <ParametersValueHeader>Proposal bond:</ParametersValueHeader>
+            <ParametersValueHeader>
+              {flags.CanPropose
+                ? "Proposal bond"
+                : flags.CanDispute || flags.InDvmVote || flags.CanSettle
+                ? "Disputer bond"
+                : ""}
+            </ParametersValueHeader>
             <ParametersValue>
               <BondLogo src={logo} alt="bond_img" /> {collateralSymbol}{" "}
               {totalBond ? prettyFormatNumber(Number(totalBond)) : ""}
             </ParametersValue>
           </ParametersValuesWrapper>
           <ParametersValuesWrapper>
-            <ParametersValueHeader>Proposal reward:</ParametersValueHeader>
+            <ParametersValueHeader>
+              {flags.CanPropose
+                ? "Proposal reward"
+                : flags.CanDispute || flags.InDvmVote || flags.CanSettle
+                ? "Disputer reward"
+                : ""}
+            </ParametersValueHeader>
             <ParametersValue>
               <BondLogo src={logo} alt="bond_img" /> {collateralSymbol}{" "}
               {reward ? prettyFormatNumber(Number(reward)) : ""}
             </ParametersValue>
           </ParametersValuesWrapper>
-          <ParametersValuesWrapper>
-            <ParametersValueHeader>Liveness period: </ParametersValueHeader>
-            <ParametersValue>
-              {flags.CanDispute && (
+          {flags.CanDispute || flags.InDvmVote || flags.CanSettle ? (
+            <ParametersValuesWrapper>
+              <ParametersValueHeader>Sponsor Reward</ParametersValueHeader>
+              <ParametersValue>
+                <BondLogo src={logo} alt="bond_img" /> {collateralSymbol}{" "}
+                {reward ? prettyFormatNumber(Number(reward)) : ""}
+              </ParametersValue>
+            </ParametersValuesWrapper>
+          ) : null}
+          {flags.CanDispute && (
+            <ParametersValuesWrapper>
+              <ParametersValueHeader>Liveness period: </ParametersValueHeader>
+              <ParametersValue>
                 <>
                   Time remaining:{" "}
                   {Duration.fromMillis(currentTime).toFormat(
                     "hh 'h' mm' min' s' sec' left"
                   )}
                 </>
-              )}
-            </ParametersValue>
-          </ParametersValuesWrapper>
+              </ParametersValue>
+            </ParametersValuesWrapper>
+          )}
         </RequestFormParametersWrapper>
       </RequestFormRow>
     </RequestFormWrapper>
