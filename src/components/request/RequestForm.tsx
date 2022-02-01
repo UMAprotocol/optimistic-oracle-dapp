@@ -220,14 +220,7 @@ const RequestForm: FC = () => {
                 <div>Dispute Period</div>
                 <div>
                   Disputed and sent to UMA's Data Verification Mechanism (DVM)
-                  for resolution.{" "}
-                  <a
-                    target="_blank"
-                    rel="noreferrer"
-                    href="https://vote.umaproject.org"
-                  >
-                    View here
-                  </a>
+                  for resolution.
                 </div>
               </>
             )}
