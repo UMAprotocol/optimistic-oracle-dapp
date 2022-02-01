@@ -319,21 +319,19 @@ const RequestForm: FC = () => {
               </ParametersValue>
             </ParametersValuesWrapper>
           ) : null}
-          <ParametersValuesWrapper>
-            {flags.CanDispute && (
+          {flags.CanDispute && (
+            <ParametersValuesWrapper>
               <ParametersValueHeader>Liveness period: </ParametersValueHeader>
-            )}
-            <ParametersValue>
-              {flags.CanDispute && (
+              <ParametersValue>
                 <>
                   Time remaining:{" "}
                   {Duration.fromMillis(currentTime).toFormat(
                     "hh 'h' mm' min' s' sec' left"
                   )}
                 </>
-              )}
-            </ParametersValue>
-          </ParametersValuesWrapper>
+              </ParametersValue>
+            </ParametersValuesWrapper>
+          )}
         </RequestFormParametersWrapper>
       </RequestFormRow>
     </RequestFormWrapper>
