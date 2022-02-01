@@ -25,7 +25,7 @@ export const StyledInput = styled.div<IStyledInput>`
   input {
     min-height: 25px;
     background-color: #fff;
-    border: 1px solid #d4d3d4;
+    border: 1px solid rgb(39, 37, 40, 0.5);
     width: ${(props) => (props.inputWidth ? `${props.inputWidth}` : "100%")};
     margin-left: 16px;
     padding: 1rem 1.25rem;
@@ -38,8 +38,8 @@ export const StyledInput = styled.div<IStyledInput>`
     }
     &:focus {
       background-color: #fff;
-      color: #ff4d4c;
-      outline-color: #ff4d4c;
+      color: #272528;
+      outline-color: #272528;
     }
     @media ${QUERIES.tabletAndUp} {
       padding: 1rem 1.25rem;

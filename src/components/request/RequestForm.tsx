@@ -240,6 +240,7 @@ const RequestForm: FC = () => {
                   label="Propose: "
                   value={value}
                   onChange={inputOnChange}
+                  placeholder="Your input"
                 />
               )}
               {(flags.CanDispute || flags.InDvmVote || flags.CanSettle) &&
