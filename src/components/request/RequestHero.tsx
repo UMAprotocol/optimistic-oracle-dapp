@@ -50,7 +50,6 @@ const RequestHero: FC<Props> = ({ chainId }) => {
               {requestState === oracle.types.state.RequestState.Requested ? (
                 "Request"
               ) : requestState === oracle.types.state.RequestState.Disputed ||
-                requestState === oracle.types.state.RequestState.Proposed ||
                 requestState === oracle.types.state.RequestState.Resolved ? (
                 <HeroButtonFlex>
                   <HeroLogoSmall src={alertIcon} alt="alert_icon" />
