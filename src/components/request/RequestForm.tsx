@@ -44,9 +44,6 @@ const RequestForm: FC = () => {
     if (isNaN(Number(v))) {
       throw new Error("Must be a valid number.");
     }
-    if (Number(v) < 0) {
-      throw new Error("Must be a positive number.");
-    }
     if (v.includes(".")) {
       const split = v.split(".");
       if (split[1].length > 18) {
