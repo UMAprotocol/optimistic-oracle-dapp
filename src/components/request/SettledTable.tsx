@@ -75,7 +75,7 @@ const SettledTable: FC<Props> = ({
 
 const StyledCellBody = styled(Cell)`
   &.first-cell {
-    font-weight: 700;
+    font-weight: 600;
     flex: 0 0 280px;
   }
 `;

@@ -35,7 +35,7 @@ export const TableTitle = styled.div`
   }
   span {
     margin-left: 1.25rem;
-    font-weight: 700;
+    font-weight: 600;
   }
 `;
 /* Hero Components */
@@ -64,7 +64,7 @@ export const HeaderTitle = styled.h2`
   font-weight: 600;
   font-size: 1.5rem;
   font-family: "Halyard";
-  font-weight: 700;
+  font-weight: 600;
 `;
 
 export const HeaderButtonWrapper = styled.div`
@@ -140,7 +140,7 @@ export const RequestFormInputWrapper = styled.div`
   label {
     color: #272528;
     font-style: normal;
-    font-weight: 700;
+    font-weight: 600;
   }
 `;
 
@@ -151,12 +151,11 @@ export const RequestInputButtonBlock = styled.div`
 
 export const FormHeader = styled.div`
   font-family: "Halyard";
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1.25rem;
   margin-bottom: 1rem;
   > div:first-of-type {
     font-family: "Halyard";
-    font-weight: 700;
     font-size: 1.25rem;
   }
   > div:nth-of-type(2) {
@@ -181,7 +180,7 @@ export const RequestFormParametersWrapper = styled.div`
 export const ParametersHeader = styled.h3`
   color: #272528;
   border-bottom: 1px solid #efefef;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1rem;
   margin-top: 1.75rem;
 `;
@@ -220,7 +219,7 @@ export const RequestFormButton = styled(Button)<IRequestFormButton>`
   margin-top: 2.6rem;
   margin-left: 1rem;
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 0.5rem;
 `;
 
@@ -258,7 +257,7 @@ export const InputError = styled.div`
   margin-bottom: 8px;
   border-radius: 8px;
   padding: 0.5rem;
-  font-weight: 700;
+  font-weight: 600;
 `;
 
 export const HeroLogoSmall = styled(HeroLogo)`
