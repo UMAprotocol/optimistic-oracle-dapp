@@ -13,15 +13,8 @@ import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
 import SettledTable from "./SettledTable";
 import dataIcon from "assets/data-icon.svg";
-/* Search Params:
-  {
-    requester: string;
-    identifier: string;
-    ancillaryData: string;
-    timestamp: number;
-    chainId: number;
-  } 
-*/
+import useRequestParams, { isLegacyRequest } from "hooks/useRequestParams";
+import useIsLegacyParams from "hooks/useIsLegacyParams";
 
 const Request = () => {
   const { client, state, flags } = useClient();
@@ -38,25 +31,30 @@ const Request = () => {
     parsedIdentifier,
   } = useReader(state);
 
-  useEffect(() => {
-    const requester = searchParams.get("requester")?.trim();
-    const identifier = searchParams.get("identifier");
-    const timestamp =
-      searchParams.get("timestamp") && Number(searchParams.get("timestamp"));
-    const ancillaryData = searchParams.get("ancillaryData");
-    const chainId =
-      searchParams.get("chainId") && Number(searchParams.get("chainId"));
+  const isLegacyParams = useIsLegacyParams();
+  const { request, error } = useRequestParams(isLegacyParams);
 
-    if (requester && identifier && timestamp && ancillaryData && chainId) {
-      client.setActiveRequest({
-        requester,
-        identifier,
-        timestamp,
-        ancillaryData,
-        chainId,
-      });
+  useEffect(() => {
+    // TODO: would be nice to do something with the error here, like redirect to the homepage
+    if (!error) {
+      if (isLegacyRequest(request)) {
+        client.setActiveRequest({
+          requester: request.requester.trim(),
+          identifier: request.identifier,
+          timestamp: request.timestamp,
+          ancillaryData: request.ancillaryData,
+          chainId: request.chainId,
+        });
+      } else {
+        // FIXME: once we bump the SDK to 0.22, uncomment this
+        // client.setActiveRequest({
+        //   transactionHash: request.transactionHash,
+        //   chainId: request.chainId,
+        //   eventIndex: request.eventIndex,
+        // });
+      }
     }
-  }, [searchParams, client]);
+  }, [client, error, request]);
 
   return (
     <Wrapper>

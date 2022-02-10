@@ -1,4 +1,4 @@
-import { Routes, Route, useSearchParams } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import GlobalStyles from "./components/global-styles";
 import Navbar from "./components/navbar";
 import Request from "./components/request";
@@ -8,18 +8,19 @@ import Index from "components/index";
 import ChangeNetwork from "components/change-network/ChangeNetwork";
 import useConnection from "hooks/useConnection";
 import useClient from "hooks/useOracleClient";
+import useRequestParams from "hooks/useRequestParams";
 
 const Router = () => {
   const { wrongNetwork } = useConnection();
   const { client } = useClient();
-  const [searchParams] = useSearchParams();
+  const { request } = useRequestParams();
   return (
     <>
       <GlobalStyles />
-      {wrongNetwork && searchParams.get("chainId") && (
+      {wrongNetwork && request && (
         <ChangeNetwork
           switchChain={() => client.switchOrAddChain()}
-          chainId={Number(searchParams.get("chainId"))}
+          chainId={request.chainId}
         />
       )}
       <Navbar />
