@@ -1,10 +1,12 @@
-import { oracle } from "../helpers/oracleClient";
 import { ethers } from "ethers";
 import usdcLogo from "assets/usdc-logo.png";
 import umaLogo from "assets/uma-logo.png";
 import { CHAINS, ChainId } from "constants/blockchain";
-const { formatUnits } = ethers.utils;
 
+import { oracle } from "../helpers/oracleClient";
+import { Explorer } from "../helpers/format";
+
+const { formatUnits } = ethers.utils;
 const { ignoreExistenceError } = oracle.errors;
 
 // this is less of a hook and more of just a static function. Thats ok, its cheap to do this on each render.
@@ -24,9 +26,7 @@ export default function useOracleReader(state: oracle.types.state.State) {
     formatUnits(request.bond.add(request.finalFee), decimals);
 
   const reward =
-    request?.reward &&
-    decimals &&
-    formatUnits(request.reward, decimals);
+    request?.reward && decimals && formatUnits(request.reward, decimals);
 
   const liveness = request?.customLiveness?.gt(0)
     ? request.customLiveness.toNumber()
@@ -38,7 +38,25 @@ export default function useOracleReader(state: oracle.types.state.State) {
   const disputer = request?.disputer;
   const proposer = request?.proposer;
   const chainId: ChainId = state.inputs?.request?.chainId || 1;
+
+  const requestTx = request?.requestTx;
+  const proposeTx = request?.proposeTx;
+  const settleTx = request?.settleTx;
+  const disputeTx = request?.disputeTx;
+
+  // generate explorer links
   const explorerUrl = CHAINS[chainId].explorerUrl;
+  const explorer = new Explorer(explorerUrl);
+
+  // explore transactions
+  const exploreRequestTx = requestTx && explorer.tx(requestTx);
+  const exploreProposeTx = proposeTx && explorer.tx(proposeTx);
+  const exploreDisputeTx = disputeTx && explorer.tx(disputeTx);
+  const exploreSettleTx = settleTx && explorer.tx(settleTx);
+
+  // explore addresses
+  const exploreProposerAddress = proposer && explorer.address(proposer);
+  const exploreDisputerAddress = disputer && explorer.address(disputer);
 
   return {
     totalBond,
@@ -51,6 +69,16 @@ export default function useOracleReader(state: oracle.types.state.State) {
     proposedPrice,
     disputer,
     proposer,
+    requestTx,
+    proposeTx,
+    settleTx,
+    disputeTx,
     explorerUrl,
+    exploreRequestTx,
+    exploreProposeTx,
+    exploreDisputeTx,
+    exploreSettleTx,
+    exploreProposerAddress,
+    exploreDisputerAddress,
   };
 }
