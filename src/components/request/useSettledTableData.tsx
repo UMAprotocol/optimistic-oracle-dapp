@@ -10,13 +10,27 @@ function useSettledTableData(
   proposer: string | undefined,
   disputer: string | undefined,
   proposedPrice: oracle.types.ethers.BigNumber | undefined,
-  chainId: number | "" | null
+  chainId: number | "" | null,
+  parsedIdentifier: string | undefined
 ) {
   const [rows, setRows] = useState<IRow[]>([]);
   const [headerCells] = useState<ICell[]>(hc);
   const cid: ChainId = chainId ? chainId : 1;
   useEffect(() => {
     let nextRows = [
+      {
+        cells: [
+          {
+            size: "md",
+            value: "Query",
+            cellClassName: "first-cell",
+          },
+          {
+            size: "lg",
+            value: parsedIdentifier || "",
+          },
+        ],
+      },
       {
         cells: [
           {
@@ -90,7 +104,7 @@ function useSettledTableData(
       });
     }
     setRows(nextRows);
-  }, [proposer, disputer, proposedPrice, cid]);
+  }, [proposer, disputer, proposedPrice, cid, parsedIdentifier]);
 
   return { rows, headerCells };
 }

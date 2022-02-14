@@ -17,18 +17,21 @@ interface Props {
   disputer: string | undefined;
   proposedPrice: oracle.types.ethers.BigNumber | undefined;
   chainId: number | "" | null;
+  parsedIdentifier: string | undefined;
 }
 const SettledTable: FC<Props> = ({
   proposer,
   disputer,
   proposedPrice,
   chainId,
+  parsedIdentifier,
 }) => {
   const { rows, headerCells } = useSettledTableData(
     proposer,
     disputer,
     proposedPrice,
-    chainId
+    chainId,
+    parsedIdentifier
   );
 
   return (

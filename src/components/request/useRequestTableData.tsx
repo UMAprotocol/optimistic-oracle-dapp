@@ -3,6 +3,7 @@ import { ICell, IRow } from "../table/Table";
 import { DateTime } from "luxon";
 import { ethers } from "ethers";
 import { CHAINS, ChainId } from "constants/blockchain";
+import { parseIdentifier } from "../../helpers/format";
 
 const hc: ICell[] = [
   {
@@ -63,16 +64,11 @@ function useRequestTableData(searchParams: URLSearchParams) {
 
     let nextIdentifier = searchParams.get("identifier");
     let convertedIdentifier = "";
-    if (nextIdentifier) {
-      try {
-        // replace non ascii chars
-        convertedIdentifier = ethers.utils
-          .toUtf8String(nextIdentifier)
-          .replace(/[^\x20-\x7E]+/g, "");
-      } catch (err) {
-        convertedIdentifier = "Not convertible to UTF-8 string.";
-        console.log("not convertible to UTF8");
-      }
+    try {
+      convertedIdentifier = parseIdentifier(nextIdentifier);
+    } catch (err) {
+      console.error(err);
+      convertedIdentifier = "Not convertible to UTF-8 string.";
     }
     nextRows.push({
       cells: [

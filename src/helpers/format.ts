@@ -1,3 +1,5 @@
+import { ethers } from "ethers";
+
 export const prettyFormatNumber = Intl.NumberFormat("en-US").format;
 
 export class Explorer {
@@ -17,4 +19,11 @@ export function shortenString(str: string, length = 10) {
   const first = str.slice(0, offset);
   const last = str.slice(-offset);
   return [first, last].join("...");
+}
+
+export function parseIdentifier(identifier: string | null | undefined) {
+  // replace non ascii chars
+  return ethers.utils
+    .toUtf8String(identifier || "")
+    .replace(/[^\x20-\x7E]+/g, "");
 }
