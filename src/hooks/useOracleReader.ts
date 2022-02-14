@@ -5,38 +5,38 @@ import umaLogo from "assets/uma-logo.png";
 import { CHAINS, ChainId } from "constants/blockchain";
 const { formatUnits } = ethers.utils;
 
-function ignoreError<X extends () => any>(call: X): ReturnType<X> | undefined {
-  try {
-    return call();
-  } catch (err) {
-    return undefined;
-  }
-}
+const { ignoreExistenceError } = oracle.errors;
 
 // this is less of a hook and more of just a static function. Thats ok, its cheap to do this on each render.
 export default function useOracleReader(state: oracle.types.state.State) {
   const read = new oracle.store.Read(state);
-  const request = ignoreError(read.request);
-  const defaultLiveness = ignoreError(read.defaultLiveness);
-  const collateralProps = ignoreError(read.collateralProps);
-  const decimals = collateralProps && collateralProps.decimals;
+
+  const request = ignoreExistenceError(read.request);
+  const defaultLiveness = ignoreExistenceError(read.defaultLiveness);
+  const collateralProps = ignoreExistenceError(read.collateralProps);
+
+  const decimals = collateralProps?.decimals;
+
   const totalBond =
-    request &&
+    request?.finalFee &&
     decimals &&
-    formatUnits(request.bond.add(request.finalFee), collateralProps.decimals);
+    request?.bond &&
+    formatUnits(request.bond.add(request.finalFee), decimals);
+
   const reward =
-    request &&
+    request?.reward &&
     decimals &&
-    formatUnits(request.reward, collateralProps.decimals);
-  const liveness =
-    request && request.customLiveness.gt(0)
-      ? request.customLiveness.toNumber()
-      : defaultLiveness && defaultLiveness.toNumber();
-  const expirationTime = request && request.expirationTime.toNumber();
-  const requestState = request && request.state;
-  const proposedPrice = request && request.proposedPrice;
-  const disputer = request && request.disputer;
-  const proposer = request && request.proposer;
+    formatUnits(request.reward, decimals);
+
+  const liveness = request?.customLiveness?.gt(0)
+    ? request.customLiveness.toNumber()
+    : defaultLiveness && defaultLiveness.toNumber();
+
+  const expirationTime = request?.expirationTime?.toNumber();
+  const requestState = request?.state;
+  const proposedPrice = request?.proposedPrice;
+  const disputer = request?.disputer;
+  const proposer = request?.proposer;
   const chainId: ChainId = state.inputs?.request?.chainId || 1;
   const explorerUrl = CHAINS[chainId].explorerUrl;
 
