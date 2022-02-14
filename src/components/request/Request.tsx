@@ -28,8 +28,15 @@ const Request = () => {
   const [searchParams] = useSearchParams();
   const { rows, headerCells } = useRequestTableData(searchParams);
 
-  const { proposer, disputer, proposedPrice, parsedIdentifier } =
-    useReader(state);
+  const {
+    chainId,
+    proposeTx,
+    disputeTx,
+    exploreProposeTx,
+    exploreDisputeTx,
+    proposedPrice,
+    parsedIdentifier,
+  } = useReader(state);
 
   useEffect(() => {
     const requester = searchParams.get("requester")?.trim();
@@ -53,22 +60,19 @@ const Request = () => {
 
   return (
     <Wrapper>
-      {!flags.RequestSettled && (
-        <RequestHero chainId={Number(searchParams.get("chainId")) ?? 0} />
-      )}
+      {!flags.RequestSettled && <RequestHero chainId={chainId} />}
 
       <TableSection>
         {flags.RequestSettled && (
           <TableContentWrapper>
             <SettledTable
-              proposer={proposer}
-              disputer={disputer}
+              chainId={chainId}
+              proposeTx={proposeTx}
+              disputeTx={disputeTx}
+              exploreProposeTx={exploreProposeTx}
+              exploreDisputeTx={exploreDisputeTx}
               proposedPrice={proposedPrice}
               parsedIdentifier={parsedIdentifier}
-              chainId={
-                searchParams.get("chainId") &&
-                Number(searchParams.get("chainId"))
-              }
             />
           </TableContentWrapper>
         )}

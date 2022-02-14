@@ -2,15 +2,16 @@ import { useState, useEffect } from "react";
 import { ICell, IRow } from "../table/Table";
 import { oracle } from "@uma/sdk";
 import { ethers } from "ethers";
-import { CHAINS, ChainId } from "constants/blockchain";
+import { ChainId } from "constants/blockchain";
 const hc: ICell[] = [];
-const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 function useSettledTableData(
-  proposer: string | undefined,
-  disputer: string | undefined,
+  proposeTx: string | undefined,
+  disputeTx: string | undefined,
+  exploreProposeTx: string | undefined,
+  exploreDisputeTx: string | undefined,
   proposedPrice: oracle.types.ethers.BigNumber | undefined,
-  chainId: number | "" | null,
+  chainId: number,
   parsedIdentifier: string | undefined
 ) {
   const [rows, setRows] = useState<IRow[]>([]);
@@ -48,18 +49,14 @@ function useSettledTableData(
         cells: [
           {
             size: "md",
-            value: "Proposer",
+            value: "Proposal",
             cellClassName: "first-cell",
           },
           {
             size: "lg",
             value: (
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href={`${CHAINS[cid].explorerUrl}/address/${proposer}`}
-              >
-                {proposer}
+              <a target="_blank" rel="noreferrer" href={exploreProposeTx}>
+                {proposeTx}
               </a>
             ),
           },
@@ -74,29 +71,25 @@ function useSettledTableData(
           },
           {
             size: "lg",
-            value: disputer && disputer !== NULL_ADDRESS ? "Yes" : "No",
+            value: disputeTx ? "Yes" : "No",
           },
         ],
       },
     ] as IRow[];
 
-    if (disputer && disputer !== NULL_ADDRESS) {
+    if (disputeTx) {
       nextRows.push({
         cells: [
           {
             size: "md",
-            value: "Disputer",
+            value: "Dispute",
             cellClassName: "first-cell",
           },
           {
             size: "lg",
             value: (
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href={`${CHAINS[cid].explorerUrl}/address/${disputer}`}
-              >
-                {disputer}
+              <a target="_blank" rel="noreferrer" href={exploreDisputeTx}>
+                {disputeTx}
               </a>
             ),
           },
@@ -104,7 +97,15 @@ function useSettledTableData(
       });
     }
     setRows(nextRows);
-  }, [proposer, disputer, proposedPrice, cid, parsedIdentifier]);
+  }, [
+    proposeTx,
+    exploreProposeTx,
+    disputeTx,
+    exploreDisputeTx,
+    proposedPrice,
+    cid,
+    parsedIdentifier,
+  ]);
 
   return { rows, headerCells };
 }
