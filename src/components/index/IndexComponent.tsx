@@ -1,8 +1,19 @@
-import { Wrapper, Header } from "./Index.styled";
+import {
+  Wrapper,
+  Header,
+  HeaderTitle,
+  HeaderTitleText,
+  HeaderTitleTextRed,
+} from "./Index.styled";
 const Index = () => {
   return (
     <Wrapper>
-      <Header>Optimistic Oracle Requests &amp; Proposals</Header>
+      <Header>
+        <HeaderTitle>
+          <HeaderTitleTextRed>Optimistic Oracle</HeaderTitleTextRed>{" "}
+          <HeaderTitleText> Requests &amp; Proposals </HeaderTitleText>{" "}
+        </HeaderTitle>
+      </Header>
     </Wrapper>
   );
 };
