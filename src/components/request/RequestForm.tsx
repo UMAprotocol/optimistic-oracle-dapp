@@ -25,7 +25,6 @@ import useReader from "hooks/useOracleReader";
 import { ethers } from "ethers";
 import { prettyFormatNumber } from "helpers/format";
 import BouncingDotsLoader from "components/bouncing-dots-loader";
-import { NULL_ADDRESS } from "constants/blockchain";
 const RequestForm: FC = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [value, setValue] = useState("");
@@ -63,9 +62,10 @@ const RequestForm: FC = () => {
     logo,
     expirationTime,
     proposedPrice,
-    disputer,
-    proposer,
-    explorerUrl,
+    disputeTx,
+    proposeTx,
+    exploreProposeTx,
+    exploreDisputeTx,
   } = useReader(state);
 
   // TODO: update these to the correct design for text and button state
@@ -269,29 +269,19 @@ const RequestForm: FC = () => {
             {(flags.CanDispute || flags.InDvmVote) && (
               <ProposerAddress>
                 Proposer:{" "}
-                <a
-                  target="_blank"
-                  rel="noreferrer"
-                  href={`${explorerUrl}/address/${proposer}`}
-                >
-                  {proposer}
+                <a target="_blank" rel="noreferrer" href={exploreProposeTx}>
+                  {proposeTx}
                 </a>
               </ProposerAddress>
             )}
-            {(flags.CanDispute || flags.InDvmVote) &&
-              disputer &&
-              disputer !== NULL_ADDRESS && (
-                <ProposerAddress>
-                  Disputer:{" "}
-                  <a
-                    target="_blank"
-                    rel="noreferrer"
-                    href={`${explorerUrl}/address/${disputer}`}
-                  >
-                    {disputer}
-                  </a>
-                </ProposerAddress>
-              )}
+            {(flags.CanDispute || flags.InDvmVote) && disputeTx && (
+              <ProposerAddress>
+                Disputer:{" "}
+                <a target="_blank" rel="noreferrer" href={exploreDisputeTx}>
+                  {disputeTx}
+                </a>
+              </ProposerAddress>
+            )}
           </RequestFormInputWrapper>
         </RequestFormHeaderAndFormWrapper>
         <RequestFormParametersWrapper>
