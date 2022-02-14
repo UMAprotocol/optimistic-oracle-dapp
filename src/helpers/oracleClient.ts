@@ -8,8 +8,12 @@ export const client = oracle.client.factory(
   config,
   (state: oracle.types.state.State) => events.emit("change", state)
 );
-client.startInterval();
 
-events.on("change", (state) => {
-  console.log("event change", state);
-});
+// setting this to the fastest interval for more responsive state changes
+client.startInterval(1);
+
+if (process.env.REACT_APP_DEBUG) {
+  events.on("change", (state) => {
+    console.log("event change", state);
+  });
+}

@@ -8,6 +8,10 @@
 
 - REACT_APP_PROVIDER_URL_137 (Polygon Provider)
 
+## Optional Environment Variables
+
+- REACT_APP_DEBUG=1 enable event state debugging output to console. Remove definition in production.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
