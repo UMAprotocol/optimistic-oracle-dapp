@@ -37,7 +37,7 @@ export default function useOracleReader(state: oracle.types.state.State) {
   const proposedPrice = request?.proposedPrice;
   const disputer = request?.disputer;
   const proposer = request?.proposer;
-  const chainId: ChainId = state.inputs?.request?.chainId || 1;
+  const chainId: ChainId = Number(state.inputs?.request?.chainId || 1);
 
   const requestTx = request?.requestTx;
   const proposeTx = request?.proposeTx;
@@ -63,10 +63,11 @@ export default function useOracleReader(state: oracle.types.state.State) {
     parsedIdentifier = parseIdentifier(request?.identifier);
   } catch (err) {
     // ignore error
-    console.error(err);
+    console.error(request?.identifier,err);
   }
 
   return {
+    chainId,
     totalBond,
     reward,
     liveness,

@@ -13,22 +13,28 @@ import { TableTitle } from "./Request.styled";
 import dataIcon from "assets/data-icon.svg";
 
 interface Props {
-  proposer: string | undefined;
-  disputer: string | undefined;
+  proposeTx: string | undefined;
+  disputeTx: string | undefined;
+  exploreProposeTx: string | undefined;
+  exploreDisputeTx: string | undefined;
   proposedPrice: oracle.types.ethers.BigNumber | undefined;
-  chainId: number | "" | null;
+  chainId: number;
   parsedIdentifier: string | undefined;
 }
 const SettledTable: FC<Props> = ({
-  proposer,
-  disputer,
+  proposeTx,
+  disputeTx,
+  exploreProposeTx,
+  exploreDisputeTx,
   proposedPrice,
   chainId,
   parsedIdentifier,
 }) => {
   const { rows, headerCells } = useSettledTableData(
-    proposer,
-    disputer,
+    proposeTx,
+    disputeTx,
+    exploreProposeTx,
+    exploreDisputeTx,
     proposedPrice,
     chainId,
     parsedIdentifier

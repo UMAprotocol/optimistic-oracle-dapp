@@ -268,7 +268,7 @@ const RequestForm: FC = () => {
             {inputError && <InputError>{inputError}</InputError>}
             {(flags.CanDispute || flags.InDvmVote) && (
               <ProposerAddress>
-                Proposer:{" "}
+                Proposal:{" "}
                 <a target="_blank" rel="noreferrer" href={exploreProposeTx}>
                   {proposeTx}
                 </a>
@@ -276,7 +276,7 @@ const RequestForm: FC = () => {
             )}
             {(flags.CanDispute || flags.InDvmVote) && disputeTx && (
               <ProposerAddress>
-                Disputer:{" "}
+                Dispute:{" "}
                 <a target="_blank" rel="noreferrer" href={exploreDisputeTx}>
                   {disputeTx}
                 </a>
