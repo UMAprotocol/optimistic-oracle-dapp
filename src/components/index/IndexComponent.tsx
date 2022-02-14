@@ -1,5 +1,10 @@
+import { Wrapper, Header } from "./Index.styled";
 const Index = () => {
-  return <div>Index</div>;
+  return (
+    <Wrapper>
+      <Header>Optimistic Oracle Requests &amp; Proposals</Header>
+    </Wrapper>
+  );
 };
 
 export default Index;
