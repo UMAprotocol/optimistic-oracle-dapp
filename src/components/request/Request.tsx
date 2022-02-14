@@ -28,7 +28,8 @@ const Request = () => {
   const [searchParams] = useSearchParams();
   const { rows, headerCells } = useRequestTableData(searchParams);
 
-  const { proposer, disputer, proposedPrice } = useReader(state);
+  const { proposer, disputer, proposedPrice, parsedIdentifier } =
+    useReader(state);
 
   useEffect(() => {
     const requester = searchParams.get("requester")?.trim();
@@ -63,6 +64,7 @@ const Request = () => {
               proposer={proposer}
               disputer={disputer}
               proposedPrice={proposedPrice}
+              parsedIdentifier={parsedIdentifier}
               chainId={
                 searchParams.get("chainId") &&
                 Number(searchParams.get("chainId"))

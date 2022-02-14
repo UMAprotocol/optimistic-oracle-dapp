@@ -4,7 +4,7 @@ import umaLogo from "assets/uma-logo.png";
 import { CHAINS, ChainId } from "constants/blockchain";
 
 import { oracle } from "../helpers/oracleClient";
-import { Explorer } from "../helpers/format";
+import { Explorer, parseIdentifier } from "../helpers/format";
 
 const { formatUnits } = ethers.utils;
 const { ignoreExistenceError } = oracle.errors;
@@ -58,6 +58,14 @@ export default function useOracleReader(state: oracle.types.state.State) {
   const exploreProposerAddress = proposer && explorer.address(proposer);
   const exploreDisputerAddress = disputer && explorer.address(disputer);
 
+  let parsedIdentifier = "";
+  try {
+    parsedIdentifier = parseIdentifier(request?.identifier);
+  } catch (err) {
+    // ignore error
+    console.error(err);
+  }
+
   return {
     totalBond,
     reward,
@@ -80,5 +88,6 @@ export default function useOracleReader(state: oracle.types.state.State) {
     exploreSettleTx,
     exploreProposerAddress,
     exploreDisputerAddress,
+    parsedIdentifier,
   };
 }

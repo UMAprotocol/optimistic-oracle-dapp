@@ -31,13 +31,15 @@ const RequestHero: FC<Props> = ({ chainId }) => {
     chainName = CHAINS[chainId].name;
   }
   const { oracle, state } = useClient();
-  const { requestState } = useReader(state);
+  const { requestState, parsedIdentifier } = useReader(state);
 
   return (
     <HeroSection>
       <HeroContentWrapper>
         <HeroHeaderRow>
-          <HeaderTitle>Optimistic Oracle Request</HeaderTitle>
+          <HeaderTitle>
+            {parsedIdentifier || "Optimistic Oracle Request"}
+          </HeaderTitle>
           <HeaderButtonWrapper>
             <HeroButton>
               <HeroButtonFlex>
