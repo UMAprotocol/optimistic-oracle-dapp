@@ -23,3 +23,5 @@ export const HeaderTitleTextRed = styled(HeaderTitleText)`
   color: #ff4a4a;
   margin-right: 4px;
 `;
+
+export const TableWrapper = styled.div``;
