@@ -4,7 +4,8 @@ import {
   HeaderTitle,
   HeaderTitleText,
   HeaderTitleTextRed,
-  TableWrapper,
+  Body,
+  TableRow,
 } from "./Index.styled";
 import RequestsTable from "./RequestsTable";
 
@@ -17,9 +18,11 @@ const Index = () => {
           <HeaderTitleText> Requests &amp; Proposals </HeaderTitleText>{" "}
         </HeaderTitle>
       </Header>
-      <TableWrapper>
-        <RequestsTable />
-      </TableWrapper>
+      <Body>
+        <TableRow>
+          <RequestsTable />
+        </TableRow>
+      </Body>
     </Wrapper>
   );
 };

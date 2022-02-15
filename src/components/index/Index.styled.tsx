@@ -1,6 +1,9 @@
 import styled from "@emotion/styled";
 
-export const Wrapper = styled.div``;
+export const Wrapper = styled.div`
+  background-color: #efefef;
+  min-height: 100vh;
+`;
 
 export const Header = styled.div`
   background-color: #272528;
@@ -24,4 +27,12 @@ export const HeaderTitleTextRed = styled(HeaderTitleText)`
   margin-right: 4px;
 `;
 
-export const TableWrapper = styled.div``;
+export const Body = styled.div`
+  background-color: #efefef;
+  /* min-height: 70vh; */
+`;
+
+export const TableRow = styled.div`
+  max-width: 1400px;
+  margin: 0 auto;
+`;
