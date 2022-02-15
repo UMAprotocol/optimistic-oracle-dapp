@@ -3,7 +3,10 @@ import { ICell, IRow } from "../table/Table";
 import { DateTime } from "luxon";
 import { oracle } from "@uma/sdk";
 import { StyledLink } from "./RequestsTable.styled";
+// import parseAncillaryData from "helpers/parseAncillaryData";
 import { parseIdentifier } from "helpers/format";
+import { ethers } from "ethers";
+import formatYesNoQueryString from "helpers/formatYesNoQueryString";
 const hc: ICell[] = [
   {
     size: "lg",
@@ -37,6 +40,11 @@ function useRequestsTableData(
         let identifier = "";
         try {
           identifier = parseIdentifier(req.identifier);
+          if (identifier === "YES_OR_NO_QUERY") {
+            identifier = formatYesNoQueryString(
+              ethers.utils.toUtf8String(req.ancillaryData)
+            );
+          }
         } catch (err: any) {
           identifier = req.identifier;
           console.log("Error in parsing identifier", err.message);
