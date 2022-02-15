@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { ICell, IRow } from "../table/Table";
 import { DateTime } from "luxon";
-import { ethers } from "ethers";
 import { oracle } from "@uma/sdk";
 import { StyledLink } from "./RequestsTable.styled";
-
+import { parseIdentifier } from "helpers/format";
 const hc: ICell[] = [
   {
     size: "lg",
@@ -37,10 +36,10 @@ function useRequestsTableData(
       requests.forEach((req) => {
         let identifier = "";
         try {
-          identifier = ethers.utils.toUtf8String(req.identifier);
-        } catch (err) {
+          identifier = parseIdentifier(req.identifier);
+        } catch (err: any) {
           identifier = req.identifier;
-          console.log("not convertible to UTF8");
+          console.log("Error in parsing identifier", err.message);
         }
 
         const timestamp = DateTime.fromSeconds(Number(req.timestamp)).toFormat(

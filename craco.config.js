@@ -3,8 +3,8 @@ const webpack = require("webpack");
 module.exports = {
   webpack: {
     configure: {
-      module:{
-        rules:[
+      module: {
+        rules: [
           {
             test: /\.m?js$/,
             resolve: {
@@ -30,6 +30,10 @@ module.exports = {
           os: require.resolve("os-browserify/browser"),
           buffer: require.resolve("buffer"),
           stream: require.resolve("stream-browserify"),
+          // zlib: require.resolve("zlib"),
+          // tls: require.resolve("tls"),
+          // net: require.resolve("net"),
+          // dns: require.resolve("dns"),
         },
       },
       plugins: [
