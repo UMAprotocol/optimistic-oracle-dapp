@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 export const Wrapper = styled.div`
   background-color: #efefef;
   min-height: 100vh;
+  padding-bottom: 1rem;
 `;
 
 export const Header = styled.div`

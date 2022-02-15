@@ -1,5 +1,5 @@
+import { useState, useEffect } from "react";
 import { Body } from "components/table/Table.styled";
-import { ICell, IRow } from "../table/Table";
 import {
   StyledCellBody,
   StyledHeadRow,
@@ -14,7 +14,21 @@ import useRequestsTableData from "./useRequestsTableData";
 const RequestsTable = () => {
   const { state } = useClient();
   const { descendingRequests } = useReader(state);
-  const { headerCells, rows } = useRequestsTableData(descendingRequests);
+  const [requeryData, setRequeryData] = useState(true);
+  const { headerCells, rows } = useRequestsTableData(
+    descendingRequests,
+    requeryData,
+    setRequeryData
+  );
+
+  // Re-renders table too quickly. Slow down renders from requests.
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRequeryData(true);
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [setRequeryData]);
 
   return (
     <StyledTableWrapper>

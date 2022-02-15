@@ -5,6 +5,17 @@ import {
   TableWrapper,
   Row,
 } from "components/table/Table.styled";
+import { Link } from "react-router-dom";
+
+export const StyledLink = styled(Link)`
+  color: #272528;
+  text-decoration: none;
+  font-weight: 600;
+  &:hover {
+    color: #ff4a4a;
+    cursor: pointer;
+  }
+`;
 
 export const StyledTableWrapper = styled(TableWrapper)`
   box-shadow: none;
@@ -21,10 +32,6 @@ export const StyledCellBody = styled(Cell)`
     font-weight: 600;
     flex: 1 0 280px;
   }
-  &.first-cell:hover {
-    color: #ff4a4a;
-    cursor: pointer;
-  }
 
   &.other-cell,
   &.other-header-cell {
@@ -39,5 +46,5 @@ export const StyledRow = styled(Row)`
   &:nth-of-type(2n) {
     background-color: #f5f5f5;
   }
-  margin: 2px 0;
+  margin: 4px 0;
 `;
