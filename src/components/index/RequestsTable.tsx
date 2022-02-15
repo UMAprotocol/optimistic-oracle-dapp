@@ -7,66 +7,15 @@ import {
   StyledRow,
 } from "./RequestsTable.styled";
 
-const headerCells: ICell[] = [
-  {
-    size: "lg",
-    value: "Query",
-    cellClassName: "first-cell",
-  },
-  {
-    size: "sm",
-    value: "Timestamp",
-    cellClassName: "other-cell",
-  },
-  {
-    size: "sm",
-    value: "Status",
-    cellClassName: "other-cell",
-  },
-];
-
-const rows: IRow[] = [
-  {
-    cells: [
-      {
-        size: "lg",
-        value: "USDETH",
-        cellClassName: "first-cell",
-      },
-      {
-        size: "sm",
-        value: "Nov 17th 2021 1pm",
-        cellClassName: "other-cell",
-      },
-      {
-        size: "sm",
-        value: "Request",
-        cellClassName: "other-cell",
-      },
-    ],
-  },
-  {
-    cells: [
-      {
-        size: "lg",
-        value: "Will Batman get 90% on Rotten Tomatoes?",
-        cellClassName: "first-cell",
-      },
-      {
-        size: "sm",
-        value: "Nov 19th 2021 3pm",
-        cellClassName: "other-cell",
-      },
-      {
-        size: "sm",
-        value: "Proposed",
-        cellClassName: "other-cell",
-      },
-    ],
-  },
-];
+import useClient from "hooks/useOracleClient";
+import useReader from "hooks/useOracleReader";
+import useRequestsTableData from "./useRequestsTableData";
 
 const RequestsTable = () => {
+  const { state } = useClient();
+  const { descendingRequests } = useReader(state);
+  const { headerCells, rows } = useRequestsTableData(descendingRequests);
+
   return (
     <StyledTableWrapper>
       <StyledHeadRow>

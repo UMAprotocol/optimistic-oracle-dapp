@@ -16,16 +16,22 @@ export const StyledHeadRow = styled(HeadRow)`
 `;
 
 export const StyledCellBody = styled(Cell)`
-  &.first-cell {
+  &.first-cell,
+  &.first-header-cell {
     font-weight: 600;
     flex: 1 0 280px;
-    &:hover {
-      color: #ff4a4a;
-      cursor: pointer;
-    }
   }
-  &.other-cell {
+  &.first-cell:hover {
+    color: #ff4a4a;
+    cursor: pointer;
+  }
+
+  &.other-cell,
+  &.other-header-cell {
     flex: 0 0 200px;
+  }
+  &.other-header-cell {
+    font-weight: 600;
   }
 `;
 
