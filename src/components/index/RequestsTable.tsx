@@ -1,11 +1,11 @@
-import {
-  TableWrapper,
-  Row,
-  Body,
-  HeadRow,
-} from "components/table/Table.styled";
+import { Body } from "components/table/Table.styled";
 import { ICell, IRow } from "../table/Table";
-import { StyledCellBody } from "./RequestsTable.styled";
+import {
+  StyledCellBody,
+  StyledHeadRow,
+  StyledTableWrapper,
+  StyledRow,
+} from "./RequestsTable.styled";
 
 const headerCells: ICell[] = [
   {
@@ -68,8 +68,8 @@ const rows: IRow[] = [
 
 const RequestsTable = () => {
   return (
-    <TableWrapper>
-      <HeadRow>
+    <StyledTableWrapper>
+      <StyledHeadRow>
         {headerCells.map((cell, index) => {
           return (
             <StyledCellBody
@@ -81,11 +81,11 @@ const RequestsTable = () => {
             </StyledCellBody>
           );
         })}
-      </HeadRow>
+      </StyledHeadRow>
       <Body>
         {rows.map((row, ridx) => {
           return (
-            <Row key={ridx}>
+            <StyledRow key={ridx}>
               {row.cells.map((cell, cidx) => {
                 return (
                   <StyledCellBody
@@ -97,11 +97,11 @@ const RequestsTable = () => {
                   </StyledCellBody>
                 );
               })}
-            </Row>
+            </StyledRow>
           );
         })}
       </Body>
-    </TableWrapper>
+    </StyledTableWrapper>
   );
 };
 

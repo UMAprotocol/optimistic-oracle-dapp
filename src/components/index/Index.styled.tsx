@@ -29,10 +29,9 @@ export const HeaderTitleTextRed = styled(HeaderTitleText)`
 
 export const Body = styled.div`
   background-color: #efefef;
-  /* min-height: 70vh; */
 `;
 
 export const TableRow = styled.div`
   max-width: 1400px;
-  margin: 0 auto;
+  margin: 2rem auto;
 `;
