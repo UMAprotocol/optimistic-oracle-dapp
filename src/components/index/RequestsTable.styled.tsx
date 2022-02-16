@@ -48,3 +48,8 @@ export const StyledRow = styled(Row)`
   }
   margin: 4px 0;
 `;
+
+export const AlertLogo = styled.img`
+  height: 16px;
+  margin-left: -4px;
+`;

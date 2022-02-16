@@ -1,10 +1,12 @@
 import { ICell, IRow } from "../table/Table";
 import { DateTime } from "luxon";
 import { oracle } from "@uma/sdk";
-import { StyledLink } from "./RequestsTable.styled";
+import { StyledLink, AlertLogo } from "./RequestsTable.styled";
 import { parseIdentifier } from "helpers/format";
 import { ethers } from "ethers";
 import formatYesNoQueryString from "helpers/formatYesNoQueryString";
+import alertIcon from "assets/alert-icon.svg";
+
 const headerCells: ICell[] = [
   {
     size: "lg",
@@ -52,7 +54,7 @@ function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
         "LLL. dd yyyy hh:mm:ss"
       );
 
-      let requestState = "Invalid";
+      let requestState: any = "Invalid";
       if (req.state === oracle.types.state.RequestState.Requested)
         requestState = "Request";
       if (req.state === oracle.types.state.RequestState.Proposed)
@@ -63,7 +65,11 @@ function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
       )
         requestState = "Settable";
       if (req.state === oracle.types.state.RequestState.Disputed)
-        requestState = "Disputed";
+        requestState = (
+          <span>
+            <AlertLogo src={alertIcon} alt="alert_icon" /> Disput{" "}
+          </span>
+        );
       if (req.state === oracle.types.state.RequestState.Settled)
         requestState = "Settled";
 
