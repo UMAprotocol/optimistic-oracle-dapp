@@ -32,9 +32,16 @@ function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
       try {
         identifier = parseIdentifier(req.identifier);
         if (identifier === "YES_OR_NO_QUERY") {
-          identifier = formatYesNoQueryString(
-            ethers.utils.toUtf8String(req.ancillaryData)
-          );
+          try {
+            identifier = formatYesNoQueryString(
+              ethers.utils.toUtf8String(req.ancillaryData)
+            );
+          } catch (err: any) {
+            console.error(
+              "error with formatYesNoQueryString call",
+              err.message
+            );
+          }
         }
       } catch (err: any) {
         identifier = req.identifier;
