@@ -11,5 +11,10 @@ export default function formatYesNoQueryString(str: string) {
   // remove the comma at the end.
   const formatted = title.substring(0, title.length - 2);
 
-  return formatted;
+  // Return only the first 55 characters
+  if (formatted.length > 55) {
+    return `${formatted.substring(0, 56)}...`;
+  } else {
+    return formatted;
+  }
 }
