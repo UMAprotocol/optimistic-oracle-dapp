@@ -23,6 +23,11 @@ const headerCells: ICell[] = [
     value: "Status",
     cellClassName: "other-header-cell",
   },
+  {
+    size: "sm",
+    value: "Proposed answer",
+    cellClassName: "other-header-cell",
+  },
 ];
 
 function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
@@ -73,6 +78,11 @@ function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
       if (req.state === oracle.types.state.RequestState.Settled)
         requestState = "Settled";
 
+      let proposedPrice = req.proposedPrice;
+      if (req.proposedPrice && req.proposedPrice !== "0") {
+        proposedPrice = ethers.utils.formatEther(req.proposedPrice);
+      }
+
       const cells = [
         {
           size: "lg",
@@ -95,6 +105,11 @@ function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
         {
           size: "sm",
           value: requestState,
+          cellClassName: "other-cell",
+        },
+        {
+          size: "sm",
+          value: proposedPrice ?? "-",
           cellClassName: "other-cell",
         },
       ] as ICell[];
