@@ -79,8 +79,19 @@ function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
         requestState = "Settled";
 
       let proposedPrice = req.proposedPrice;
-      if (req.proposedPrice && req.proposedPrice !== "0") {
+      if (
+        req.proposedPrice &&
+        req.proposedPrice !== "0" &&
+        identifier !== "YES_OR_NO_QUERY"
+      ) {
         proposedPrice = ethers.utils.formatEther(req.proposedPrice);
+      }
+
+      if (proposedPrice && identifier === "YES_OR_NO_QUERY") {
+        const formattedPrice = ethers.utils.formatEther(proposedPrice);
+        if (formattedPrice === "0.0") proposedPrice = "No";
+        if (formattedPrice === "1.0") proposedPrice = "Yes";
+        if (formattedPrice === "0.5") proposedPrice = "Indeterminate";
       }
 
       const cells = [
