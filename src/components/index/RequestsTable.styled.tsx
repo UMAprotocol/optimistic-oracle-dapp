@@ -24,6 +24,7 @@ export const StyledTableWrapper = styled(TableWrapper)`
 export const StyledHeadRow = styled(HeadRow)`
   background: transparent;
   border: 0;
+  padding-bottom: 8px;
 `;
 
 export const StyledCellBody = styled(Cell)`
