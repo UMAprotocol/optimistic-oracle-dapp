@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { Body } from "components/table/Table.styled";
 import {
   StyledCellBody,
@@ -9,26 +8,12 @@ import {
 
 import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
-import useRequestsTableData from "./useRequestsTableData";
+import createRequestsTableCells from "./createRequestsTableCells";
 
 const RequestsTable = () => {
   const { state } = useClient();
   const { descendingRequests } = useReader(state);
-  const [requeryData, setRequeryData] = useState(true);
-  const { headerCells, rows } = useRequestsTableData(
-    descendingRequests,
-    requeryData,
-    setRequeryData
-  );
-
-  // Re-renders table too quickly. Slow down renders from requests.
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRequeryData(true);
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, [setRequeryData]);
+  const { headerCells, rows } = createRequestsTableCells(descendingRequests);
 
   return (
     <StyledTableWrapper>
