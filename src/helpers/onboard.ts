@@ -19,6 +19,8 @@ export const onboard = Onboard({
         const provider = new ethers.providers.Web3Provider(
           wallet.provider
         ) as oracle.types.ethers.Web3Provider;
+        // disable polling, this tends to cause a lot of requests to underlying provider if not disabled
+        provider.polling = false
         client.setUser({ signer: provider.getSigner(), provider });
       }
     },
