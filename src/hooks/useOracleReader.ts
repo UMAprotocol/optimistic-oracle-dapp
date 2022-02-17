@@ -63,8 +63,10 @@ export default function useOracleReader(state: oracle.types.state.State) {
     parsedIdentifier = parseIdentifier(request?.identifier);
   } catch (err) {
     // ignore error
-    console.error(request?.identifier,err);
+    console.error(request?.identifier, err);
   }
+
+  const descendingRequests = read.descendingRequests();
 
   return {
     chainId,
@@ -90,5 +92,6 @@ export default function useOracleReader(state: oracle.types.state.State) {
     exploreProposerAddress,
     exploreDisputerAddress,
     parsedIdentifier,
+    descendingRequests,
   };
 }

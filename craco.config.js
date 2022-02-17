@@ -3,8 +3,8 @@ const webpack = require("webpack");
 module.exports = {
   webpack: {
     configure: {
-      module:{
-        rules:[
+      module: {
+        rules: [
           {
             test: /\.m?js$/,
             resolve: {
@@ -15,12 +15,6 @@ module.exports = {
       },
       resolve: {
         fallback: {
-          // process: require.resolve("process/browser"),
-          // zlib: require.resolve("browserify-zlib"),
-          // stream: require.resolve("stream-browserify"),
-          // util: require.resolve("util"),
-          // buffer: require.resolve("buffer"),
-          // asset: require.resolve("assert"),
           url: require.resolve("url"),
           fs: require.resolve("fs"),
           assert: require.resolve("assert"),
