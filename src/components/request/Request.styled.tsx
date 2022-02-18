@@ -263,3 +263,14 @@ export const InputError = styled.div`
 export const HeroLogoSmall = styled(HeroLogo)`
   height: 16px;
 `;
+
+export const RequestTxText = styled.div`
+  font-size: ${14 / 16}rem;
+  color: #fff;
+  a {
+    color: #ff4a4a;
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+`;
