@@ -13,8 +13,10 @@ import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
 import SettledTable from "./SettledTable";
 import dataIcon from "assets/data-icon.svg";
-import useRequestParams, { isLegacyRequest } from "hooks/useRequestParams";
-import useIsLegacyParams from "hooks/useIsLegacyParams";
+import useRequestParams, {
+  isByTransactionRequest,
+} from "hooks/useRequestParams";
+import useIsByTransactionParams from "hooks/useIsByTransactionParams";
 
 const Request = () => {
   const { client, state, flags } = useClient();
@@ -31,13 +33,14 @@ const Request = () => {
     parsedIdentifier,
   } = useReader(state);
 
-  const isLegacyParams = useIsLegacyParams();
-  const { request, error } = useRequestParams(isLegacyParams);
+  const isByTransactionParams = useIsByTransactionParams();
+  const { request, error } = useRequestParams(isByTransactionParams);
 
   useEffect(() => {
     // TODO: would be nice to do something with the error here, like redirect to the homepage
-    if (!error) {
-      if (isLegacyRequest(request)) {
+    if (!error && request) {
+      if (isByTransactionRequest(request)) {
+      } else {
         client.setActiveRequest({
           requester: request.requester.trim(),
           identifier: request.identifier,
@@ -45,13 +48,6 @@ const Request = () => {
           ancillaryData: request.ancillaryData,
           chainId: request.chainId,
         });
-      } else {
-        // FIXME: once we bump the SDK to 0.22, uncomment this
-        // client.setActiveRequest({
-        //   transactionHash: request.transactionHash,
-        //   chainId: request.chainId,
-        //   eventIndex: request.eventIndex,
-        // });
       }
     }
   }, [client, error, request]);
