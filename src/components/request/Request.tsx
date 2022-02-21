@@ -40,6 +40,11 @@ const Request = () => {
     // TODO: would be nice to do something with the error here, like redirect to the homepage
     if (!error && request) {
       if (isByTransactionRequest(request)) {
+        client.setActiveRequestByTransaction({
+          chainId: request.chainId,
+          transactionHash: request.transactionHash,
+          eventIndex: request.eventIndex ?? 0,
+        });
       } else {
         client.setActiveRequest({
           requester: request.requester.trim(),
