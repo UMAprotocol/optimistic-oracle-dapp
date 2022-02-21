@@ -13,15 +13,10 @@ import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
 import SettledTable from "./SettledTable";
 import dataIcon from "assets/data-icon.svg";
-/* Search Params:
-  {
-    requester: string;
-    identifier: string;
-    ancillaryData: string;
-    timestamp: number;
-    chainId: number;
-  } 
-*/
+import useRequestParams, {
+  isByTransactionRequest,
+} from "hooks/useRequestParams";
+import useIsByTransactionParams from "hooks/useIsByTransactionParams";
 
 const Request = () => {
   const { client, state, flags } = useClient();
@@ -38,25 +33,29 @@ const Request = () => {
     parsedIdentifier,
   } = useReader(state);
 
-  useEffect(() => {
-    const requester = searchParams.get("requester")?.trim();
-    const identifier = searchParams.get("identifier");
-    const timestamp =
-      searchParams.get("timestamp") && Number(searchParams.get("timestamp"));
-    const ancillaryData = searchParams.get("ancillaryData");
-    const chainId =
-      searchParams.get("chainId") && Number(searchParams.get("chainId"));
+  const isByTransactionParams = useIsByTransactionParams();
+  const { request, error } = useRequestParams(isByTransactionParams);
 
-    if (requester && identifier && timestamp && ancillaryData && chainId) {
-      client.setActiveRequest({
-        requester,
-        identifier,
-        timestamp,
-        ancillaryData,
-        chainId,
-      });
+  useEffect(() => {
+    // TODO: would be nice to do something with the error here, like redirect to the homepage
+    if (!error && request) {
+      if (isByTransactionRequest(request)) {
+        client.setActiveRequestByTransaction({
+          chainId: request.chainId,
+          transactionHash: request.transactionHash,
+          eventIndex: request.eventIndex ?? 0,
+        });
+      } else {
+        client.setActiveRequest({
+          requester: request.requester.trim(),
+          identifier: request.identifier,
+          timestamp: request.timestamp,
+          ancillaryData: request.ancillaryData,
+          chainId: request.chainId,
+        });
+      }
     }
-  }, [searchParams, client]);
+  }, [client, error, request]);
 
   return (
     <Wrapper>
