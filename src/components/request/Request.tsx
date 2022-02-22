@@ -17,11 +17,11 @@ import useRequestParams, {
   isByTransactionRequest,
 } from "hooks/useRequestParams";
 import useIsByTransactionParams from "hooks/useIsByTransactionParams";
+import { ChainId } from "constants/blockchain";
 
 const Request = () => {
   const { client, state, flags } = useClient();
   const [searchParams] = useSearchParams();
-  const { rows, headerCells } = useRequestTableData(searchParams);
 
   const {
     chainId,
@@ -30,8 +30,22 @@ const Request = () => {
     exploreProposeTx,
     exploreDisputeTx,
     proposedPrice,
+    requester,
+    ancillaryData,
+    identifier,
+    timestamp,
     parsedIdentifier,
+    requestTx,
   } = useReader(state);
+
+  const { rows, headerCells } = useRequestTableData({
+    chainId: (Number(searchParams.get("chainId")) as ChainId) || chainId,
+    requester: searchParams.get("requester") ?? requester,
+    identifier: searchParams.get("identifier") ?? identifier,
+    ancillaryData: searchParams.get("ancillaryData") ?? ancillaryData,
+    timestamp: Number(searchParams.get("timestamp")) || timestamp,
+    requestTxHash: requestTx,
+  });
 
   const isByTransactionParams = useIsByTransactionParams();
   const { request, error } = useRequestParams(isByTransactionParams);

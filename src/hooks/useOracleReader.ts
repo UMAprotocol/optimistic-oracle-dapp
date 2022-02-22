@@ -58,6 +58,11 @@ export default function useOracleReader(state: oracle.types.state.State) {
   const exploreProposerAddress = proposer && explorer.address(proposer);
   const exploreDisputerAddress = disputer && explorer.address(disputer);
 
+  const requester = request?.requester;
+  const identifier = request?.identifier;
+  const ancillaryData = request?.ancillaryData;
+  const timestamp = request?.timestamp;
+
   let parsedIdentifier = "";
   try {
     parsedIdentifier = parseIdentifier(request?.identifier);
@@ -79,6 +84,10 @@ export default function useOracleReader(state: oracle.types.state.State) {
     requestState,
     proposedPrice,
     disputer,
+    requester,
+    identifier,
+    ancillaryData,
+    timestamp,
     proposer,
     requestTx,
     proposeTx,
