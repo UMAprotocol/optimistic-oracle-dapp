@@ -12,6 +12,7 @@ import {
   HeroButtonText,
   HeroButtonFlex,
   HeroLogoSmall,
+  RequestTxText,
 } from "./Request.styled";
 import { CHAINS, ChainId } from "constants/blockchain";
 import useClient from "hooks/useOracleClient";
@@ -31,7 +32,8 @@ const RequestHero: FC<Props> = ({ chainId }) => {
     chainName = CHAINS[chainId].name;
   }
   const { oracle, state } = useClient();
-  const { requestState, parsedIdentifier } = useReader(state);
+  const { requestState, parsedIdentifier, requestTx, exploreRequestTx } =
+    useReader(state);
 
   return (
     <HeroSection>
@@ -39,6 +41,14 @@ const RequestHero: FC<Props> = ({ chainId }) => {
         <HeroHeaderRow>
           <HeaderTitle>
             {parsedIdentifier || "Optimistic Oracle Request"}
+            {requestTx && (
+              <RequestTxText>
+                Request:{" "}
+                <a target="_blank" rel="noreferrer" href={exploreRequestTx}>
+                  {requestTx}
+                </a>
+              </RequestTxText>
+            )}
           </HeaderTitle>
           <HeaderButtonWrapper>
             <HeroButton>
