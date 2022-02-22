@@ -3,7 +3,7 @@ import { ICell, IRow } from "../table/Table";
 import { DateTime } from "luxon";
 import { ethers } from "ethers";
 import { CHAINS, ChainId } from "constants/blockchain";
-import { parseIdentifier } from "../../helpers/format";
+import { parseIdentifier } from "helpers/format";
 
 const hc: ICell[] = [
   {
@@ -45,7 +45,7 @@ function useRequestTableData(searchParams: URLSearchParams) {
         },
         {
           size: "sm",
-          value: "Address",
+          value: "address",
         },
         {
           size: "lg",
@@ -70,6 +70,7 @@ function useRequestTableData(searchParams: URLSearchParams) {
       console.error(err);
       convertedIdentifier = "Not convertible to UTF-8 string.";
     }
+
     nextRows.push({
       cells: [
         {
@@ -171,6 +172,41 @@ function useRequestTableData(searchParams: URLSearchParams) {
         },
       ],
     });
+
+    let umipLink =
+      "https://docs.umaproject.org/uma-tokenholders/approved-price-identifiers";
+    if (convertedIdentifier === "YES_OR_NO_QUERY") {
+      umipLink =
+        "https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-107.md";
+    }
+
+    nextRows.push({
+      cells: [
+        {
+          size: "xs",
+          value: "4",
+        },
+        {
+          size: "sm",
+          value: "url",
+        },
+        {
+          size: "sm",
+          value: "string",
+        },
+        {
+          size: "lg",
+          value: (
+            <a target="_blank" rel="noreferrer" href={umipLink}>
+              {convertedIdentifier === "YES_OR_NO_QUERY"
+                ? "UMIP-107"
+                : "Approved price identifiers"}
+            </a>
+          ),
+        },
+      ],
+    });
+
     setRows(nextRows);
   }, [searchParams]);
 
