@@ -32,7 +32,7 @@ const RequestHero: FC<Props> = ({ chainId }) => {
     chainName = CHAINS[chainId].name;
   }
   const { oracle, state } = useClient();
-  const { requestState, parsedIdentifier, requestTx, explorerUrl } =
+  const { requestState, parsedIdentifier, requestTx, exploreRequestTx } =
     useReader(state);
 
   return (
@@ -41,16 +41,14 @@ const RequestHero: FC<Props> = ({ chainId }) => {
         <HeroHeaderRow>
           <HeaderTitle>
             {parsedIdentifier || "Optimistic Oracle Request"}
-            <RequestTxText>
-              Request:{" "}
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href={`${explorerUrl}/tx/${requestTx}`}
-              >
-                {requestTx}
-              </a>
-            </RequestTxText>
+            {requestTx && (
+              <RequestTxText>
+                Request:{" "}
+                <a target="_blank" rel="noreferrer" href={exploreRequestTx}>
+                  {requestTx}
+                </a>
+              </RequestTxText>
+            )}
           </HeaderTitle>
           <HeaderButtonWrapper>
             <HeroButton>
