@@ -188,7 +188,7 @@ function useRequestTableData(searchParams: URLSearchParams) {
         },
         {
           size: "sm",
-          value: "url",
+          value: "UMIP",
         },
         {
           size: "sm",
