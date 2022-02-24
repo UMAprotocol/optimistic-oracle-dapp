@@ -127,6 +127,7 @@ function useSettledTableData(
     proposedPrice,
     cid,
     parsedIdentifier,
+    request,
   ]);
 
   return { rows, headerCells };
