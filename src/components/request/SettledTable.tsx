@@ -11,6 +11,10 @@ import { oracle } from "@uma/sdk";
 import useSettledTableData from "./useSettledTableData";
 import { TableTitle } from "./Request.styled";
 import dataIcon from "assets/data-icon.svg";
+import {
+  ActiveRequestParams,
+  ActiveRequestParamsByTransaction,
+} from "hooks/useRequestParams";
 
 interface Props {
   proposeTx: string | undefined;
@@ -20,6 +24,7 @@ interface Props {
   proposedPrice: oracle.types.ethers.BigNumber | undefined;
   chainId: number;
   parsedIdentifier: string | undefined;
+  request: ActiveRequestParams | ActiveRequestParamsByTransaction | undefined;
 }
 const SettledTable: FC<Props> = ({
   proposeTx,
@@ -29,6 +34,7 @@ const SettledTable: FC<Props> = ({
   proposedPrice,
   chainId,
   parsedIdentifier,
+  request,
 }) => {
   const { rows, headerCells } = useSettledTableData(
     proposeTx,
@@ -37,7 +43,8 @@ const SettledTable: FC<Props> = ({
     exploreDisputeTx,
     proposedPrice,
     chainId,
-    parsedIdentifier
+    parsedIdentifier,
+    request
   );
 
   return (
