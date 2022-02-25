@@ -13,7 +13,7 @@ export const Header = styled.div`
 export const HeaderTitle = styled.div`
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem 15px;
+  padding: 2rem 40px;
 `;
 
 export const HeaderTitleText = styled.span`
@@ -36,7 +36,7 @@ export const Body = styled.div`
 export const TableRow = styled.div`
   max-width: 1400px;
   margin: 2rem auto;
-  padding: 0 15px;
+  padding: 0 40px;
 `;
 
 export const Logo = styled.img`
