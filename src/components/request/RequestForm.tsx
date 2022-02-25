@@ -258,6 +258,7 @@ const RequestForm: FC = () => {
                 proposedPrice && (
                   <RequestFormInput
                     disabled={true}
+                    style={{ background: "transparent", cursor: "not-allowed" }}
                     label="Proposed answer: "
                     value={ethers.utils.formatUnits(proposedPrice, 18)}
                     onChange={() => null}
