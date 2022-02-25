@@ -3,10 +3,6 @@ import { ICell, IRow } from "../table/Table";
 import { oracle } from "@uma/sdk";
 import { ethers } from "ethers";
 import { ChainId } from "constants/blockchain";
-import {
-  ActiveRequestParams,
-  ActiveRequestParamsByTransaction,
-} from "hooks/useRequestParams";
 import formatYesNoQueryString from "helpers/formatYesNoQueryString";
 const hc: ICell[] = [];
 
@@ -18,7 +14,7 @@ function useSettledTableData(
   proposedPrice: oracle.types.ethers.BigNumber | undefined,
   chainId: number,
   parsedIdentifier: string | undefined,
-  request: ActiveRequestParams | ActiveRequestParamsByTransaction | undefined
+  ancillaryData: string | undefined
 ) {
   const [rows, setRows] = useState<IRow[]>([]);
   const [headerCells] = useState<ICell[]>(hc);
@@ -26,11 +22,10 @@ function useSettledTableData(
   useEffect(() => {
     let formattedIdentifier = parsedIdentifier;
     try {
-      if (formattedIdentifier === "YES_OR_NO_QUERY" && request) {
-        const r = request as ActiveRequestParams;
+      if (formattedIdentifier === "YES_OR_NO_QUERY" && ancillaryData) {
         try {
           formattedIdentifier = formatYesNoQueryString(
-            ethers.utils.toUtf8String(r.ancillaryData)
+            ethers.utils.toUtf8String(ancillaryData)
           );
         } catch (err: any) {
           console.error("error with formatYesNoQueryString call", err.message);
@@ -127,7 +122,7 @@ function useSettledTableData(
     proposedPrice,
     cid,
     parsedIdentifier,
-    request,
+    ancillaryData,
   ]);
 
   return { rows, headerCells };
