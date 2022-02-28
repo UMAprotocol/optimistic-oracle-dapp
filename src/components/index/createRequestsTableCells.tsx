@@ -56,7 +56,7 @@ function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
       }
 
       const timestamp = DateTime.fromSeconds(Number(req.timestamp)).toFormat(
-        "LLL. dd yyyy hh:mm:ss"
+        "LLL. dd yyyy hh:mm:ss a"
       );
 
       let requestState: any = "Invalid";
