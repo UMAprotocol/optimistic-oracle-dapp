@@ -24,20 +24,62 @@ const hc: ICell[] = [
   },
 ];
 
-function useRequestTableData(searchParams: URLSearchParams) {
+type UseRequestTableParams = {
+  chainId?: ChainId;
+  requester?: string;
+  identifier?: string;
+  timestamp?: number;
+  ancillaryData?: string;
+  requestTxHash?: string;
+};
+function useRequestTableData({
+  chainId = 1,
+  requester,
+  identifier,
+  timestamp,
+  ancillaryData,
+  requestTxHash,
+}: UseRequestTableParams) {
   const [rows, setRows] = useState<IRow[]>([]);
   const [headerCells] = useState<ICell[]>(hc);
 
   useEffect(() => {
     const nextRows = [] as IRow[];
 
-    const nextRequester = searchParams.get("requester");
-    const chainId: ChainId = Number(searchParams.get("chainId")) || 1;
     nextRows.push({
       cells: [
         {
           size: "xs",
           value: "0",
+        },
+        {
+          size: "sm",
+          value: "Request",
+        },
+        {
+          size: "sm",
+          value: "bytes",
+        },
+        {
+          size: "lg",
+          value: (
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`${CHAINS[chainId].explorerUrl}/tx/${requestTxHash}`}
+            >
+              {requestTxHash}
+            </a>
+          ),
+        },
+      ],
+    });
+
+    nextRows.push({
+      cells: [
+        {
+          size: "xs",
+          value: "1",
         },
         {
           size: "sm",
@@ -53,19 +95,18 @@ function useRequestTableData(searchParams: URLSearchParams) {
             <a
               target="_blank"
               rel="noreferrer"
-              href={`${CHAINS[chainId].explorerUrl}/address/${nextRequester}`}
+              href={`${CHAINS[chainId].explorerUrl}/address/${requester}`}
             >
-              {nextRequester}
+              {requester}
             </a>
           ),
         },
       ],
     });
 
-    let nextIdentifier = searchParams.get("identifier");
     let convertedIdentifier = "";
     try {
-      convertedIdentifier = parseIdentifier(nextIdentifier);
+      convertedIdentifier = parseIdentifier(identifier);
     } catch (err) {
       console.error(err);
       convertedIdentifier = "Not convertible to UTF-8 string.";
@@ -75,7 +116,7 @@ function useRequestTableData(searchParams: URLSearchParams) {
       cells: [
         {
           size: "xs",
-          value: "1",
+          value: "2",
         },
         {
           size: "sm",
@@ -91,13 +132,12 @@ function useRequestTableData(searchParams: URLSearchParams) {
         },
       ],
     });
-    const nextTimestamp = searchParams.get("timestamp");
 
     nextRows.push({
       cells: [
         {
           size: "xs",
-          value: "2",
+          value: "3",
         },
         {
           size: "sm",
@@ -109,20 +149,19 @@ function useRequestTableData(searchParams: URLSearchParams) {
         },
         {
           size: "lg",
-          value: nextTimestamp
-            ? `${DateTime.fromSeconds(Number(nextTimestamp)).toFormat(
+          value: timestamp
+            ? `${DateTime.fromSeconds(timestamp).toFormat(
                 "LLL. dd yyyy hh:mm:ss"
-              )} (${nextTimestamp})`
+              )} (${timestamp})`
             : "",
         },
       ],
     });
 
-    let nextAncillaryData = searchParams.get("ancillaryData");
     let convertedAncillaryData = "";
-    if (nextAncillaryData && nextAncillaryData !== "0x") {
+    if (ancillaryData && ancillaryData !== "0x") {
       try {
-        convertedAncillaryData = ethers.utils.toUtf8String(nextAncillaryData);
+        convertedAncillaryData = ethers.utils.toUtf8String(ancillaryData);
       } catch (err) {
         convertedAncillaryData = "Not convertible to UTF-8 string.";
         console.log("not convertible to UTF8");
@@ -135,7 +174,7 @@ function useRequestTableData(searchParams: URLSearchParams) {
       cells: [
         {
           size: "xs",
-          value: "3",
+          value: "4",
         },
         {
           size: "sm",
@@ -156,7 +195,7 @@ function useRequestTableData(searchParams: URLSearchParams) {
       cells: [
         {
           size: "xs",
-          value: "4",
+          value: "5",
         },
         {
           size: "sm",
@@ -168,7 +207,7 @@ function useRequestTableData(searchParams: URLSearchParams) {
         },
         {
           size: "lg",
-          value: nextAncillaryData ?? "",
+          value: ancillaryData ?? "",
         },
       ],
     });
@@ -208,7 +247,7 @@ function useRequestTableData(searchParams: URLSearchParams) {
     });
 
     setRows(nextRows);
-  }, [searchParams]);
+  }, [chainId, requester, identifier, timestamp, ancillaryData, requestTxHash]);
 
   return { rows, headerCells };
 }
