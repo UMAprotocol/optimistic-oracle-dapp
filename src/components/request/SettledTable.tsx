@@ -20,6 +20,7 @@ interface Props {
   proposedPrice: oracle.types.ethers.BigNumber | undefined;
   chainId: number;
   parsedIdentifier: string | undefined;
+  ancillaryData: string | undefined;
 }
 const SettledTable: FC<Props> = ({
   proposeTx,
@@ -29,6 +30,7 @@ const SettledTable: FC<Props> = ({
   proposedPrice,
   chainId,
   parsedIdentifier,
+  ancillaryData,
 }) => {
   const { rows, headerCells } = useSettledTableData(
     proposeTx,
@@ -37,7 +39,8 @@ const SettledTable: FC<Props> = ({
     exploreDisputeTx,
     proposedPrice,
     chainId,
-    parsedIdentifier
+    parsedIdentifier,
+    ancillaryData
   );
 
   return (

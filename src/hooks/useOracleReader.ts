@@ -72,7 +72,6 @@ export default function useOracleReader(state: oracle.types.state.State) {
   }
 
   const descendingRequests = read.descendingRequests();
-
   return {
     chainId,
     totalBond,

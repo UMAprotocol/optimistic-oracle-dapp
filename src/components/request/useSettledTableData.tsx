@@ -3,6 +3,7 @@ import { ICell, IRow } from "../table/Table";
 import { oracle } from "@uma/sdk";
 import { ethers } from "ethers";
 import { ChainId } from "constants/blockchain";
+import { formatYesNoQueryString } from "helpers/format";
 const hc: ICell[] = [];
 
 function useSettledTableData(
@@ -12,12 +13,28 @@ function useSettledTableData(
   exploreDisputeTx: string | undefined,
   proposedPrice: oracle.types.ethers.BigNumber | undefined,
   chainId: number,
-  parsedIdentifier: string | undefined
+  parsedIdentifier: string | undefined,
+  ancillaryData: string | undefined
 ) {
   const [rows, setRows] = useState<IRow[]>([]);
   const [headerCells] = useState<ICell[]>(hc);
   const cid: ChainId = chainId ? chainId : 1;
   useEffect(() => {
+    let formattedIdentifier = parsedIdentifier;
+    try {
+      if (formattedIdentifier === "YES_OR_NO_QUERY" && ancillaryData) {
+        try {
+          formattedIdentifier = formatYesNoQueryString(
+            ethers.utils.toUtf8String(ancillaryData)
+          );
+        } catch (err: any) {
+          console.error("error with formatYesNoQueryString call", err.message);
+        }
+      }
+    } catch (err: any) {
+      console.log("Error in parsing identifier", err.message);
+    }
+
     let nextRows = [
       {
         cells: [
@@ -28,7 +45,7 @@ function useSettledTableData(
           },
           {
             size: "lg",
-            value: parsedIdentifier || "",
+            value: formattedIdentifier || "",
           },
         ],
       },
@@ -105,6 +122,7 @@ function useSettledTableData(
     proposedPrice,
     cid,
     parsedIdentifier,
+    ancillaryData,
   ]);
 
   return { rows, headerCells };

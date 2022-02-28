@@ -86,6 +86,7 @@ const Request = () => {
               exploreDisputeTx={exploreDisputeTx}
               proposedPrice={proposedPrice}
               parsedIdentifier={parsedIdentifier}
+              ancillaryData={ancillaryData}
             />
           </TableContentWrapper>
         )}
