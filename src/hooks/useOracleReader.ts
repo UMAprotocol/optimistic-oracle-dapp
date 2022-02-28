@@ -72,7 +72,6 @@ export default function useOracleReader(state: oracle.types.state.State) {
   }
 
   const descendingRequests = read.descendingRequests();
-  const ancillaryData = request && request.ancillaryData;
   return {
     chainId,
     totalBond,
@@ -102,6 +101,5 @@ export default function useOracleReader(state: oracle.types.state.State) {
     exploreDisputerAddress,
     parsedIdentifier,
     descendingRequests,
-    ancillaryData,
   };
 }
