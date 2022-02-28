@@ -3,7 +3,7 @@ import { ICell, IRow } from "../table/Table";
 import { oracle } from "@uma/sdk";
 import { ethers } from "ethers";
 import { ChainId } from "constants/blockchain";
-import formatYesNoQueryString from "helpers/formatYesNoQueryString";
+import { formatYesNoQueryString } from "helpers/format";
 const hc: ICell[] = [];
 
 function useSettledTableData(

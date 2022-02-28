@@ -4,7 +4,7 @@ import { oracle } from "@uma/sdk";
 import { StyledLink, AlertLogo } from "./RequestsTable.styled";
 import { parseIdentifier } from "helpers/format";
 import { ethers } from "ethers";
-import formatYesNoQueryString from "helpers/formatYesNoQueryString";
+import { formatYesNoQueryString } from "helpers/format";
 import alertIcon from "assets/alert-icon.svg";
 
 const headerCells: ICell[] = [
