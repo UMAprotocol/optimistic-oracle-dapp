@@ -36,10 +36,10 @@ const Request = () => {
   } = useReader(state);
 
   const { rows, headerCells } = useRequestTableData({
-    chainId: chainId,
-    requester: requester,
-    identifier: identifier,
-    ancillaryData: ancillaryData,
+    chainId,
+    requester,
+    identifier,
+    ancillaryData,
     timestamp: timestamp ? Number(timestamp) : undefined,
     requestTxHash: requestTx,
   });
