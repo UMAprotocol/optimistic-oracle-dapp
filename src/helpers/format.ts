@@ -2,6 +2,10 @@ import { ethers } from "ethers";
 
 export const prettyFormatNumber = Intl.NumberFormat("en-US").format;
 
+// maximum length for a yes/no query ancillary question title
+export const MAX_TITLE_LENGTH = 55;
+export const DEFAULT_REQUEST_TITLE = "Optimistic Oracle Request";
+
 export class Explorer {
   constructor(private base: string) {}
   tx = (hash: string): string => {
@@ -41,7 +45,10 @@ export function validateYesNoQueryString(parsedAncillaryData: string) {
 
 // String has a particular format that includes break points like q: title: description:
 // Split the string based on these common parts of query strings.
-export function formatYesNoQueryString(str: string, maxLength = 55) {
+export function formatYesNoQueryString(
+  str: string,
+  maxLength = MAX_TITLE_LENGTH
+) {
   // Split the string before title:
   const splitOne = str.split("title: ")[1];
 
@@ -59,19 +66,19 @@ export function formatYesNoQueryString(str: string, maxLength = 55) {
   }
 }
 
-type FormatRequestTitleParams = {
+interface FormatRequestTitleParams {
   identifier?: string;
   ancillaryData?: string;
   maxTitleLength?: number;
   defaultTitle?: string;
-};
+}
 
 export function formatRequestTitle(params: FormatRequestTitleParams) {
   const {
     identifier,
     ancillaryData,
-    maxTitleLength = 55,
-    defaultTitle = "Optimistic Oracle Request",
+    maxTitleLength = MAX_TITLE_LENGTH,
+    defaultTitle = DEFAULT_REQUEST_TITLE,
   } = params;
   let title = defaultTitle;
   try {

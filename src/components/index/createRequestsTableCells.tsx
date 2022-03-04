@@ -35,7 +35,7 @@ function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
 
   if (requests.length) {
     requests.forEach((req) => {
-      let identifier = formatRequestTitle(req);
+      const identifier = formatRequestTitle(req);
       const timestamp = DateTime.fromSeconds(Number(req.timestamp)).toFormat(
         "LLL. dd yyyy hh:mm:ss a"
       );
