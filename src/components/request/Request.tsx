@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import Table from "../table/Table";
-import { useSearchParams } from "react-router-dom";
 import useRequestTableData from "./useRequestTableData";
 import {
   Wrapper,
@@ -17,11 +16,9 @@ import useRequestParams, {
   isByTransactionRequest,
 } from "hooks/useRequestParams";
 import useIsByTransactionParams from "hooks/useIsByTransactionParams";
-import { ChainId } from "constants/blockchain";
 
 const Request = () => {
   const { client, state, flags } = useClient();
-  const [searchParams] = useSearchParams();
 
   const {
     chainId,
@@ -39,11 +36,11 @@ const Request = () => {
   } = useReader(state);
 
   const { rows, headerCells } = useRequestTableData({
-    chainId: (Number(searchParams.get("chainId")) as ChainId) || chainId,
-    requester: searchParams.get("requester") ?? requester,
-    identifier: searchParams.get("identifier") ?? identifier,
-    ancillaryData: searchParams.get("ancillaryData") ?? ancillaryData,
-    timestamp: Number(searchParams.get("timestamp")) || timestamp,
+    chainId,
+    requester,
+    identifier,
+    ancillaryData,
+    timestamp: timestamp ? Number(timestamp) : undefined,
     requestTxHash: requestTx,
   });
 
