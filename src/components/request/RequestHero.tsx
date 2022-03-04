@@ -18,6 +18,7 @@ import { CHAINS, ChainId } from "constants/blockchain";
 import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
 import alertIcon from "assets/alert-icon.svg";
+import { formatRequestTitle } from "helpers/format";
 
 interface Props {
   chainId: ChainId;
@@ -32,15 +33,20 @@ const RequestHero: FC<Props> = ({ chainId }) => {
     chainName = CHAINS[chainId].name;
   }
   const { oracle, state } = useClient();
-  const { requestState, parsedIdentifier, requestTx, exploreRequestTx } =
-    useReader(state);
+  const {
+    requestState,
+    requestTx,
+    exploreRequestTx,
+    identifier,
+    ancillaryData,
+  } = useReader(state);
 
   return (
     <HeroSection>
       <HeroContentWrapper>
         <HeroHeaderRow>
           <HeaderTitle>
-            {parsedIdentifier || "Optimistic Oracle Request"}
+            {formatRequestTitle({ identifier, ancillaryData })}
             {requestTx && (
               <RequestTxText>
                 Request:{" "}
