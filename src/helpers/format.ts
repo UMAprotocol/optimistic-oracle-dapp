@@ -2,6 +2,10 @@ import { ethers } from "ethers";
 
 export const prettyFormatNumber = Intl.NumberFormat("en-US").format;
 
+// maximum length for a yes/no query ancillary question title
+export const MAX_TITLE_LENGTH = 55;
+export const DEFAULT_REQUEST_TITLE = "Optimistic Oracle Request";
+
 export class Explorer {
   constructor(private base: string) {}
   tx = (hash: string): string => {
@@ -28,10 +32,23 @@ export function parseIdentifier(identifier: string | null | undefined) {
     .replace(/[^\x20-\x7E]+/g, "");
 }
 
+export function parseAncillaryData(ancillaryData: string) {
+  return ethers.utils.toUtf8String(ancillaryData);
+}
+
+export function validateYesNoQueryString(parsedAncillaryData: string) {
+  return (
+    parsedAncillaryData.includes("title: ") &&
+    parsedAncillaryData.includes("description: ")
+  );
+}
+
 // String has a particular format that includes break points like q: title: description:
 // Split the string based on these common parts of query strings.
-
-export function formatYesNoQueryString(str: string) {
+export function formatYesNoQueryString(
+  str: string,
+  maxLength = MAX_TITLE_LENGTH
+) {
   // Split the string before title:
   const splitOne = str.split("title: ")[1];
 
@@ -42,9 +59,45 @@ export function formatYesNoQueryString(str: string) {
   const formatted = title.substring(0, title.length - 2);
 
   // Return only the first 55 characters
-  if (formatted.length > 55) {
-    return `${formatted.substring(0, 56)}...`;
+  if (formatted.length > maxLength) {
+    return `${formatted.substring(0, maxLength + 1)}...`;
   } else {
     return formatted;
   }
+}
+
+interface FormatRequestTitleParams {
+  identifier?: string;
+  ancillaryData?: string;
+  maxTitleLength?: number;
+  defaultTitle?: string;
+}
+
+export function formatRequestTitle(params: FormatRequestTitleParams) {
+  const {
+    identifier,
+    ancillaryData,
+    maxTitleLength = MAX_TITLE_LENGTH,
+    defaultTitle = DEFAULT_REQUEST_TITLE,
+  } = params;
+  let title = defaultTitle;
+  try {
+    const parsedIdentifier = identifier
+      ? parseIdentifier(identifier)
+      : undefined;
+
+    if (parsedIdentifier) title = parsedIdentifier;
+
+    if (parsedIdentifier === "YES_OR_NO_QUERY") {
+      if (!ancillaryData) return parsedIdentifier;
+      const parsedAncillaryData = parseAncillaryData(ancillaryData);
+      if (!validateYesNoQueryString(parsedAncillaryData))
+        return parsedIdentifier;
+      return formatYesNoQueryString(parsedAncillaryData, maxTitleLength);
+    }
+    // add future parsers here
+  } catch (err) {
+    console.error("Error Formatting Request Title", err, params);
+  }
+  return title;
 }

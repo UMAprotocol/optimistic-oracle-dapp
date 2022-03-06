@@ -4,7 +4,7 @@ import { oracle } from "@uma/sdk";
 import { StyledLink, AlertLogo } from "./RequestsTable.styled";
 import { parseIdentifier } from "helpers/format";
 import { ethers } from "ethers";
-import { formatYesNoQueryString } from "helpers/format";
+import { formatRequestTitle } from "helpers/format";
 import alertIcon from "assets/alert-icon.svg";
 
 const headerCells: ICell[] = [
@@ -35,26 +35,7 @@ function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
 
   if (requests.length) {
     requests.forEach((req) => {
-      let identifier = "";
-      try {
-        identifier = parseIdentifier(req.identifier);
-        if (identifier === "YES_OR_NO_QUERY") {
-          try {
-            identifier = formatYesNoQueryString(
-              ethers.utils.toUtf8String(req.ancillaryData)
-            );
-          } catch (err: any) {
-            console.error(
-              "error with formatYesNoQueryString call",
-              err.message
-            );
-          }
-        }
-      } catch (err: any) {
-        identifier = req.identifier;
-        console.log("Error in parsing identifier", err.message);
-      }
-
+      const identifier = formatRequestTitle(req);
       const timestamp = DateTime.fromSeconds(Number(req.timestamp)).toFormat(
         "LLL. dd yyyy hh:mm:ss a"
       );
