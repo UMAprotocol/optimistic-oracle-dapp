@@ -15,7 +15,7 @@ const headerCells: ICell[] = [
   },
   {
     size: "sm",
-    value: "Timestamp",
+    value: "Request Timestamp",
     cellClassName: "other-header-cell",
   },
   {
