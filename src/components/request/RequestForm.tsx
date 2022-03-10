@@ -116,11 +116,24 @@ const RequestForm: FC = () => {
 
   useEffect(() => {
     if (flags.InsufficientBalance) {
-      setInputError("You don't have enough funds to approve the bond.");
+      if (flags.CanPropose) {
+        setInputError(
+          `You don't have enough ${collateralSymbol} to propose an answer.`
+        );
+      } else if (flags.CanDispute) {
+        setInputError(
+          `You don't have enough ${collateralSymbol} to dispute this proposal.`
+        );
+      }
     } else {
       setInputError("");
     }
-  }, [flags.InsufficientBalance]);
+  }, [
+    flags.InsufficientBalance,
+    collateralSymbol,
+    flags.CanPropose,
+    flags.CanDispute,
+  ]);
 
   const getDisputeButtonProps = () => {
     // setInputError("");
