@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { ICell, IRow } from "../table/Table";
-import { DateTime } from "luxon";
 import { ethers } from "ethers";
 import { CHAINS, ChainId } from "constants/blockchain";
-import { parseIdentifier } from "helpers/format";
+import { parseIdentifier, formatTime } from "helpers/format";
 
 const hc: ICell[] = [
   {
@@ -149,11 +148,7 @@ function useRequestTableData({
         },
         {
           size: "lg",
-          value: timestamp
-            ? `${DateTime.fromSeconds(timestamp).toFormat(
-                "LLL. dd yyyy hh:mm:ss"
-              )} (${timestamp})`
-            : "",
+          value: timestamp ? `${formatTime(timestamp)} (${timestamp})` : "",
         },
       ],
     });
