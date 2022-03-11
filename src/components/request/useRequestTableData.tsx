@@ -141,7 +141,7 @@ function useRequestTableData({
         },
         {
           size: "sm",
-          value: "timestamp",
+          value: "request timestamp",
         },
         {
           size: "sm",
