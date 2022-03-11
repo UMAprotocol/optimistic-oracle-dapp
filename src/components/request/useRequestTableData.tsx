@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { ICell, IRow } from "../table/Table";
 import { ethers } from "ethers";
 import { CHAINS, ChainId } from "constants/blockchain";
-import { parseIdentifier, formatTime } from "helpers/format";
+import { parseIdentifier, formatTime, formatDate } from "helpers/format";
 
 const hc: ICell[] = [
   {
@@ -148,7 +148,15 @@ function useRequestTableData({
         },
         {
           size: "lg",
-          value: timestamp ? `${formatTime(timestamp)} (${timestamp})` : "",
+          value: timestamp ? (
+            <div>
+              {formatDate(timestamp)}
+              <br />
+              {formatTime(timestamp)} ({timestamp})
+            </div>
+          ) : (
+            ""
+          ),
         },
       ],
     });

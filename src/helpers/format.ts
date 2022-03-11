@@ -103,6 +103,9 @@ export function formatRequestTitle(params: FormatRequestTitleParams) {
   return title;
 }
 
+export function formatDate(timestamp: number | string) {
+  return DateTime.fromSeconds(Number(timestamp)).toFormat("LLL. dd yyyy");
+}
 export function formatTime(timestamp: number | string) {
-  return DateTime.fromSeconds(Number(timestamp)).toFormat("LLL. dd yyyy ttt");
+  return DateTime.fromSeconds(Number(timestamp)).toFormat("ttt");
 }

@@ -3,7 +3,7 @@ import { oracle } from "@uma/sdk";
 import { StyledLink, AlertLogo } from "./RequestsTable.styled";
 import { parseIdentifier } from "helpers/format";
 import { ethers } from "ethers";
-import { formatRequestTitle, formatTime } from "helpers/format";
+import { formatRequestTitle, formatTime, formatDate } from "helpers/format";
 import alertIcon from "assets/alert-icon.svg";
 
 const headerCells: ICell[] = [
@@ -35,7 +35,13 @@ function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
   if (requests.length) {
     requests.forEach((req) => {
       const identifier = formatRequestTitle(req);
-      const timestamp = formatTime(req.timestamp);
+      const timestamp = req.timestamp ? (
+        <div>
+          {formatDate(req.timestamp)}
+          <br />
+          {formatTime(req.timestamp)}
+        </div>
+      ) : undefined;
 
       let requestState: any = "Invalid";
       if (req.state === oracle.types.state.RequestState.Requested)
