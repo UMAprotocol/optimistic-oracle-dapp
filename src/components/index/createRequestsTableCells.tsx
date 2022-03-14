@@ -53,7 +53,7 @@ function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
       if (req.state === oracle.types.state.RequestState.Disputed)
         requestState = (
           <span>
-            <AlertLogo src={alertIcon} alt="alert_icon" /> Disput{" "}
+            <AlertLogo src={alertIcon} alt="alert_icon" /> Dispute{" "}
           </span>
         );
       if (req.state === oracle.types.state.RequestState.Settled)
