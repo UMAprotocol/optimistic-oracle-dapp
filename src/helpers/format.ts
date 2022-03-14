@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import { DateTime } from "luxon";
 
 export const prettyFormatNumber = Intl.NumberFormat("en-US").format;
 
@@ -100,4 +101,11 @@ export function formatRequestTitle(params: FormatRequestTitleParams) {
     console.error("Error Formatting Request Title", err, params);
   }
   return title;
+}
+
+export function formatDate(timestamp: number | string) {
+  return DateTime.fromSeconds(Number(timestamp)).toFormat("LLL. dd yyyy");
+}
+export function formatTime(timestamp: number | string) {
+  return DateTime.fromSeconds(Number(timestamp)).toFormat("ttt");
 }
