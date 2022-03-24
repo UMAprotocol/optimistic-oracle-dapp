@@ -8,6 +8,7 @@ import {
 
 import createRequestsTableCells from "./createRequestsTableCells";
 import { RequestIndexes } from "@uma/sdk/dist/types/oracle/types/state";
+
 interface Props {
   requests: RequestIndexes;
 }

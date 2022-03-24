@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Wrapper,
   Header,
@@ -16,8 +16,10 @@ import RequestsTable from "./RequestsTable";
 import ooLogo from "assets/uma-oo-logo-redcirclebg.svg";
 import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
+import { RequestState } from "constants/blockchain";
+import { RequestIndex } from "@uma/sdk/dist/types/oracle/types/state";
 
-enum Selected {
+enum Filter {
   DEFAULT,
   REQUESTS,
   PROPOSED,
@@ -26,10 +28,47 @@ enum Selected {
 }
 
 const Index = () => {
-  const [filter, setFilter] = useState<Selected>(Selected.DEFAULT);
+  const [filter, setFilter] = useState<Filter>(Filter.DEFAULT);
   const { state } = useClient();
   const { descendingRequests } = useReader(state);
+  const [filteredRequests, setFilteredRequests] = useState(descendingRequests);
 
+  useEffect(() => {
+    // Default state, IE: filter = Filter.DEFAULT
+    let filterFunc = (x: RequestIndex) => {
+      return (
+        x.state === RequestState.Requested ||
+        x.state === RequestState.Proposed ||
+        x.state === RequestState.Disputed
+      );
+    };
+    if (filter === Filter.DEFAULT) {
+      filterFunc = (x: RequestIndex) => {
+        return (
+          x.state === RequestState.Requested ||
+          x.state === RequestState.Proposed ||
+          x.state === RequestState.Disputed
+        );
+      };
+    }
+    if (filter === Filter.PROPOSED) {
+      filterFunc = (x: RequestIndex) => {
+        return x.state === RequestState.Proposed;
+      };
+    }
+    if (filter === Filter.REQUESTS) {
+      filterFunc = (x: RequestIndex) => {
+        return x.state === RequestState.Requested;
+      };
+    }
+    if (filter === Filter.DISPUTED) {
+      filterFunc = (x: RequestIndex) => {
+        return x.state === RequestState.Disputed;
+      };
+    }
+    const fr = descendingRequests.filter(filterFunc);
+    setFilteredRequests(fr);
+  }, [filter, descendingRequests]);
   return (
     <Wrapper>
       <Header>
@@ -42,26 +81,26 @@ const Index = () => {
       <FilterWrapper>
         <FilterButtonRow>
           <FilterButton
-            variant={filter === Selected.DEFAULT ? "primary" : "outline"}
-            onClick={() => setFilter(Selected.DEFAULT)}
+            variant={filter === Filter.DEFAULT ? "primary" : "outline"}
+            onClick={() => setFilter(Filter.DEFAULT)}
           >
             <div>All</div> <div>1000</div>
           </FilterButton>
           <FilterButton
-            variant={filter === Selected.REQUESTS ? "primary" : "outline"}
-            onClick={() => setFilter(Selected.REQUESTS)}
+            variant={filter === Filter.REQUESTS ? "primary" : "outline"}
+            onClick={() => setFilter(Filter.REQUESTS)}
           >
             <div>Requests </div> <div>500</div>
           </FilterButton>
           <FilterButton
-            variant={filter === Selected.PROPOSED ? "primary" : "outline"}
-            onClick={() => setFilter(Selected.PROPOSED)}
+            variant={filter === Filter.PROPOSED ? "primary" : "outline"}
+            onClick={() => setFilter(Filter.PROPOSED)}
           >
             <div>Proposed </div> <div>300</div>
           </FilterButton>
           <FilterButton
-            variant={filter === Selected.DISPUTED ? "primary" : "outline"}
-            onClick={() => setFilter(Selected.DISPUTED)}
+            variant={filter === Filter.DISPUTED ? "primary" : "outline"}
+            onClick={() => setFilter(Filter.DISPUTED)}
           >
             <div>Disputed </div> <div>200</div>
           </FilterButton>
@@ -74,7 +113,7 @@ const Index = () => {
       </FilterWrapper>
       <Body>
         <TableRow>
-          <RequestsTable requests={descendingRequests} />
+          <RequestsTable requests={filteredRequests} />
         </TableRow>
       </Body>
     </Wrapper>
