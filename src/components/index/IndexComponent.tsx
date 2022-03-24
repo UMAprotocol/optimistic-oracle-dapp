@@ -7,7 +7,8 @@ import {
   Body,
   TableRow,
   Logo,
-  FilterButtonWrapper,
+  FilterButtonRow,
+  FilterButton,
 } from "./Index.styled";
 import RequestsTable from "./RequestsTable";
 import ooLogo from "assets/uma-oo-logo-redcirclebg.svg";
@@ -28,12 +29,20 @@ const Index = () => {
           <HeaderTitleText> Requests &amp; Proposals </HeaderTitleText>{" "}
         </HeaderTitle>
       </Header>
-      <FilterButtonWrapper>
-        <Button>All</Button>
-        <Button variant="outline">Requests</Button>
-        <Button variant="outline">Proposed</Button>
-        <Button variant="outline">Disputed</Button>
-      </FilterButtonWrapper>
+      <FilterButtonRow>
+        <FilterButton>
+          <div>All</div> <div>1000</div>
+        </FilterButton>
+        <FilterButton variant="outline">
+          <div>Requests </div> <div>500</div>
+        </FilterButton>
+        <FilterButton variant="outline">
+          <div>Proposed </div> <div>300</div>
+        </FilterButton>
+        <FilterButton variant="outline">
+          <div>Disputed </div> <div>200</div>
+        </FilterButton>
+      </FilterButtonRow>
       <Body>
         <TableRow>
           <RequestsTable requests={descendingRequests} />
