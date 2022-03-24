@@ -49,4 +49,13 @@ export const Logo = styled.img`
 export const FilterButtonWrapper = styled.div`
   display: flex;
   width: 100%;
+  margin-top: 1rem;
+  max-width: 1325px;
+  margin: 1rem auto;
+  > button {
+    width: 100px;
+    margin: 0 4px;
+    height: 30px;
+    line-height: 0px;
+  }
 `;
