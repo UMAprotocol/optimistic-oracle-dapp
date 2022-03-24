@@ -6,14 +6,13 @@ import {
   StyledRow,
 } from "./RequestsTable.styled";
 
-import useClient from "hooks/useOracleClient";
-import useReader from "hooks/useOracleReader";
 import createRequestsTableCells from "./createRequestsTableCells";
-
-const RequestsTable = () => {
-  const { state } = useClient();
-  const { descendingRequests } = useReader(state);
-  const { headerCells, rows } = createRequestsTableCells(descendingRequests);
+import { RequestIndexes } from "@uma/sdk/dist/types/oracle/types/state";
+interface Props {
+  requests: RequestIndexes;
+}
+const RequestsTable: React.FC<Props> = ({ requests }) => {
+  const { headerCells, rows } = createRequestsTableCells(requests);
 
   return (
     <StyledTableWrapper>

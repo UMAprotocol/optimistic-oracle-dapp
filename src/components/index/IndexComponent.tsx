@@ -7,11 +7,17 @@ import {
   Body,
   TableRow,
   Logo,
+  FilterButtonWrapper,
 } from "./Index.styled";
 import RequestsTable from "./RequestsTable";
 import ooLogo from "assets/uma-oo-logo-redcirclebg.svg";
+import useClient from "hooks/useOracleClient";
+import useReader from "hooks/useOracleReader";
 
 const Index = () => {
+  const { state } = useClient();
+  const { descendingRequests } = useReader(state);
+
   return (
     <Wrapper>
       <Header>
@@ -21,9 +27,10 @@ const Index = () => {
           <HeaderTitleText> Requests &amp; Proposals </HeaderTitleText>{" "}
         </HeaderTitle>
       </Header>
+      <FilterButtonWrapper></FilterButtonWrapper>
       <Body>
         <TableRow>
-          <RequestsTable />
+          <RequestsTable requests={descendingRequests} />
         </TableRow>
       </Body>
     </Wrapper>

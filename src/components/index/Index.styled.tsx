@@ -45,3 +45,8 @@ export const Logo = styled.img`
   margin-left: 8px;
   height: 45px;
 `;
+
+export const FilterButtonWrapper = styled.div`
+  display: flex;
+  width: 100%;
+`;
