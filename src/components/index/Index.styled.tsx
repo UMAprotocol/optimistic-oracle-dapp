@@ -64,4 +64,11 @@ export const FilterButton = styled(Button)`
   > div {
     line-height: 0;
   }
+  &:last-of-type {
+    margin-left: auto;
+    width: 200px;
+    input {
+      margin-top: -6px;
+    }
+  }
 `;

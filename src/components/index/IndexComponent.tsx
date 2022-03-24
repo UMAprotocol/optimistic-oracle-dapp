@@ -14,7 +14,6 @@ import RequestsTable from "./RequestsTable";
 import ooLogo from "assets/uma-oo-logo-redcirclebg.svg";
 import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
-import Button from "components/button";
 
 const Index = () => {
   const { state } = useClient();
@@ -41,6 +40,11 @@ const Index = () => {
         </FilterButton>
         <FilterButton variant="outline">
           <div>Disputed </div> <div>200</div>
+        </FilterButton>
+        <FilterButton variant="base">
+          <input type="checkbox" />
+          <div>Show Answered</div>
+          <div>1200</div>
         </FilterButton>
       </FilterButtonRow>
       <Body>
