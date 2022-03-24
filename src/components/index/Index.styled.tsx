@@ -46,29 +46,36 @@ export const Logo = styled.img`
   height: 45px;
 `;
 
+export const FilterWrapper = styled.div`
+  background-color: #fff;
+  padding: 1.5rem 0 1rem;
+`;
+
 export const FilterButtonRow = styled.div`
   display: flex;
   width: 100%;
   margin-top: 1rem;
   max-width: 1325px;
-  margin: 1rem auto;
+  margin: 0 auto;
 `;
 
 export const FilterButton = styled(Button)`
   width: 140px;
   margin: 0 4px;
-  height: 30px;
+  height: 36px;
   line-height: 0px;
   display: flex;
   justify-content: space-between;
   > div {
-    line-height: 0;
+    line-height: 4px;
   }
   &:last-of-type {
+    background-color: #f5f4f4;
+    color: #272528;
     margin-left: auto;
     width: 200px;
     input {
-      margin-top: -6px;
+      margin-top: -4px;
     }
   }
 `;
