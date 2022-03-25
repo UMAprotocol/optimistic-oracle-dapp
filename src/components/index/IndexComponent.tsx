@@ -33,9 +33,20 @@ const Index = () => {
   const { descendingRequests } = useReader(state);
   const [filteredRequests, setFilteredRequests] = useState(descendingRequests);
   const [checked, setChecked] = useState<boolean>(false);
+  const [numAll, setNumAll] = useState(0);
+  const [numProposed, setNumProposed] = useState(0);
+  const [numRequested, setNumRequested] = useState(0);
+  const [numDisputed, setNumDisputed] = useState(0);
+  const [numAnswered, setNumAnswered] = useState(0);
+
   useEffect(() => {
     // Default state, IE: filter = Filter.DEFAULT
     let filterFunc = ALL_FILTER;
+    setNumAll(descendingRequests.filter(ALL_FILTER).length);
+    setNumRequested(descendingRequests.filter(REQUEST_FILTER).length);
+    setNumProposed(descendingRequests.filter(PROPOSED_FILTER).length);
+    setNumDisputed(descendingRequests.filter(DISPUTE_FILTER).length);
+    setNumAnswered(descendingRequests.filter(ANSWERED_FILTER).length);
     if (!checked) {
       if (filter === Filter.PROPOSED) {
         filterFunc = PROPOSED_FILTER;
@@ -52,7 +63,16 @@ const Index = () => {
 
     const fr = descendingRequests.filter(filterFunc);
     setFilteredRequests(fr);
-  }, [filter, descendingRequests, checked]);
+  }, [
+    filter,
+    descendingRequests,
+    checked,
+    setNumAll,
+    setNumRequested,
+    setNumProposed,
+    setNumDisputed,
+    setNumAnswered,
+  ]);
 
   return (
     <Wrapper>
@@ -69,29 +89,25 @@ const Index = () => {
             variant={filter === Filter.DEFAULT ? "primary" : "outline"}
             onClick={() => setFilter(Filter.DEFAULT)}
           >
-            <div>All</div>{" "}
-            <div>{descendingRequests.filter(ALL_FILTER).length}</div>
+            <div>All</div> <div>{numAll}</div>
           </FilterButton>
           <FilterButton
             variant={filter === Filter.REQUESTS ? "primary" : "outline"}
             onClick={() => setFilter(Filter.REQUESTS)}
           >
-            <div>Requests </div>{" "}
-            <div>{descendingRequests.filter(REQUEST_FILTER).length}</div>
+            <div>Requests </div> <div>{numRequested}</div>
           </FilterButton>
           <FilterButton
             variant={filter === Filter.PROPOSED ? "primary" : "outline"}
             onClick={() => setFilter(Filter.PROPOSED)}
           >
-            <div>Proposed </div>{" "}
-            <div>{descendingRequests.filter(PROPOSED_FILTER).length}</div>
+            <div>Proposed </div> <div>{numProposed}</div>
           </FilterButton>
           <FilterButton
             variant={filter === Filter.DISPUTED ? "primary" : "outline"}
             onClick={() => setFilter(Filter.DISPUTED)}
           >
-            <div>Disputed </div>{" "}
-            <div>{descendingRequests.filter(DISPUTE_FILTER).length}</div>
+            <div>Disputed </div> <div>{numDisputed}</div>
           </FilterButton>
           <FilterButton variant="base">
             <input
@@ -99,7 +115,7 @@ const Index = () => {
               onChange={(event) => setChecked(event.target.checked)}
             />
             <div>Show Answered</div>
-            <div>{descendingRequests.filter(ANSWERED_FILTER).length}</div>
+            <div>{numAnswered}</div>
           </FilterButton>
         </FilterButtonRow>
       </FilterWrapper>
