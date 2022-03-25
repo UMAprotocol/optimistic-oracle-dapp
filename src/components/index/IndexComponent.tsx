@@ -117,8 +117,12 @@ const Index = () => {
               {numDisputed}
             </FilterNumbers>
           </FilterButton>
-          <FilterButton variant="base">
+          <FilterButton
+            onClick={() => setChecked((prevValue) => !prevValue)}
+            variant="base"
+          >
             <input
+              checked={checked}
               type="checkbox"
               onChange={(event) => setChecked(event.target.checked)}
             />
