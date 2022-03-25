@@ -32,22 +32,28 @@ const Index = () => {
   const { state } = useClient();
   const { descendingRequests } = useReader(state);
   const [filteredRequests, setFilteredRequests] = useState(descendingRequests);
-
+  const [checked, setChecked] = useState<boolean>(false);
   useEffect(() => {
     // Default state, IE: filter = Filter.DEFAULT
     let filterFunc = ALL_FILTER;
-    if (filter === Filter.PROPOSED) {
-      filterFunc = PROPOSED_FILTER;
+    if (!checked) {
+      if (filter === Filter.PROPOSED) {
+        filterFunc = PROPOSED_FILTER;
+      }
+      if (filter === Filter.REQUESTS) {
+        filterFunc = REQUEST_FILTER;
+      }
+      if (filter === Filter.DISPUTED) {
+        filterFunc = DISPUTE_FILTER;
+      }
+    } else {
+      filterFunc = ANSWERED_FILTER;
     }
-    if (filter === Filter.REQUESTS) {
-      filterFunc = REQUEST_FILTER;
-    }
-    if (filter === Filter.DISPUTED) {
-      filterFunc = DISPUTE_FILTER;
-    }
+
     const fr = descendingRequests.filter(filterFunc);
     setFilteredRequests(fr);
-  }, [filter, descendingRequests]);
+  }, [filter, descendingRequests, checked]);
+
   return (
     <Wrapper>
       <Header>
@@ -88,9 +94,12 @@ const Index = () => {
             <div>{descendingRequests.filter(DISPUTE_FILTER).length}</div>
           </FilterButton>
           <FilterButton variant="base">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              onChange={(event) => setChecked(event.target.checked)}
+            />
             <div>Show Answered</div>
-            <div>1200</div>
+            <div>{descendingRequests.filter(ANSWERED_FILTER).length}</div>
           </FilterButton>
         </FilterButtonRow>
       </FilterWrapper>
@@ -121,6 +130,10 @@ function REQUEST_FILTER(x: RequestIndex) {
 
 function DISPUTE_FILTER(x: RequestIndex) {
   return x.state === RequestState.Disputed || x.state === RequestState.Resolved;
+}
+
+function ANSWERED_FILTER(x: RequestIndex) {
+  return x.state === RequestState.Settled;
 }
 
 export default Index;
