@@ -84,25 +84,58 @@ const Index = () => {
             variant={filter === Filter.DEFAULT ? "primary" : "outline"}
             onClick={() => setFilter(Filter.DEFAULT)}
           >
-            <div>All</div> <div>1000</div>
+            <div>All</div>{" "}
+            <div>
+              {
+                descendingRequests.filter(
+                  (x) =>
+                    x.state === RequestState.Requested ||
+                    x.state === RequestState.Proposed ||
+                    x.state === RequestState.Disputed
+                ).length
+              }
+            </div>
           </FilterButton>
           <FilterButton
             variant={filter === Filter.REQUESTS ? "primary" : "outline"}
             onClick={() => setFilter(Filter.REQUESTS)}
           >
-            <div>Requests </div> <div>500</div>
+            <div>Requests </div>{" "}
+            <div>
+              {
+                descendingRequests.filter(
+                  (x) => x.state === RequestState.Requested
+                ).length
+              }
+            </div>
           </FilterButton>
           <FilterButton
             variant={filter === Filter.PROPOSED ? "primary" : "outline"}
             onClick={() => setFilter(Filter.PROPOSED)}
           >
-            <div>Proposed </div> <div>300</div>
+            <div>Proposed </div>{" "}
+            <div>
+              {
+                descendingRequests.filter(
+                  (x) => x.state === RequestState.Proposed
+                ).length
+              }
+            </div>
           </FilterButton>
           <FilterButton
             variant={filter === Filter.DISPUTED ? "primary" : "outline"}
             onClick={() => setFilter(Filter.DISPUTED)}
           >
-            <div>Disputed </div> <div>200</div>
+            <div>Disputed </div>{" "}
+            <div>
+              {
+                descendingRequests.filter(
+                  (x) =>
+                    x.state === RequestState.Disputed ||
+                    x.state === RequestState.Resolved
+                ).length
+              }
+            </div>
           </FilterButton>
           <FilterButton variant="base">
             <input type="checkbox" />
