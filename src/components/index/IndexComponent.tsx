@@ -35,36 +35,15 @@ const Index = () => {
 
   useEffect(() => {
     // Default state, IE: filter = Filter.DEFAULT
-    let filterFunc = (x: RequestIndex) => {
-      return (
-        x.state === RequestState.Requested ||
-        x.state === RequestState.Proposed ||
-        x.state === RequestState.Disputed
-      );
-    };
-    if (filter === Filter.DEFAULT) {
-      filterFunc = (x: RequestIndex) => {
-        return (
-          x.state === RequestState.Requested ||
-          x.state === RequestState.Proposed ||
-          x.state === RequestState.Disputed
-        );
-      };
-    }
+    let filterFunc = ALL_FILTER;
     if (filter === Filter.PROPOSED) {
-      filterFunc = (x: RequestIndex) => {
-        return x.state === RequestState.Proposed;
-      };
+      filterFunc = PROPOSED_FILTER;
     }
     if (filter === Filter.REQUESTS) {
-      filterFunc = (x: RequestIndex) => {
-        return x.state === RequestState.Requested;
-      };
+      filterFunc = REQUEST_FILTER;
     }
     if (filter === Filter.DISPUTED) {
-      filterFunc = (x: RequestIndex) => {
-        return x.state === RequestState.Disputed;
-      };
+      filterFunc = DISPUTE_FILTER;
     }
     const fr = descendingRequests.filter(filterFunc);
     setFilteredRequests(fr);
@@ -85,57 +64,28 @@ const Index = () => {
             onClick={() => setFilter(Filter.DEFAULT)}
           >
             <div>All</div>{" "}
-            <div>
-              {
-                descendingRequests.filter(
-                  (x) =>
-                    x.state === RequestState.Requested ||
-                    x.state === RequestState.Proposed ||
-                    x.state === RequestState.Disputed
-                ).length
-              }
-            </div>
+            <div>{descendingRequests.filter(ALL_FILTER).length}</div>
           </FilterButton>
           <FilterButton
             variant={filter === Filter.REQUESTS ? "primary" : "outline"}
             onClick={() => setFilter(Filter.REQUESTS)}
           >
             <div>Requests </div>{" "}
-            <div>
-              {
-                descendingRequests.filter(
-                  (x) => x.state === RequestState.Requested
-                ).length
-              }
-            </div>
+            <div>{descendingRequests.filter(REQUEST_FILTER).length}</div>
           </FilterButton>
           <FilterButton
             variant={filter === Filter.PROPOSED ? "primary" : "outline"}
             onClick={() => setFilter(Filter.PROPOSED)}
           >
             <div>Proposed </div>{" "}
-            <div>
-              {
-                descendingRequests.filter(
-                  (x) => x.state === RequestState.Proposed
-                ).length
-              }
-            </div>
+            <div>{descendingRequests.filter(PROPOSED_FILTER).length}</div>
           </FilterButton>
           <FilterButton
             variant={filter === Filter.DISPUTED ? "primary" : "outline"}
             onClick={() => setFilter(Filter.DISPUTED)}
           >
             <div>Disputed </div>{" "}
-            <div>
-              {
-                descendingRequests.filter(
-                  (x) =>
-                    x.state === RequestState.Disputed ||
-                    x.state === RequestState.Resolved
-                ).length
-              }
-            </div>
+            <div>{descendingRequests.filter(DISPUTE_FILTER).length}</div>
           </FilterButton>
           <FilterButton variant="base">
             <input type="checkbox" />
@@ -152,5 +102,25 @@ const Index = () => {
     </Wrapper>
   );
 };
+
+function ALL_FILTER(x: RequestIndex) {
+  return (
+    x.state === RequestState.Requested ||
+    x.state === RequestState.Proposed ||
+    x.state === RequestState.Disputed
+  );
+}
+
+function PROPOSED_FILTER(x: RequestIndex) {
+  return x.state === RequestState.Proposed;
+}
+
+function REQUEST_FILTER(x: RequestIndex) {
+  return x.state === RequestState.Requested;
+}
+
+function DISPUTE_FILTER(x: RequestIndex) {
+  return x.state === RequestState.Disputed || x.state === RequestState.Resolved;
+}
 
 export default Index;
