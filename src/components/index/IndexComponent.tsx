@@ -42,11 +42,7 @@ const Index = () => {
   useEffect(() => {
     // Default state, IE: filter = Filter.DEFAULT
     let filterFunc = ALL_FILTER;
-    setNumAll(descendingRequests.filter(ALL_FILTER).length);
-    setNumRequested(descendingRequests.filter(REQUEST_FILTER).length);
-    setNumProposed(descendingRequests.filter(PROPOSED_FILTER).length);
-    setNumDisputed(descendingRequests.filter(DISPUTE_FILTER).length);
-    setNumAnswered(descendingRequests.filter(ANSWERED_FILTER).length);
+
     if (!checked) {
       if (filter === Filter.PROPOSED) {
         filterFunc = PROPOSED_FILTER;
@@ -63,16 +59,15 @@ const Index = () => {
 
     const fr = descendingRequests.filter(filterFunc);
     setFilteredRequests(fr);
-  }, [
-    filter,
-    descendingRequests,
-    checked,
-    setNumAll,
-    setNumRequested,
-    setNumProposed,
-    setNumDisputed,
-    setNumAnswered,
-  ]);
+  }, [filter, descendingRequests, checked]);
+
+  useEffect(() => {
+    setNumAll(descendingRequests.filter(ALL_FILTER).length);
+    setNumRequested(descendingRequests.filter(REQUEST_FILTER).length);
+    setNumProposed(descendingRequests.filter(PROPOSED_FILTER).length);
+    setNumDisputed(descendingRequests.filter(DISPUTE_FILTER).length);
+    setNumAnswered(descendingRequests.filter(ANSWERED_FILTER).length);
+  }, [descendingRequests]);
 
   return (
     <Wrapper>
