@@ -11,6 +11,7 @@ import {
   FilterButtonRow,
   FilterButton,
   FilterWrapper,
+  FilterNumbers,
 } from "./Index.styled";
 import RequestsTable from "./RequestsTable";
 import ooLogo from "assets/uma-oo-logo-redcirclebg.svg";
@@ -84,25 +85,37 @@ const Index = () => {
             variant={filter === Filter.DEFAULT ? "primary" : "outline"}
             onClick={() => setFilter(Filter.DEFAULT)}
           >
-            <div>All</div> <div>{numAll}</div>
+            <div>All</div>{" "}
+            <FilterNumbers selected={filter === Filter.DEFAULT}>
+              {numAll}
+            </FilterNumbers>
           </FilterButton>
           <FilterButton
             variant={filter === Filter.REQUESTS ? "primary" : "outline"}
             onClick={() => setFilter(Filter.REQUESTS)}
           >
-            <div>Requests </div> <div>{numRequested}</div>
+            <div>Requests </div>{" "}
+            <FilterNumbers selected={filter === Filter.REQUESTS}>
+              {numRequested}
+            </FilterNumbers>
           </FilterButton>
           <FilterButton
             variant={filter === Filter.PROPOSED ? "primary" : "outline"}
             onClick={() => setFilter(Filter.PROPOSED)}
           >
-            <div>Proposed </div> <div>{numProposed}</div>
+            <div>Proposed </div>{" "}
+            <FilterNumbers selected={filter === Filter.PROPOSED}>
+              {numProposed}
+            </FilterNumbers>
           </FilterButton>
           <FilterButton
             variant={filter === Filter.DISPUTED ? "primary" : "outline"}
             onClick={() => setFilter(Filter.DISPUTED)}
           >
-            <div>Disputed </div> <div>{numDisputed}</div>
+            <div>Disputed </div>{" "}
+            <FilterNumbers selected={filter === Filter.DISPUTED}>
+              {numDisputed}
+            </FilterNumbers>
           </FilterButton>
           <FilterButton variant="base">
             <input

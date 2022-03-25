@@ -66,6 +66,14 @@ export const FilterButton = styled(Button)`
   line-height: 0px;
   display: flex;
   justify-content: space-between;
+  border-color: ${(props) => {
+    if (props.variant === "primary") return "#FF4D4D";
+    if (props.variant === "outline") return "#F5F4F4";
+  }};
+  color: ${(props) => {
+    if (props.variant === "primary") return "#fff";
+    if (props.variant === "outline") return "#3E3C3F";
+  }};
   > div {
     line-height: 4px;
   }
@@ -78,4 +86,17 @@ export const FilterButton = styled(Button)`
       margin-top: -4px;
     }
   }
+`;
+
+interface IFilterNumbers {
+  selected?: boolean;
+}
+
+export const FilterNumbers = styled.div<IFilterNumbers>`
+  /* height: 16px; */
+  padding: 6px 8px;
+  margin-top: -6px;
+  border-radius: 4px;
+  background-color: ${(props) => (props.selected ? "#FE7677" : "#E1E1E0")};
+  color: ${(props) => (props.selected ? "#FEFEFF" : "#3E3C3F")};
 `;
