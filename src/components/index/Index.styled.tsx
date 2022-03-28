@@ -142,3 +142,7 @@ export const FilterNumbers = styled.div<IFilterNumbers>`
   background-color: ${(props) => (props.selected ? "#FE7677" : "#E1E1E0")};
   color: ${(props) => (props.selected ? "#FEFEFF" : "#3E3C3F")};
 `;
+
+export const ShowAnsweredText = styled.div`
+  margin-top: 4px;
+`;

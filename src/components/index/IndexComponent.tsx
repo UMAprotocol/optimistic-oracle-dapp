@@ -12,6 +12,7 @@ import {
   FilterButton,
   FilterWrapper,
   FilterNumbers,
+  ShowAnsweredText,
 } from "./Index.styled";
 import RequestsTable from "./RequestsTable";
 import ooLogo from "assets/uma-oo-logo-redcirclebg.svg";
@@ -130,8 +131,8 @@ const Index = () => {
               <span />
               <span />
             </span>
-            <div>Show Answered</div>
-            <div>{numAnswered}</div>
+            <ShowAnsweredText>Show Answered</ShowAnsweredText>
+            <ShowAnsweredText>{numAnswered}</ShowAnsweredText>
           </FilterButton>
         </FilterButtonRow>
       </FilterWrapper>
