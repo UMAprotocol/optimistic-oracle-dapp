@@ -4,6 +4,7 @@ export const Wrapper = styled.div`
   background-color: #efefef;
   height: 100%;
   padding-bottom: 1rem;
+  min-height: 90vh;
 `;
 
 export const Header = styled.div`
