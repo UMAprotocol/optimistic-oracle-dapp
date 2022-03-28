@@ -67,8 +67,8 @@ export const FilterButton = styled(Button)`
   display: flex;
   justify-content: space-between;
   background-color: ${(props) => {
-    if (props.variant === "primary") return " #FF4D4D";
-    if (props.variant === "outline") return " #f5f4f4";
+    if (props.variant === "primary") return "#FF4D4D";
+    if (props.variant === "outline") return "#f5f4f4";
   }};
 
   border-color: ${(props) => {
@@ -82,6 +82,9 @@ export const FilterButton = styled(Button)`
   > div {
     line-height: 4px;
   }
+  &:first-of-type {
+    margin-left: 16px;
+  }
   &:last-of-type {
     background-color: #f5f4f4;
     color: #272528;
@@ -91,6 +94,39 @@ export const FilterButton = styled(Button)`
       margin-top: -4px;
     }
     margin-right: 16px;
+    input[type="checkbox"] {
+      display: none;
+    }
+    input[type="checkbox"] + span {
+      display: inline-block;
+      position: relative;
+      width: 14px;
+      height: 14px;
+      margin: -1px 0px 0 0;
+      vertical-align: middle;
+      background: #f5f4f4 left top no-repeat;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      > span {
+        display: none;
+      }
+    }
+    input[type="checkbox"]:checked + span {
+      background: #0073cd -19px top no-repeat;
+      span:first-of-type {
+        position: absolute;
+        display: block;
+        left: 4px;
+        top: 0px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }
+    }
   }
 `;
 

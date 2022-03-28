@@ -126,6 +126,10 @@ const Index = () => {
               type="checkbox"
               onChange={(event) => setChecked(event.target.checked)}
             />
+            <span>
+              <span />
+              <span />
+            </span>
             <div>Show Answered</div>
             <div>{numAnswered}</div>
           </FilterButton>
