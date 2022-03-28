@@ -168,11 +168,7 @@ const Index = () => {
 };
 
 function ALL_FILTER(x: RequestIndex) {
-  return (
-    x.state === RequestState.Requested ||
-    x.state === RequestState.Proposed ||
-    x.state === RequestState.Disputed
-  );
+  return REQUEST_FILTER(x) || PROPOSED_FILTER(x) || DISPUTE_FILTER(x);
 }
 
 function PROPOSED_FILTER(x: RequestIndex) {
