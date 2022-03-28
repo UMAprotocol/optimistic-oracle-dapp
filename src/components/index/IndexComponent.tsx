@@ -30,7 +30,6 @@ enum Filter {
 }
 
 interface FilteredRequests {
-  // this is the initial object
   all: RequestIndex[];
   requested: RequestIndex[];
   proposed: RequestIndex[];
@@ -50,31 +49,8 @@ const Index = () => {
   const [filter, setFilter] = useState<Filter>(Filter.DEFAULT);
   const { state } = useClient();
   const { descendingRequests } = useReader(state);
-  const [filteredRequests, setFilteredRequests] = useState(descendingRequests);
-  const [fr, setFr] = useState(initialFR);
+  const [filteredRequests, setFilteredRequests] = useState(initialFR);
   const [checked, setChecked] = useState<boolean>(false);
-
-  useEffect(() => {
-    // Default state, IE: filter = Filter.DEFAULT
-    let filterFunc = ALL_FILTER;
-
-    if (!checked) {
-      if (filter === Filter.PROPOSED) {
-        filterFunc = PROPOSED_FILTER;
-      }
-      if (filter === Filter.REQUESTS) {
-        filterFunc = REQUEST_FILTER;
-      }
-      if (filter === Filter.DISPUTED) {
-        filterFunc = DISPUTE_FILTER;
-      }
-    } else {
-      filterFunc = ANSWERED_FILTER;
-    }
-
-    const fr = descendingRequests.filter(filterFunc);
-    setFilteredRequests(fr);
-  }, [filter, descendingRequests, checked]);
 
   useEffect(() => {
     const initial: FilteredRequests = {
@@ -104,8 +80,16 @@ const Index = () => {
       return result;
     }, initial);
 
-    setFr(nextFR);
+    setFilteredRequests(nextFR);
   }, [descendingRequests]);
+
+  function filterDescendingRequests(checked: boolean, filter: Filter) {
+    if (checked) return filteredRequests.answered;
+    if (filter === Filter.PROPOSED) return filteredRequests.proposed;
+    if (filter === Filter.REQUESTS) return filteredRequests.requested;
+    if (filter === Filter.DISPUTED) return filteredRequests.disputed;
+    return filteredRequests.all;
+  }
 
   return (
     <Wrapper>
@@ -124,7 +108,7 @@ const Index = () => {
           >
             <div>All</div>{" "}
             <FilterNumbers selected={filter === Filter.DEFAULT}>
-              {fr.all.length}
+              {filteredRequests.all.length}
             </FilterNumbers>
           </FilterButton>
           <FilterButton
@@ -133,7 +117,7 @@ const Index = () => {
           >
             <div>Requests </div>{" "}
             <FilterNumbers selected={filter === Filter.REQUESTS}>
-              {fr.requested.length}
+              {filteredRequests.requested.length}
             </FilterNumbers>
           </FilterButton>
           <FilterButton
@@ -142,7 +126,7 @@ const Index = () => {
           >
             <div>Proposed </div>{" "}
             <FilterNumbers selected={filter === Filter.PROPOSED}>
-              {fr.proposed.length}
+              {filteredRequests.proposed.length}
             </FilterNumbers>
           </FilterButton>
           <FilterButton
@@ -151,7 +135,7 @@ const Index = () => {
           >
             <div>Disputed </div>{" "}
             <FilterNumbers selected={filter === Filter.DISPUTED}>
-              {fr.disputed.length}
+              {filteredRequests.disputed.length}
             </FilterNumbers>
           </FilterButton>
           <FilterButton
@@ -168,13 +152,15 @@ const Index = () => {
               <span />
             </span>
             <ShowAnsweredText>Show Answered</ShowAnsweredText>
-            <ShowAnsweredText>{fr.answered.length}</ShowAnsweredText>
+            <ShowAnsweredText>
+              {filteredRequests.answered.length}
+            </ShowAnsweredText>
           </FilterButton>
         </FilterButtonRow>
       </FilterWrapper>
       <Body>
         <TableRow>
-          <RequestsTable requests={filteredRequests} />
+          <RequestsTable requests={filterDescendingRequests(checked, filter)} />
         </TableRow>
       </Body>
     </Wrapper>
