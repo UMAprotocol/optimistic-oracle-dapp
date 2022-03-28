@@ -56,7 +56,7 @@ export const FilterButtonRow = styled.div`
   display: flex;
   width: 100%;
   margin-top: 1rem;
-  max-width: 1325px;
+  max-width: 1220px;
   margin: 0 auto;
 `;
 
@@ -94,7 +94,7 @@ export const FilterButton = styled(Button)`
     input {
       margin-top: -4px;
     }
-    margin-right: 16px;
+    margin-right: 8px;
     input[type="checkbox"] {
       display: none;
     }
