@@ -67,6 +67,7 @@ export const FilterButton = styled(Button)`
   line-height: 0px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background-color: ${(props) => {
     if (props.variant === "primary") return "#FF4D4D";
     if (props.variant === "outline") return "#f5f4f4";
@@ -91,9 +92,6 @@ export const FilterButton = styled(Button)`
     color: #272528;
     margin-left: auto;
     width: 200px;
-    input {
-      margin-top: -4px;
-    }
     margin-right: 8px;
     input[type="checkbox"] {
       display: none;
@@ -103,7 +101,7 @@ export const FilterButton = styled(Button)`
       position: relative;
       width: 14px;
       height: 14px;
-      margin: -1px 0px 0 0;
+      margin: 5px 0px 0 0;
       vertical-align: middle;
       background: #f5f4f4 left top no-repeat;
       border: 1px solid #ccc;
@@ -138,7 +136,6 @@ interface IFilterNumbers {
 export const FilterNumbers = styled.div<IFilterNumbers>`
   /* height: 16px; */
   padding: 6px 8px;
-  margin-top: -6px;
   border-radius: 4px;
   background-color: ${(props) => (props.selected ? "#FE7677" : "#E1E1E0")};
   color: ${(props) => (props.selected ? "#FEFEFF" : "#3E3C3F")};
