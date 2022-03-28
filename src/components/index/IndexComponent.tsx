@@ -19,10 +19,7 @@ import ooLogo from "assets/uma-oo-logo-redcirclebg.svg";
 import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
 import { RequestState } from "constants/blockchain";
-import {
-  RequestIndex,
-  RequestIndexes,
-} from "@uma/sdk/dist/types/oracle/types/state";
+import { RequestIndex } from "@uma/sdk/dist/types/oracle/types/state";
 
 enum Filter {
   DEFAULT,
@@ -32,17 +29,30 @@ enum Filter {
   ANSWERED,
 }
 
+interface FilteredRequests {
+  // this is the initial object
+  all: RequestIndex[];
+  requested: RequestIndex[];
+  proposed: RequestIndex[];
+  disputed: RequestIndex[];
+  answered: RequestIndex[];
+}
+
+const initialFR: FilteredRequests = {
+  all: [],
+  requested: [],
+  proposed: [],
+  disputed: [],
+  answered: [],
+};
+
 const Index = () => {
   const [filter, setFilter] = useState<Filter>(Filter.DEFAULT);
   const { state } = useClient();
   const { descendingRequests } = useReader(state);
   const [filteredRequests, setFilteredRequests] = useState(descendingRequests);
+  const [fr, setFr] = useState(initialFR);
   const [checked, setChecked] = useState<boolean>(false);
-  const [numAll, setNumAll] = useState(0);
-  const [numProposed, setNumProposed] = useState(0);
-  const [numRequested, setNumRequested] = useState(0);
-  const [numDisputed, setNumDisputed] = useState(0);
-  const [numAnswered, setNumAnswered] = useState(0);
 
   useEffect(() => {
     // Default state, IE: filter = Filter.DEFAULT
@@ -67,40 +77,25 @@ const Index = () => {
   }, [filter, descendingRequests, checked]);
 
   useEffect(() => {
-    const filteredRequests = descendingRequests.reduce(
-      (result, request) => {
-        if (ALL_FILTER(request)) {
-          result.all.push(request);
-        }
-        if (REQUEST_FILTER(request)) {
-          result.requested.push(request);
-        }
-        if (DISPUTE_FILTER(request)) {
-          result.disputed.push(request);
-        }
-        if (PROPOSED_FILTER(request)) {
-          result.proposed.push(request);
-        }
-        if (ANSWERED_FILTER(request)) {
-          result.answered.push(request);
-        }
-        return result;
-      },
-      {
-        // this is the initial object
-        all: [] as RequestIndexes,
-        requested: [] as RequestIndexes,
-        proposed: [] as RequestIndexes,
-        disputed: [] as RequestIndexes,
-        answered: [] as RequestIndexes,
+    const filteredRequests = descendingRequests.reduce((result, request) => {
+      if (ALL_FILTER(request)) {
+        result.all.push(request);
       }
-    );
-
-    setNumAll(filteredRequests.all.length);
-    setNumRequested(filteredRequests.requested.length);
-    setNumProposed(filteredRequests.proposed.length);
-    setNumDisputed(filteredRequests.disputed.length);
-    setNumAnswered(filteredRequests.answered.length);
+      if (REQUEST_FILTER(request)) {
+        result.requested.push(request);
+      }
+      if (DISPUTE_FILTER(request)) {
+        result.disputed.push(request);
+      }
+      if (PROPOSED_FILTER(request)) {
+        result.proposed.push(request);
+      }
+      if (ANSWERED_FILTER(request)) {
+        result.answered.push(request);
+      }
+      return result;
+    }, initialFR);
+    setFr(filteredRequests);
   }, [descendingRequests]);
 
   return (
@@ -120,7 +115,7 @@ const Index = () => {
           >
             <div>All</div>{" "}
             <FilterNumbers selected={filter === Filter.DEFAULT}>
-              {numAll}
+              {fr.all.length}
             </FilterNumbers>
           </FilterButton>
           <FilterButton
@@ -129,7 +124,7 @@ const Index = () => {
           >
             <div>Requests </div>{" "}
             <FilterNumbers selected={filter === Filter.REQUESTS}>
-              {numRequested}
+              {fr.requested.length}
             </FilterNumbers>
           </FilterButton>
           <FilterButton
@@ -138,7 +133,7 @@ const Index = () => {
           >
             <div>Proposed </div>{" "}
             <FilterNumbers selected={filter === Filter.PROPOSED}>
-              {numProposed}
+              {fr.proposed.length}
             </FilterNumbers>
           </FilterButton>
           <FilterButton
@@ -147,7 +142,7 @@ const Index = () => {
           >
             <div>Disputed </div>{" "}
             <FilterNumbers selected={filter === Filter.DISPUTED}>
-              {numDisputed}
+              {fr.disputed.length}
             </FilterNumbers>
           </FilterButton>
           <FilterButton
@@ -164,7 +159,7 @@ const Index = () => {
               <span />
             </span>
             <ShowAnsweredText>Show Answered</ShowAnsweredText>
-            <ShowAnsweredText>{numAnswered}</ShowAnsweredText>
+            <ShowAnsweredText>{fr.answered.length}</ShowAnsweredText>
           </FilterButton>
         </FilterButtonRow>
       </FilterWrapper>
