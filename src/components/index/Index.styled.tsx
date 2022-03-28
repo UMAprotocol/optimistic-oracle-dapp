@@ -66,6 +66,11 @@ export const FilterButton = styled(Button)`
   line-height: 0px;
   display: flex;
   justify-content: space-between;
+  background-color: ${(props) => {
+    if (props.variant === "primary") return " #FF4D4D";
+    if (props.variant === "outline") return " #f5f4f4";
+  }};
+
   border-color: ${(props) => {
     if (props.variant === "primary") return "#FF4D4D";
     if (props.variant === "outline") return "#F5F4F4";
@@ -85,6 +90,7 @@ export const FilterButton = styled(Button)`
     input {
       margin-top: -4px;
     }
+    margin-right: 16px;
   }
 `;
 
