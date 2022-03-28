@@ -77,7 +77,15 @@ const Index = () => {
   }, [filter, descendingRequests, checked]);
 
   useEffect(() => {
-    const filteredRequests = descendingRequests.reduce((result, request) => {
+    const initial: FilteredRequests = {
+      all: [],
+      requested: [],
+      proposed: [],
+      disputed: [],
+      answered: [],
+    };
+
+    const nextFR = descendingRequests.reduce((result, request) => {
       if (ALL_FILTER(request)) {
         result.all.push(request);
       }
@@ -94,8 +102,9 @@ const Index = () => {
         result.answered.push(request);
       }
       return result;
-    }, initialFR);
-    setFr(filteredRequests);
+    }, initial);
+
+    setFr(nextFR);
   }, [descendingRequests]);
 
   return (

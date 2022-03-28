@@ -14,7 +14,6 @@ interface Props {
 }
 const RequestsTable: React.FC<Props> = ({ requests }) => {
   const { headerCells, rows } = createRequestsTableCells(requests);
-
   return (
     <StyledTableWrapper>
       <StyledHeadRow>
