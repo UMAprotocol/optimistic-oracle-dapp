@@ -19,7 +19,10 @@ import ooLogo from "assets/uma-oo-logo-redcirclebg.svg";
 import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
 import { RequestState } from "constants/blockchain";
-import { RequestIndex } from "@uma/sdk/dist/types/oracle/types/state";
+import {
+  RequestIndex,
+  RequestIndexes,
+} from "@uma/sdk/dist/types/oracle/types/state";
 
 enum Filter {
   DEFAULT,
@@ -64,11 +67,40 @@ const Index = () => {
   }, [filter, descendingRequests, checked]);
 
   useEffect(() => {
-    setNumAll(descendingRequests.filter(ALL_FILTER).length);
-    setNumRequested(descendingRequests.filter(REQUEST_FILTER).length);
-    setNumProposed(descendingRequests.filter(PROPOSED_FILTER).length);
-    setNumDisputed(descendingRequests.filter(DISPUTE_FILTER).length);
-    setNumAnswered(descendingRequests.filter(ANSWERED_FILTER).length);
+    const filteredRequests = descendingRequests.reduce(
+      (result, request) => {
+        if (ALL_FILTER(request)) {
+          result.all.push(request);
+        }
+        if (REQUEST_FILTER(request)) {
+          result.requested.push(request);
+        }
+        if (DISPUTE_FILTER(request)) {
+          result.disputed.push(request);
+        }
+        if (PROPOSED_FILTER(request)) {
+          result.proposed.push(request);
+        }
+        if (ANSWERED_FILTER(request)) {
+          result.answered.push(request);
+        }
+        return result;
+      },
+      {
+        // this is the initial object
+        all: [] as RequestIndexes,
+        requested: [] as RequestIndexes,
+        proposed: [] as RequestIndexes,
+        disputed: [] as RequestIndexes,
+        answered: [] as RequestIndexes,
+      }
+    );
+
+    setNumAll(filteredRequests.all.length);
+    setNumRequested(filteredRequests.requested.length);
+    setNumProposed(filteredRequests.proposed.length);
+    setNumDisputed(filteredRequests.disputed.length);
+    setNumAnswered(filteredRequests.answered.length);
   }, [descendingRequests]);
 
   return (
