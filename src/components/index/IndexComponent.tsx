@@ -153,7 +153,7 @@ const Index = () => {
             </span>
             <ShowAnsweredText>Show Answered</ShowAnsweredText>
             <ShowAnsweredText>
-              {filteredRequests.answered.length}
+              {addCommasOnly(filteredRequests.answered.length)}
             </ShowAnsweredText>
           </FilterButton>
         </FilterButtonRow>
