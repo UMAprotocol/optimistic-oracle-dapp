@@ -20,7 +20,7 @@ import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
 import { RequestState } from "constants/blockchain";
 import { RequestIndex } from "@uma/sdk/dist/types/oracle/types/state";
-
+import { addCommasOnly } from "utils/format";
 enum Filter {
   DEFAULT,
   REQUESTS,
@@ -108,7 +108,7 @@ const Index = () => {
           >
             <div>All</div>{" "}
             <FilterNumbers selected={filter === Filter.DEFAULT}>
-              {filteredRequests.all.length}
+              {addCommasOnly(filteredRequests.all.length)}
             </FilterNumbers>
           </FilterButton>
           <FilterButton
@@ -117,7 +117,7 @@ const Index = () => {
           >
             <div>Requests </div>{" "}
             <FilterNumbers selected={filter === Filter.REQUESTS}>
-              {filteredRequests.requested.length}
+              {addCommasOnly(filteredRequests.requested.length)}
             </FilterNumbers>
           </FilterButton>
           <FilterButton
@@ -126,7 +126,7 @@ const Index = () => {
           >
             <div>Proposed </div>{" "}
             <FilterNumbers selected={filter === Filter.PROPOSED}>
-              {filteredRequests.proposed.length}
+              {addCommasOnly(filteredRequests.proposed.length)}
             </FilterNumbers>
           </FilterButton>
           <FilterButton
@@ -135,7 +135,7 @@ const Index = () => {
           >
             <div>Disputed </div>{" "}
             <FilterNumbers selected={filter === Filter.DISPUTED}>
-              {filteredRequests.disputed.length}
+              {addCommasOnly(filteredRequests.disputed.length)}
             </FilterNumbers>
           </FilterButton>
           <FilterButton
