@@ -53,6 +53,7 @@ export const Wrapper = styled.header`
 export const MaxWidth = styled(MaxWidthWrapper)`
   display: flex;
   align-items: center;
+  padding: 0 45px;
 `;
 
 export const Navigation = styled.nav`

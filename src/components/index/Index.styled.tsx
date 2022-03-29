@@ -56,8 +56,9 @@ export const FilterButtonRow = styled.div`
   display: flex;
   width: 100%;
   margin-top: 1rem;
-  max-width: 1220px;
+  max-width: 1400px;
   margin: 0 auto;
+  padding: 0 2rem;
 `;
 
 export const FilterButton = styled(Button)`
