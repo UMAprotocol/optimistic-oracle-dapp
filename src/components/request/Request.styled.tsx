@@ -2,7 +2,9 @@ import styled from "@emotion/styled";
 import Button from "components/button";
 import Input from "components/input";
 
-export const Wrapper = styled.div``;
+export const Wrapper = styled.div`
+  min-height: 90vh;
+`;
 
 /* Table Components */
 
