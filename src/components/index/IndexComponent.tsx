@@ -84,7 +84,7 @@ const Index = () => {
   }, [descendingRequests]);
 
   function filterDescendingRequests(checked: boolean, filter: Filter) {
-    if (checked) return filteredRequests.answered;
+    if (!checked) return filteredRequests.answered;
     if (filter === Filter.PROPOSED) return filteredRequests.proposed;
     if (filter === Filter.REQUESTS) return filteredRequests.requested;
     if (filter === Filter.DISPUTED) return filteredRequests.disputed;
@@ -151,7 +151,7 @@ const Index = () => {
               <span />
               <span />
             </span>
-            <ShowAnsweredText>Show Answered</ShowAnsweredText>
+            <ShowAnsweredText>Hide Settled</ShowAnsweredText>
             <ShowAnsweredText>
               {addCommasOnly(filteredRequests.answered.length)}
             </ShowAnsweredText>
