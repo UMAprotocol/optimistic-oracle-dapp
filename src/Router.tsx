@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import GlobalStyles from "./components/global-styles";
 import Navbar from "./components/navbar";
@@ -14,6 +15,7 @@ const Router = () => {
   const { wrongNetwork } = useConnection();
   const { client } = useClient();
   const { request } = useRequestParams();
+  const [currentPage, setCurrentPage] = useState<number>(0);
   return (
     <>
       <GlobalStyles />
@@ -26,7 +28,15 @@ const Router = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Index />} />
+          <Route
+            index
+            element={
+              <Index
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+              />
+            }
+          />
           <Route path="request" element={<Request />} />
         </Route>
         <Route path="*" element={<NotFound />} />

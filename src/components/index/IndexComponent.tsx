@@ -21,6 +21,8 @@ import useReader from "hooks/useOracleReader";
 import { RequestState } from "constants/blockchain";
 import { RequestIndex } from "@uma/sdk/dist/types/oracle/types/state";
 import { addCommasOnly } from "utils/format";
+import { paginate } from "utils/paginate";
+import { PageNavigation } from "./PageNavigation";
 enum Filter {
   DEFAULT,
   REQUESTS,
@@ -45,7 +47,11 @@ const initialFR: FilteredRequests = {
   answered: [],
 };
 
-const Index = () => {
+interface Props {
+  currentPage: number;
+  setCurrentPage: (number) => void;
+}
+const Index = ({ currentPage, setCurrentPage }: Props) => {
   const [filter, setFilter] = useState<Filter>(Filter.DEFAULT);
   const { state } = useClient();
   const { descendingRequests } = useReader(state);
@@ -90,6 +96,18 @@ const Index = () => {
     if (filter === Filter.DISPUTED) return filteredRequests.disputed;
     return filteredRequests.all;
   }
+
+  const filteredDescendingRequests = filterDescendingRequests(checked, filter);
+
+  const { startIndex, endIndex, navigationList, navigationIndex } = paginate({
+    currentPage,
+    elementCount: filteredDescendingRequests.length,
+  });
+
+  const paginatedDescendingRequests = filteredDescendingRequests.slice(
+    startIndex,
+    endIndex
+  );
 
   return (
     <Wrapper>
@@ -160,9 +178,14 @@ const Index = () => {
       </FilterWrapper>
       <Body>
         <TableRow>
-          <RequestsTable requests={filterDescendingRequests(checked, filter)} />
+          <RequestsTable requests={paginatedDescendingRequests} />
         </TableRow>
       </Body>
+      <PageNavigation
+        onPageChange={setCurrentPage}
+        pages={navigationList}
+        activeIndex={navigationIndex}
+      />
     </Wrapper>
   );
 };

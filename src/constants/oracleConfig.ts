@@ -31,8 +31,8 @@ const mmChainConfig: oracle.types.state.PartialChainConfig = {
 
 const config = {
   chains: {
-    [ethChainId]: ethChainConfig,
     [polygonChainId]: polygonChainConfig,
+    [ethChainId]: ethChainConfig,
     [mmChainId]: mmChainConfig,
   },
 };
