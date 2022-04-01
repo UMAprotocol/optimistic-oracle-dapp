@@ -90,7 +90,7 @@ const Index = () => {
     if (filter === Filter.DISPUTED) fr = filteredRequests.disputed;
     if (filter === Filter.DEFAULT) fr = filteredRequests.all;
     if (!checked) fr = [...fr, ...filteredRequests.answered];
-    return fr;
+    return fr.sort((a, b) => b.timestamp - a.timestamp);
   }
 
   return (
