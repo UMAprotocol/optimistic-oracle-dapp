@@ -84,11 +84,13 @@ const Index = () => {
   }, [descendingRequests]);
 
   function filterDescendingRequests(checked: boolean, filter: Filter) {
-    if (!checked) return filteredRequests.answered;
-    if (filter === Filter.PROPOSED) return filteredRequests.proposed;
-    if (filter === Filter.REQUESTS) return filteredRequests.requested;
-    if (filter === Filter.DISPUTED) return filteredRequests.disputed;
-    return filteredRequests.all;
+    let fr: RequestIndex[] = [];
+    if (filter === Filter.PROPOSED) fr = filteredRequests.proposed;
+    if (filter === Filter.REQUESTS) fr = filteredRequests.requested;
+    if (filter === Filter.DISPUTED) fr = filteredRequests.disputed;
+    if (filter === Filter.DEFAULT) fr = filteredRequests.all;
+    if (!checked) fr = [...fr, ...filteredRequests.answered];
+    return fr;
   }
 
   return (
