@@ -106,7 +106,10 @@ const Index = () => {
         <FilterButtonRow>
           <FilterButton
             variant={filter === Filter.DEFAULT ? "primary" : "outline"}
-            onClick={() => setFilter(Filter.DEFAULT)}
+            onClick={() => {
+              setFilter(Filter.DEFAULT);
+              if (checked) setChecked(false);
+            }}
           >
             <div>All</div>{" "}
             <FilterNumbers selected={filter === Filter.DEFAULT}>
@@ -115,7 +118,10 @@ const Index = () => {
           </FilterButton>
           <FilterButton
             variant={filter === Filter.REQUESTS ? "primary" : "outline"}
-            onClick={() => setFilter(Filter.REQUESTS)}
+            onClick={() => {
+              setFilter(Filter.REQUESTS);
+              setChecked(true);
+            }}
           >
             <div>Requests </div>{" "}
             <FilterNumbers selected={filter === Filter.REQUESTS}>
@@ -124,7 +130,10 @@ const Index = () => {
           </FilterButton>
           <FilterButton
             variant={filter === Filter.PROPOSED ? "primary" : "outline"}
-            onClick={() => setFilter(Filter.PROPOSED)}
+            onClick={() => {
+              setFilter(Filter.PROPOSED);
+              setChecked(true);
+            }}
           >
             <div>Proposed </div>{" "}
             <FilterNumbers selected={filter === Filter.PROPOSED}>
@@ -133,7 +142,10 @@ const Index = () => {
           </FilterButton>
           <FilterButton
             variant={filter === Filter.DISPUTED ? "primary" : "outline"}
-            onClick={() => setFilter(Filter.DISPUTED)}
+            onClick={() => {
+              setFilter(Filter.DISPUTED);
+              setChecked(true);
+            }}
           >
             <div>Disputed </div>{" "}
             <FilterNumbers selected={filter === Filter.DISPUTED}>
