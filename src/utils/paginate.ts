@@ -34,9 +34,12 @@ interface Params {
 interface Result extends Params {
   startIndex: number;
   endIndex: number;
-  navigationList: number[];
-  navigationIndex: number;
+  pageList: number[];
+  activeIndex: number;
   totalPages: number;
+  disableStart: boolean;
+  disableEnd: boolean;
+  lastPage: number;
 }
 export function paginate({
   elementCount,
@@ -45,8 +48,9 @@ export function paginate({
   maxNavigationCount = 5,
 }: Params): Result {
   const totalPages = Math.ceil(elementCount / elementsPerPage);
+  const lastPage = totalPages - 1;
   if (currentPage < 0) currentPage = 0;
-  if (currentPage >= totalPages) currentPage = totalPages - 1;
+  if (currentPage >= totalPages) currentPage = lastPage;
 
   const startIndex = Math.min(currentPage * elementsPerPage, elementCount);
   const endIndex = Math.min(
@@ -68,8 +72,10 @@ export function paginate({
     maxNavigationCount,
     startIndex,
     endIndex,
-    navigationList: partialNavigation.list,
-    navigationIndex: partialNavigation.index,
-    totalPages,
+    pageList: partialNavigation.list,
+    activeIndex: partialNavigation.index,
+    disableStart: partialNavigation.list.includes(0),
+    disableEnd: partialNavigation.list.includes(totalPages - 1),
+    lastPage,
   };
 }

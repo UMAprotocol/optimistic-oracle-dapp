@@ -99,14 +99,14 @@ const Index = ({ currentPage, setCurrentPage }: Props) => {
 
   const filteredDescendingRequests = filterDescendingRequests(checked, filter);
 
-  const { startIndex, endIndex, navigationList, navigationIndex } = paginate({
+  const paginated = paginate({
     currentPage,
     elementCount: filteredDescendingRequests.length,
   });
 
   const paginatedDescendingRequests = filteredDescendingRequests.slice(
-    startIndex,
-    endIndex
+    paginated.startIndex,
+    paginated.endIndex
   );
 
   return (
@@ -181,11 +181,7 @@ const Index = ({ currentPage, setCurrentPage }: Props) => {
           <RequestsTable requests={paginatedDescendingRequests} />
         </TableRow>
       </Body>
-      <PageNavigation
-        onPageChange={setCurrentPage}
-        pages={navigationList}
-        activeIndex={navigationIndex}
-      />
+      <PageNavigation onPageChange={setCurrentPage} {...paginated} />
     </Wrapper>
   );
 };
