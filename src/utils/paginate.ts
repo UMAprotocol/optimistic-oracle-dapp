@@ -1,9 +1,5 @@
-interface PartialNavbar {
-  list: number[];
-  maxLength: number;
-  index: number;
-}
-export function partialNavbar({
+// Utility to turn a full list of pages 1-N to a subset of pages around the current page
+function partialNavbar({
   list,
   maxLength,
   index,
@@ -25,28 +21,7 @@ export function partialNavbar({
     maxLength,
   };
 }
-interface Params {
-  elementCount: number;
-  elementsPerPage?: number;
-  currentPage?: number;
-  maxNavigationCount?: number;
-}
-interface Result extends Params {
-  startIndex: number;
-  endIndex: number;
-  pageList: number[];
-  activeIndex: number;
-  totalPages: number;
-  disableStart: boolean;
-  disableEnd: boolean;
-  lastPage: number;
-}
-export function paginate({
-  elementCount,
-  elementsPerPage = 25,
-  currentPage = 0,
-  maxNavigationCount = 5,
-}: Params): Result {
+export function page({ elementCount, elementsPerPage = 25, currentPage = 0 }) {
   const totalPages = Math.ceil(elementCount / elementsPerPage);
   const lastPage = totalPages - 1;
   if (currentPage < 0) currentPage = 0;
@@ -57,6 +32,23 @@ export function paginate({
     currentPage * elementsPerPage + elementsPerPage,
     elementCount
   );
+  return {
+    startIndex,
+    endIndex,
+    currentPage,
+    totalPages,
+    lastPage,
+  };
+}
+
+export function navigate({
+  elementCount,
+  elementsPerPage = 25,
+  currentPage = 0,
+  maxNavigationCount = 5,
+}) {
+  const totalPages = Math.ceil(elementCount / elementsPerPage);
+  const lastPage = totalPages - 1;
 
   const navigationList = [...Array(totalPages).keys()];
   const partialNavigation = partialNavbar({
@@ -70,12 +62,12 @@ export function paginate({
     elementsPerPage,
     currentPage,
     maxNavigationCount,
-    startIndex,
-    endIndex,
     pageList: partialNavigation.list,
     activeIndex: partialNavigation.index,
-    disableStart: partialNavigation.list.includes(0),
-    disableEnd: partialNavigation.list.includes(totalPages - 1),
+    hideStart: partialNavigation.list.includes(0),
+    hideEnd: partialNavigation.list.includes(totalPages - 1),
+    disableForward: currentPage >= lastPage,
+    disableBack: currentPage <= 0,
     lastPage,
   };
 }

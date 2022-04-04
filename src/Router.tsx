@@ -15,6 +15,7 @@ const Router = () => {
   const { wrongNetwork } = useConnection();
   const { client } = useClient();
   const { request } = useRequestParams();
+  // pulled this into router so that you dont lose your page number when you go to details page.
   const [currentPage, setCurrentPage] = useState<number>(0);
   return (
     <>

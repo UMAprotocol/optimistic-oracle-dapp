@@ -1,33 +1,31 @@
 import styled from "@emotion/styled";
+import { navigate } from "utils/paginate";
 import { MaxWidthWrapper } from "components/wrappers/Wrappers";
 
 interface Props {
   onPageChange: (page: number) => void;
-  pageList: number[];
-  activeIndex: number;
-  disableStart: boolean;
-  disableEnd: boolean;
-  firstPage?: number;
-  lastPage: number;
+  currentPage: number;
+  elementCount: number;
+  elementsPerPage?: number;
+  maxNavigationCount?: number;
 }
-export const PageNavigation = ({
-  onPageChange,
-  pageList,
-  activeIndex,
-  disableStart,
-  disableEnd,
-  firstPage = 0,
-  lastPage,
-  currentPage,
-}: Props) => {
+export const PageNavigation = ({ onPageChange, ...props }: Props) => {
+  const {
+    pageList,
+    activeIndex,
+    disableBack,
+    disableForward,
+    hideStart,
+    hideEnd,
+    lastPage,
+    currentPage,
+  } = navigate(props);
   return (
     <Wrapper>
       <PaginationElements>
-        {!disableStart && (
+        {!hideStart && (
           <>
-            <ElementWrapper onClick={() => onPageChange(firstPage)}>
-              {firstPage + 1}
-            </ElementWrapper>
+            <ElementWrapper onClick={() => onPageChange(0)}> 1 </ElementWrapper>
             ...
           </>
         )}
@@ -42,7 +40,7 @@ export const PageNavigation = ({
             </ElementWrapper>
           );
         })}
-        {!disableEnd && (
+        {!hideEnd && (
           <>
             ...
             <ElementWrapper onClick={() => onPageChange(lastPage)}>
@@ -51,14 +49,14 @@ export const PageNavigation = ({
           </>
         )}
         <NextElement
-          disabled={disableStart}
+          disabled={disableBack}
           onClick={() => onPageChange(currentPage - 1)}
         >
           {" "}
           {"<"}{" "}
         </NextElement>
         <NextElement
-          disabled={disableEnd}
+          disabled={disableForward}
           onClick={() => onPageChange(currentPage + 1)}
         >
           {" "}

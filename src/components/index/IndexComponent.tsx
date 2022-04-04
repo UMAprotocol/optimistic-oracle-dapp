@@ -21,7 +21,7 @@ import useReader from "hooks/useOracleReader";
 import { RequestState } from "constants/blockchain";
 import { RequestIndex } from "@uma/sdk/dist/types/oracle/types/state";
 import { addCommasOnly } from "utils/format";
-import { paginate } from "utils/paginate";
+import { page } from "utils/paginate";
 import { PageNavigation } from "./PageNavigation";
 enum Filter {
   DEFAULT,
@@ -98,15 +98,20 @@ const Index = ({ currentPage, setCurrentPage }: Props) => {
   }
 
   const filteredDescendingRequests = filterDescendingRequests(checked, filter);
+  const elementCount = filteredDescendingRequests.length;
 
-  const paginated = paginate({
+  const {
+    startIndex,
+    endIndex,
+    currentPage: sanitizedCurrentPage,
+  } = page({
     currentPage,
-    elementCount: filteredDescendingRequests.length,
+    elementCount,
   });
 
   const paginatedDescendingRequests = filteredDescendingRequests.slice(
-    paginated.startIndex,
-    paginated.endIndex
+    startIndex,
+    endIndex
   );
 
   return (
@@ -181,7 +186,11 @@ const Index = ({ currentPage, setCurrentPage }: Props) => {
           <RequestsTable requests={paginatedDescendingRequests} />
         </TableRow>
       </Body>
-      <PageNavigation onPageChange={setCurrentPage} {...paginated} />
+      <PageNavigation
+        onPageChange={setCurrentPage}
+        elementCount={elementCount}
+        currentPage={sanitizedCurrentPage}
+      />
     </Wrapper>
   );
 };
