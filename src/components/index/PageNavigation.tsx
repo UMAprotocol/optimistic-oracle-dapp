@@ -1,32 +1,37 @@
 import styled from "@emotion/styled";
-import { navigate } from "utils/paginate";
 import { MaxWidthWrapper } from "components/wrappers/Wrappers";
+import { ReactComponent as LeftIcon } from "assets/Pagination-left-arrow.svg";
+import { ReactComponent as RightIcon } from "assets/Pagination-right-arrow.svg";
 
 interface Props {
   onPageChange: (page: number) => void;
   currentPage: number;
-  elementCount: number;
-  elementsPerPage?: number;
-  maxNavigationCount?: number;
+  pageList: number[];
+  activeIndex: number;
+  disableBack: boolean;
+  disableForward: boolean;
+  hideStart: boolean;
+  hideEnd: bolean;
+  lastPage: number;
 }
-export const PageNavigation = ({ onPageChange, ...props }: Props) => {
-  const {
-    pageList,
-    activeIndex,
-    disableBack,
-    disableForward,
-    hideStart,
-    hideEnd,
-    lastPage,
-    currentPage,
-  } = navigate(props);
+export const PageNavigation = ({
+  onPageChange,
+  pageList,
+  activeIndex,
+  disableBack,
+  disableForward,
+  hideStart,
+  hideEnd,
+  lastPage,
+  currentPage,
+}: Props) => {
   return (
     <Wrapper>
       <PaginationElements>
         {!hideStart && (
           <>
             <ElementWrapper onClick={() => onPageChange(0)}> 1 </ElementWrapper>
-            ...
+            &nbsp; ... &nbsp;
           </>
         )}
         {pageList.map((page, index) => {
@@ -42,7 +47,7 @@ export const PageNavigation = ({ onPageChange, ...props }: Props) => {
         })}
         {!hideEnd && (
           <>
-            ...
+            &nbsp; ... &nbsp;
             <ElementWrapper onClick={() => onPageChange(lastPage)}>
               {lastPage + 1}
             </ElementWrapper>
@@ -52,15 +57,13 @@ export const PageNavigation = ({ onPageChange, ...props }: Props) => {
           disabled={disableBack}
           onClick={() => onPageChange(currentPage - 1)}
         >
-          {" "}
-          {"<"}{" "}
+          <LeftIcon />
         </NextElement>
         <NextElement
           disabled={disableForward}
           onClick={() => onPageChange(currentPage + 1)}
         >
-          {" "}
-          {">"}{" "}
+          <RightIcon />
         </NextElement>
       </PaginationElements>
     </Wrapper>
@@ -82,9 +85,12 @@ interface IElementWrapper {
 }
 
 export const ElementWrapper = styled.div<IElementWrapper>`
-  background-color: ${({ active }) => (active ? "gray" : "#efefef")};
-  color: ${({ active }) => (active ? "white" : "gray")};
-  border: 2px solid gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ active }) => (active ? "#565656" : "white")};
+  color: ${({ active }) => (active ? "white" : "#565656")};
+  border: 1px solid #565656;
   height: 32px;
   width: 32px;
   border-radius: 6px;
@@ -92,8 +98,8 @@ export const ElementWrapper = styled.div<IElementWrapper>`
   margin: 0 3px;
   font-size: ${16 / 16}rem;
   &:hover {
-    background-color: lightgray;
-    color: gray;
+    background-color: ${({ active }) => !active && "lightgray"};
+    color: ${({ active }) => !active && "#565656"};
     cursor: pointer;
   }
 `;
@@ -102,16 +108,13 @@ interface INextWrapper {
   disabled?: boolean;
 }
 export const NextElement = styled.div<INextWrapper>`
-  color: lightGray;
-  text-align: center;
-  font-size: ${32 / 16}rem;
-  line-height: 1.5rem;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #565656;
   height: 32px;
   width: 32px;
-  margin: 0 4px;
   &:hover {
-    color: ${({ disabled }) => (disabled ? "lightGray" : "gray")};
     cursor: pointer;
   }
 `;

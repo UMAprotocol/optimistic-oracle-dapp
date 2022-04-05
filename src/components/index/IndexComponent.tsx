@@ -5,8 +5,6 @@ import {
   HeaderTitle,
   HeaderTitleText,
   HeaderTitleTextRed,
-  Body,
-  TableRow,
   Logo,
   FilterButtonRow,
   FilterButton,
@@ -14,15 +12,13 @@ import {
   FilterNumbers,
   ShowAnsweredText,
 } from "./Index.styled";
-import RequestsTable from "./RequestsTable";
 import ooLogo from "assets/uma-oo-logo-redcirclebg.svg";
 import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
 import { RequestState } from "constants/blockchain";
 import { RequestIndex } from "@uma/sdk/dist/types/oracle/types/state";
 import { addCommasOnly } from "utils/format";
-import { page } from "utils/paginate";
-import { PageNavigation } from "./PageNavigation";
+import { RequestsTableWithPagination } from "./RequestsTableWithPagination";
 enum Filter {
   DEFAULT,
   REQUESTS,
@@ -98,21 +94,6 @@ const Index = ({ currentPage, setCurrentPage }: Props) => {
   }
 
   const filteredDescendingRequests = filterDescendingRequests(checked, filter);
-  const elementCount = filteredDescendingRequests.length;
-
-  const {
-    startIndex,
-    endIndex,
-    currentPage: sanitizedCurrentPage,
-  } = page({
-    currentPage,
-    elementCount,
-  });
-
-  const paginatedDescendingRequests = filteredDescendingRequests.slice(
-    startIndex,
-    endIndex
-  );
 
   return (
     <Wrapper>
@@ -181,16 +162,13 @@ const Index = ({ currentPage, setCurrentPage }: Props) => {
           </FilterButton>
         </FilterButtonRow>
       </FilterWrapper>
-      <Body>
-        <TableRow>
-          <RequestsTable requests={paginatedDescendingRequests} />
-        </TableRow>
-      </Body>
-      <PageNavigation
-        onPageChange={setCurrentPage}
-        elementCount={elementCount}
-        currentPage={sanitizedCurrentPage}
-      />
+      {filteredDescendingRequests.length ? (
+        <RequestsTableWithPagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          requests={filteredDescendingRequests}
+        />
+      ) : null}
     </Wrapper>
   );
 };
