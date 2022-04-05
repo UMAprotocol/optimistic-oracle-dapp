@@ -5,7 +5,7 @@ import { Body, TableRow } from "./Index.styled";
 
 interface Props {
   currentPage: number;
-  setCurrentPage: (number) => void;
+  setCurrentPage: (number: number) => void;
   requests: any[];
 }
 export const RequestsTableWithPagination = ({
@@ -14,9 +14,11 @@ export const RequestsTableWithPagination = ({
   requests,
 }: Props) => {
   const elementCount = requests.length;
+
   const paginateState = paginate({
-    currentPage,
     elementCount,
+    currentPage,
+    maxNavigationCount: 5,
   });
 
   const paginatedRequests = requests.slice(
