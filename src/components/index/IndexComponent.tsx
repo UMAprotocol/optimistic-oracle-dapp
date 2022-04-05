@@ -5,8 +5,6 @@ import {
   HeaderTitle,
   HeaderTitleText,
   HeaderTitleTextRed,
-  Body,
-  TableRow,
   Logo,
   FilterButtonRow,
   FilterButton,
@@ -14,13 +12,13 @@ import {
   FilterNumbers,
   ShowAnsweredText,
 } from "./Index.styled";
-import RequestsTable from "./RequestsTable";
 import ooLogo from "assets/uma-oo-logo-redcirclebg.svg";
 import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
 import { RequestState } from "constants/blockchain";
 import { RequestIndex } from "@uma/sdk/dist/types/oracle/types/state";
 import { addCommasOnly } from "utils/format";
+import { RequestsTableWithPagination } from "./RequestsTableWithPagination";
 enum Filter {
   DEFAULT,
   REQUESTS,
@@ -45,7 +43,11 @@ const initialFR: FilteredRequests = {
   answered: [],
 };
 
-const Index = () => {
+interface Props {
+  currentPage: number;
+  setCurrentPage: (number) => void;
+}
+const Index = ({ currentPage, setCurrentPage }: Props) => {
   const [filter, setFilter] = useState<Filter>(Filter.DEFAULT);
   const { state } = useClient();
   const { descendingRequests } = useReader(state);
@@ -92,6 +94,8 @@ const Index = () => {
     if (!checked) fr = [...fr, ...filteredRequests.answered];
     return fr.sort((a, b) => b.timestamp - a.timestamp);
   }
+
+  const filteredDescendingRequests = filterDescendingRequests(checked, filter);
 
   return (
     <Wrapper>
@@ -172,11 +176,13 @@ const Index = () => {
           </FilterButton>
         </FilterButtonRow>
       </FilterWrapper>
-      <Body>
-        <TableRow>
-          <RequestsTable requests={filterDescendingRequests(checked, filter)} />
-        </TableRow>
-      </Body>
+      {filteredDescendingRequests.length ? (
+        <RequestsTableWithPagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          requests={filteredDescendingRequests}
+        />
+      ) : null}
     </Wrapper>
   );
 };
