@@ -11,7 +11,7 @@ interface Props {
   disableBack: boolean;
   disableForward: boolean;
   hideStart: boolean;
-  hideEnd: bolean;
+  hideEnd: boolean;
   lastPage: number;
 }
 export const PageNavigation = ({

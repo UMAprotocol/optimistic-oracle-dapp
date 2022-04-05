@@ -45,7 +45,7 @@ const initialFR: FilteredRequests = {
 
 interface Props {
   currentPage: number;
-  setCurrentPage: (number) => void;
+  setCurrentPage: (x: number) => void;
 }
 const Index = ({ currentPage, setCurrentPage }: Props) => {
   const [filter, setFilter] = useState<Filter>(Filter.DEFAULT);

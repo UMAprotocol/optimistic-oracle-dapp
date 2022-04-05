@@ -1,11 +1,11 @@
 import RequestsTable from "./RequestsTable";
-import paginate from "utils/paginate";
+import paginate, { page } from "utils/paginate";
 import { PageNavigation } from "./PageNavigation";
 import { Body, TableRow } from "./Index.styled";
 
 interface Props {
   currentPage: number;
-  setCurrentPage: (number) => void;
+  setCurrentPage: (number: number) => void;
   requests: any[];
 }
 export const RequestsTableWithPagination = ({
@@ -14,15 +14,22 @@ export const RequestsTableWithPagination = ({
   requests,
 }: Props) => {
   const elementCount = requests.length;
-  const paginateState = paginate({
+  const indices = page({
     currentPage,
     elementCount,
+    elementsPerPage: 25,
   });
 
   const paginatedRequests = requests.slice(
-    paginateState.startIndex,
-    paginateState.endIndex
+    indices.startIndex,
+    indices.endIndex
   );
+
+  const paginateState = paginate({
+    elementCount,
+    currentPage,
+    maxNavigationCount: 5,
+  });
 
   return (
     <>

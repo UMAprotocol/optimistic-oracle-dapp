@@ -34,7 +34,8 @@ interface PageProps {
   elementsPerPage: number;
   currentPage: number;
 }
-interface PageResult {
+
+export interface PageResult {
   startIndex: number;
   endIndex: number;
 }
@@ -69,7 +70,7 @@ interface NavigateResult {
   activeIndex: number;
   hideStart: boolean;
   hideEnd: boolean;
-  disabledForward: boolean;
+  disableForward: boolean;
   disableBack: boolean;
 }
 // calculates the state of the page navigation numbers only
@@ -113,17 +114,22 @@ export function navigate({
 interface PaginateProps {
   elementCount: number;
   elementsPerPage?: number;
-  currentPage?: number;
-  maxNavigationCount?: number;
+  currentPage: number;
+  maxNavigationCount: number;
 }
-type PaginateResult = PaginateProps | NavigateResult | PageResult;
+
+interface PaginateValues extends PaginateProps, NavigateResult, PageResult {
+  totalPages: number;
+  lastPage: number;
+}
+
 // the main interface to paginating both the page and the page navigation state
 export default function paginate({
   elementCount,
   elementsPerPage = 25,
   currentPage = 0,
   maxNavigationCount = 5,
-}: PaginateProps): PaginateResult {
+}: PaginateProps): PaginateValues {
   const totalPages = Math.ceil(elementCount / elementsPerPage);
   const lastPage = Math.max(totalPages - 1, 0);
   if (currentPage < 0) currentPage = 0;
