@@ -30,6 +30,7 @@
   },
   "scripts": {
     "start": "craco start",
+    "lint": "prettier --write ./src",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
@@ -53,6 +54,7 @@
     ]
   },
   "devDependencies": {
-    "@types/luxon": "^2.0.8"
+    "@types/luxon": "^2.0.8",
+    "prettier": "^2.6.2"
   }
 }

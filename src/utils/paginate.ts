@@ -56,16 +56,28 @@ export function navigate({
     maxLength: maxNavigationCount,
     index: currentPage,
   });
+  const hideStart = partialNavigation.list.includes(0);
+  const hideEnd = partialNavigation.list.includes(totalPages - 1);
+  let pageList = partialNavigation.list;
+  let activeIndex = partialNavigation.index;
+  // this prevents us from showing more than maxNavigationCount buttons when showing the first/last nav buttons
+  if (!hideStart) {
+    pageList = pageList.slice(1);
+    activeIndex--;
+  }
+  if (!hideEnd) {
+    pageList = pageList.slice(0, -1);
+  }
 
   return {
     elementCount,
     elementsPerPage,
     currentPage,
     maxNavigationCount,
-    pageList: partialNavigation.list,
-    activeIndex: partialNavigation.index,
-    hideStart: partialNavigation.list.includes(0),
-    hideEnd: partialNavigation.list.includes(totalPages - 1),
+    pageList,
+    activeIndex,
+    hideStart,
+    hideEnd,
     disableForward: currentPage >= lastPage,
     disableBack: currentPage <= 0,
     lastPage,
