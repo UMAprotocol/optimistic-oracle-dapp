@@ -103,7 +103,6 @@ export const FilterButton = styled(Button)`
       position: relative;
       width: 18px;
       height: 18px;
-      margin: 5px 0px 0 0;
       vertical-align: middle;
       background: #fff left top no-repeat;
       border: 1px solid #ccc;
@@ -143,6 +142,4 @@ export const FilterNumbers = styled.div<IFilterNumbers>`
   color: ${(props) => (props.selected ? "#FEFEFF" : "#3E3C3F")};
 `;
 
-export const ShowAnsweredText = styled.div`
-  margin-top: 4px;
-`;
+export const ShowAnsweredText = styled.div``;
