@@ -69,7 +69,7 @@ export const FilterButton = styled(Button)`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: ${14 / 16}rem;
+  font-size: ${15 / 16}rem;
   background-color: ${(props) => {
     if (props.variant === "primary") return "#FF4D4D";
     if (props.variant === "outline") return "#f5f4f4";
@@ -101,8 +101,8 @@ export const FilterButton = styled(Button)`
     input[type="checkbox"] + span {
       display: inline-block;
       position: relative;
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       margin: 5px 0px 0 0;
       vertical-align: middle;
       background: #fff left top no-repeat;
@@ -117,8 +117,8 @@ export const FilterButton = styled(Button)`
       span:first-of-type {
         position: absolute;
         display: block;
-        left: 5px;
-        top: 1px;
+        left: 6px;
+        top: 2px;
         width: 5px;
         height: 10px;
         border: solid white;
