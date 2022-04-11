@@ -83,6 +83,12 @@ export const FilterButton = styled(Button)`
     if (props.variant === "primary") return "#fff";
     if (props.variant === "outline") return "#3E3C3F";
   }};
+  &:hover {
+    border-color: ${(props) => {
+      if (props.variant === "primary") return "#FF4D4D";
+      if (props.variant === "outline") return "#f5f4f4";
+    }};
+  }
   > div {
     line-height: 4px;
   }
@@ -112,7 +118,7 @@ export const FilterButton = styled(Button)`
       }
     }
     input[type="checkbox"]:checked + span {
-      background: #0073cd -19px top no-repeat;
+      background: #ff4d4d -19px top no-repeat;
       span:first-of-type {
         position: absolute;
         display: block;
