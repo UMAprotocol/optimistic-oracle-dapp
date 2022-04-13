@@ -63,15 +63,16 @@ function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
         requestState = "Settled";
 
       let proposedPrice = req.proposedPrice;
-      if (
+
+      if (req.proposedPrice && req.proposedPrice.startsWith("-")) {
+        proposedPrice = "Unanswerable";
+      } else if (
         req.proposedPrice &&
         req.proposedPrice !== "0" &&
         identifier !== "YES_OR_NO_QUERY"
       ) {
         proposedPrice = ethers.utils.formatEther(req.proposedPrice);
-      }
-
-      if (
+      } else if (
         req.proposedPrice &&
         parseIdentifier(req.identifier) === "YES_OR_NO_QUERY"
       ) {
