@@ -70,7 +70,6 @@ function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
 
       if (req.proposedPrice && unanswerable.includes(req.proposedPrice)) {
         proposedPrice = "Unanswerable";
-        console.log(req.proposedPrice);
       } else if (
         req.proposedPrice &&
         req.proposedPrice !== "0" &&
