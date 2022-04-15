@@ -6,6 +6,10 @@ import { ethers } from "ethers";
 import { formatRequestTitle, formatTime, formatDate } from "helpers/format";
 import alertIcon from "assets/alert-icon.svg";
 
+const unanswerable = [
+  "-57896044618658097711785492504343953926634992332820282019728792003956564819968"
+];
+
 const headerCells: ICell[] = [
   {
     size: "lg",
@@ -64,8 +68,9 @@ function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
 
       let proposedPrice = req.proposedPrice;
 
-      if (req.proposedPrice && req.proposedPrice.startsWith("-")) {
+      if (req.proposedPrice && unanswerable.includes(req.proposedPrice)) {
         proposedPrice = "Unanswerable";
+        console.log(req.proposedPrice);
       } else if (
         req.proposedPrice &&
         req.proposedPrice !== "0" &&
