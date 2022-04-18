@@ -2,7 +2,7 @@ import { oracle } from "@uma/sdk";
 import { CHAINS, ChainId } from "./blockchain";
 
 // metamask local chain for testing
-const mmChainId = 1337;
+const mmChainId = ChainId.MM_TESTNET;
 // Ethereum config
 const ethChainId = ChainId.MAINNET;
 // Polygon config
