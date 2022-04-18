@@ -95,6 +95,9 @@ export const PageNavigation = ({
 export const Wrapper = styled(MaxWidthWrapper)`
   padding-right: 30px;
   padding-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 200px;
 `;
 
 export const PaginationElements = styled.div`

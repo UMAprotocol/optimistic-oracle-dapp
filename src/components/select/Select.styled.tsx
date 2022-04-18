@@ -15,26 +15,25 @@ export const SelectHeader = styled.button<ISelectStyledProps>`
   border-radius: 6px;
   border-width: 1px;
   border-style: solid;
-  border-color: ${(props) => (props.isOpen ? "#ff4b4b" : "#565656")};
+  border-color: ${(props) => (props.isOpen ? "#565656" : "#565656")};
   min-width: 100%;
   background-color: ${(props) => (props.isOpen ? "#fff" : "#F1F0F0")};
-  color: ${(props) => (props.isOpen ? "#ff4b4b" : "#565656")};
+  color: ${(props) => (props.isOpen ? "#565656" : "#565656")};
 `;
 
 export const SelectList = styled.ul<ISelectStyledProps>`
-  max-height: "200px";
-  overflow-y: "auto";
-  width: "150px";
-  margin: "12px 0 0 0";
+  max-height: 200px;
+  overflow-y: auto;
+  margin: 12px 0 0 0;
   border-width: ${(props) => (props.isOpen ? "1px" : "0")};
   border-style: solid;
   border-color: #565656;
   background-color: #fff;
   list-style: none;
   position: absolute;
-  width: 250px;
+  width: 110px;
   border-radius: 8px;
-  color: #ff4b4b;
+  color: #565656;
   z-index: 1000;
   padding-inline-start: 0;
 `;
@@ -62,7 +61,7 @@ export const Arrow = styled.span`
 
 export const UpArrow = styled(Arrow)`
   opacity: 0.8;
-  color: #ff4b4b;
+  color: #565656;
 `;
 
 export const DownArrow = styled(Arrow)`
