@@ -13,6 +13,7 @@ interface Props {
   hideStart: boolean;
   hideEnd: boolean;
   lastPage: number;
+  maxNavigationCount: number;
 }
 export const PageNavigation = ({
   onPageChange,
