@@ -6,6 +6,10 @@ import { ethers } from "ethers";
 import { formatRequestTitle, formatTime, formatDate } from "helpers/format";
 import alertIcon from "assets/alert-icon.svg";
 
+const unanswerable = [
+  "-57896044618658097711785492504343953926634992332820282019728792003956564819968"
+];
+
 const headerCells: ICell[] = [
   {
     size: "lg",
@@ -63,15 +67,16 @@ function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
         requestState = "Settled";
 
       let proposedPrice = req.proposedPrice;
-      if (
+
+      if (req.proposedPrice && unanswerable.includes(req.proposedPrice)) {
+        proposedPrice = "Requested too early";
+      } else if (
         req.proposedPrice &&
         req.proposedPrice !== "0" &&
         identifier !== "YES_OR_NO_QUERY"
       ) {
         proposedPrice = ethers.utils.formatEther(req.proposedPrice);
-      }
-
-      if (
+      } else if (
         req.proposedPrice &&
         parseIdentifier(req.identifier) === "YES_OR_NO_QUERY"
       ) {
