@@ -6,7 +6,7 @@ interface ISelectStyledProps {
 }
 
 export const SelectContainer = styled.div`
-  width: 110px;
+  width: 120px;
 `;
 
 export const SelectHeader = styled.button<ISelectStyledProps>`
@@ -17,8 +17,10 @@ export const SelectHeader = styled.button<ISelectStyledProps>`
   border-style: solid;
   border-color: ${(props) => (props.isOpen ? "#565656" : "#565656")};
   min-width: 100%;
-  background-color: ${(props) => (props.isOpen ? "#fff" : "#F1F0F0")};
+  /* background-color: ${(props) => (props.isOpen ? "#fff" : "#F1F0F0")}; */
+  background-color: #fff;
   color: ${(props) => (props.isOpen ? "#565656" : "#565656")};
+  font-size: ${16 / 16}rem;
 `;
 
 export const SelectList = styled.ul<ISelectStyledProps>`
@@ -31,15 +33,17 @@ export const SelectList = styled.ul<ISelectStyledProps>`
   background-color: #fff;
   list-style: none;
   position: absolute;
-  width: 110px;
+  width: 120px;
   border-radius: 8px;
   color: #565656;
   z-index: 1000;
   padding-inline-start: 0;
+  font-size: ${16 / 16}rem;
 `;
 export const SelectListItem = styled.li<ISelectStyledProps>`
   padding: 5px 10px;
-  background: ${(props) => (props.isHighlighted ? "#A0AEC0" : "")};
+  background: ${(props) => (props.isHighlighted ? "#ff4b4b" : "#fff")};
+  color: ${(props) => (props.isHighlighted ? "#fff" : "#565656")};
   &:first-of-type {
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
@@ -56,7 +60,7 @@ export const SelectListItem = styled.li<ISelectStyledProps>`
 
 export const Arrow = styled.span`
   position: absolute;
-  margin-left: 80px;
+  margin-left: 90px;
 `;
 
 export const UpArrow = styled(Arrow)`

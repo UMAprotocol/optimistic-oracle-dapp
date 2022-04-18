@@ -103,6 +103,7 @@ export const Wrapper = styled(MaxWidthWrapper)`
 export const PaginationElements = styled.div`
   display: flex;
   justify-content: right;
+  align-self: center;
 `;
 
 interface IElementWrapper {
