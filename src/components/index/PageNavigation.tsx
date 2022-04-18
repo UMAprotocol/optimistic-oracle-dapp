@@ -3,6 +3,8 @@ import { MaxWidthWrapper } from "components/wrappers/Wrappers";
 import { ReactComponent as LeftIcon } from "assets/Pagination-left-arrow.svg";
 import { ReactComponent as RightIcon } from "assets/Pagination-right-arrow.svg";
 import Select from "components/select";
+import { OptionType } from "components/select/Select";
+
 interface Props {
   onPageChange: (page: number) => void;
   currentPage: number;
@@ -14,6 +16,10 @@ interface Props {
   hideEnd: boolean;
   lastPage: number;
   maxNavigationCount: number;
+  paginationDropdownItems: OptionType[];
+  dropdownValue: OptionType;
+  setDropdownValue: React.Dispatch<React.SetStateAction<OptionType>>;
+  totalPages: number;
 }
 
 export const PageNavigation = ({
@@ -26,77 +32,62 @@ export const PageNavigation = ({
   hideEnd,
   lastPage,
   currentPage,
+  paginationDropdownItems,
+  dropdownValue,
+  setDropdownValue,
+  totalPages,
 }: Props) => {
   return (
     <Wrapper>
       <Select
-        items={[
-          {
-            value: "25",
-            label: "25 results",
-          },
-          {
-            value: "50",
-            label: "50 results",
-          },
-          {
-            value: "75",
-            label: "75 results",
-          },
-          {
-            value: "100",
-            label: "100 results",
-          },
-          {
-            value: "500",
-            label: "500 results",
-          },
-          {
-            value: "1000",
-            label: "1000 results",
-          },
-        ]}
+        items={paginationDropdownItems}
+        selected={dropdownValue}
+        setSelected={setDropdownValue}
       />
-
-      <PaginationElements>
-        {!hideStart && (
-          <>
-            <ElementWrapper onClick={() => onPageChange(0)}> 1 </ElementWrapper>
-            &nbsp; ... &nbsp;
-          </>
-        )}
-        {pageList.map((page, index) => {
-          return (
-            <ElementWrapper
-              active={index === activeIndex}
-              key={page}
-              onClick={() => onPageChange(page)}
-            >
-              {page + 1}
-            </ElementWrapper>
-          );
-        })}
-        {!hideEnd && (
-          <>
-            &nbsp; ... &nbsp;
-            <ElementWrapper onClick={() => onPageChange(lastPage)}>
-              {lastPage + 1}
-            </ElementWrapper>
-          </>
-        )}
-        <NextElement
-          disabled={disableBack}
-          onClick={() => onPageChange(currentPage - 1)}
-        >
-          <LeftIcon />
-        </NextElement>
-        <NextElement
-          disabled={disableForward}
-          onClick={() => onPageChange(currentPage + 1)}
-        >
-          <RightIcon />
-        </NextElement>
-      </PaginationElements>
+      {totalPages > 1 ? (
+        <PaginationElements>
+          {!hideStart && (
+            <>
+              <ElementWrapper onClick={() => onPageChange(0)}>
+                {" "}
+                1{" "}
+              </ElementWrapper>
+              &nbsp; ... &nbsp;
+            </>
+          )}
+          {pageList.map((page, index) => {
+            return (
+              <ElementWrapper
+                active={index === activeIndex}
+                key={page}
+                onClick={() => onPageChange(page)}
+              >
+                {page + 1}
+              </ElementWrapper>
+            );
+          })}
+          {!hideEnd && (
+            <>
+              &nbsp; ... &nbsp;
+              <ElementWrapper onClick={() => onPageChange(lastPage)}>
+                {lastPage + 1}
+              </ElementWrapper>
+            </>
+          )}
+          <NextElement
+            disabled={disableBack}
+            onClick={() => onPageChange(currentPage - 1)}
+          >
+            <LeftIcon />
+          </NextElement>
+          <NextElement
+            disabled={disableForward}
+            onClick={() => onPageChange(currentPage + 1)}
+          >
+            <RightIcon />
+          </NextElement>
+        </PaginationElements>
+      ) : null}
     </Wrapper>
   );
 };

@@ -12,16 +12,18 @@ import {
   DownArrow,
 } from "./Select.styled";
 
-interface OptionType {
+export interface OptionType {
   value: string;
   label: string;
 }
 
 export interface Props {
   items: OptionType[];
+  selected: OptionType;
+  setSelected: React.Dispatch<React.SetStateAction<OptionType>>;
 }
 
-const Select: FC<Props> = ({ items }) => {
+const Select: FC<Props> = ({ items, selected, setSelected }) => {
   const {
     isOpen,
     selectedItem,
@@ -29,7 +31,16 @@ const Select: FC<Props> = ({ items }) => {
     getMenuProps,
     highlightedIndex,
     getItemProps,
-  } = useSelect({ items, defaultSelectedItem: items[0] });
+  } = useSelect({
+    items,
+    defaultSelectedItem: selected,
+    selectedItem: selected,
+    onSelectedItemChange: ({ selectedItem }) => {
+      if (selectedItem) {
+        setSelected(selectedItem);
+      }
+    },
+  });
 
   return (
     <SelectContainer>
