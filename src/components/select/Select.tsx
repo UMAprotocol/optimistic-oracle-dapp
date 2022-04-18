@@ -29,7 +29,7 @@ const Select: FC<Props> = ({ items }) => {
     getMenuProps,
     highlightedIndex,
     getItemProps,
-  } = useSelect({ items });
+  } = useSelect({ items, defaultSelectedItem: items[0] });
 
   return (
     <SelectContainer>

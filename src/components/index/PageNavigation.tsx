@@ -32,24 +32,28 @@ export const PageNavigation = ({
       <Select
         items={[
           {
-            value: "10",
-            label: "10",
-          },
-          {
             value: "25",
-            label: "25",
+            label: "25 results",
           },
           {
             value: "50",
-            label: "50",
+            label: "50 results",
+          },
+          {
+            value: "75",
+            label: "75 results",
           },
           {
             value: "100",
-            label: "100",
+            label: "100 results",
           },
           {
-            value: "250",
-            label: "250",
+            value: "500",
+            label: "500 results",
+          },
+          {
+            value: "1000",
+            label: "1000 results",
           },
         ]}
       />
