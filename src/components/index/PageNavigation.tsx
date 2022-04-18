@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { MaxWidthWrapper } from "components/wrappers/Wrappers";
 import { ReactComponent as LeftIcon } from "assets/Pagination-left-arrow.svg";
 import { ReactComponent as RightIcon } from "assets/Pagination-right-arrow.svg";
-
+import Select from "components/select";
 interface Props {
   onPageChange: (page: number) => void;
   currentPage: number;
@@ -15,6 +15,7 @@ interface Props {
   lastPage: number;
   maxNavigationCount: number;
 }
+
 export const PageNavigation = ({
   onPageChange,
   pageList,
@@ -28,6 +29,31 @@ export const PageNavigation = ({
 }: Props) => {
   return (
     <Wrapper>
+      <Select
+        items={[
+          {
+            value: "10",
+            label: "10",
+          },
+          {
+            value: "25",
+            label: "25",
+          },
+          {
+            value: "50",
+            label: "50",
+          },
+          {
+            value: "100",
+            label: "100",
+          },
+          {
+            value: "250",
+            label: "250",
+          },
+        ]}
+      />
+
       <PaginationElements>
         {!hideStart && (
           <>
