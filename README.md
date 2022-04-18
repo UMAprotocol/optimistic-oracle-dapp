@@ -4,13 +4,17 @@
 
 - REACT_APP_ONBOARD_API_KEY
 
+## Optional Environment Variables
+
+At least one of these providers should be enabled in order for the app to collect any data. 
+
 - REACT_APP_PROVIDER_URL_1 (Ethereum Provider)
 
 - REACT_APP_PROVIDER_URL_137 (Polygon Provider)
 
-## Optional Environment Variables
+- REACT_APP_PROVIDER_URL_42 (Eth Kovan Provider)
 
-- REACT_APP_DEBUG=1 enable event state debugging output to console. Remove definition in production.
+- REACT_APP_DEBUG=1 enable event state debugging output to console. Remove definition in production. Setting debug to 1 will also enable local hardhat testing with chain id 1337.
 
 # Getting Started with Create React App
 
