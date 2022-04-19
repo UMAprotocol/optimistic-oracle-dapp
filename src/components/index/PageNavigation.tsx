@@ -97,7 +97,7 @@ export const Wrapper = styled(MaxWidthWrapper)`
   padding-bottom: 2rem;
   display: flex;
   justify-content: space-between;
-  padding-bottom: 200px;
+  padding-bottom: 210px;
 `;
 
 export const PaginationElements = styled.div`

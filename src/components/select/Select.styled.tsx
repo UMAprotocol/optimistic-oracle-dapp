@@ -24,7 +24,7 @@ export const SelectHeader = styled.button<ISelectStyledProps>`
 `;
 
 export const SelectList = styled.ul<ISelectStyledProps>`
-  max-height: 200px;
+  max-height: 210px;
   overflow-y: auto;
   margin: 12px 0 0 0;
   border-width: ${(props) => (props.isOpen ? "1px" : "0")};

@@ -71,6 +71,6 @@ const items: OptionType[] = [
   },
   {
     value: "1000",
-    label: "1000 results",
+    label: "1,000 results",
   },
 ];
