@@ -19,6 +19,7 @@ import { RequestState } from "constants/blockchain";
 import { RequestIndex } from "@uma/sdk/dist/types/oracle/types/state";
 import { addCommasOnly } from "utils/format";
 import { RequestsTableWithPagination } from "./RequestsTableWithPagination";
+import { OptionType } from "components/select/Select";
 enum Filter {
   DEFAULT,
   REQUESTS,
@@ -46,8 +47,15 @@ const initialFR: FilteredRequests = {
 interface Props {
   currentPage: number;
   setCurrentPage: (x: number) => void;
+  dropdownPaginationValue: OptionType;
+  setDropdownPaginationValue: React.Dispatch<React.SetStateAction<OptionType>>;
 }
-const Index = ({ currentPage, setCurrentPage }: Props) => {
+const Index = ({
+  currentPage,
+  setCurrentPage,
+  dropdownPaginationValue,
+  setDropdownPaginationValue,
+}: Props) => {
   const [filter, setFilter] = useState<Filter>(Filter.DEFAULT);
   const { state } = useClient();
   const { descendingRequests } = useReader(state);
@@ -181,6 +189,8 @@ const Index = ({ currentPage, setCurrentPage }: Props) => {
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           requests={filteredDescendingRequests}
+          dropdownPaginationValue={dropdownPaginationValue}
+          setDropdownPaginationValue={setDropdownPaginationValue}
         />
       ) : null}
     </Wrapper>

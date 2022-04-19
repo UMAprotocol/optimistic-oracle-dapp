@@ -9,20 +9,23 @@ interface Props {
   currentPage: number;
   setCurrentPage: (number: number) => void;
   requests: any[];
+  dropdownPaginationValue: OptionType;
+  setDropdownPaginationValue: React.Dispatch<React.SetStateAction<OptionType>>;
 }
 export const RequestsTableWithPagination = ({
   currentPage,
   setCurrentPage,
   requests,
+  dropdownPaginationValue,
+  setDropdownPaginationValue,
 }: Props) => {
-  const [dropdownValue, setDropdownValue] = useState<OptionType>(items[0]);
   const elementCount = requests.length;
 
   const paginateState = paginate({
     elementCount,
     currentPage,
     maxNavigationCount: 5,
-    elementsPerPage: Number(dropdownValue.value),
+    elementsPerPage: Number(dropdownPaginationValue.value),
   });
 
   const paginatedRequests = requests.slice(
@@ -41,14 +44,14 @@ export const RequestsTableWithPagination = ({
         onPageChange={setCurrentPage}
         {...paginateState}
         paginationDropdownItems={items}
-        dropdownValue={dropdownValue}
-        setDropdownValue={setDropdownValue}
+        dropdownValue={dropdownPaginationValue}
+        setDropdownValue={setDropdownPaginationValue}
       />
     </>
   );
 };
 
-const items: OptionType[] = [
+export const items: OptionType[] = [
   {
     value: "25",
     label: "25 results",
