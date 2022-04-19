@@ -1,4 +1,3 @@
-import { useState } from "react";
 import RequestsTable from "./RequestsTable";
 import paginate from "utils/paginate";
 import { PageNavigation } from "./PageNavigation";
