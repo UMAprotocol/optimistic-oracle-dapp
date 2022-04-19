@@ -2,6 +2,8 @@ import styled from "@emotion/styled";
 import { MaxWidthWrapper } from "components/wrappers/Wrappers";
 import { ReactComponent as LeftIcon } from "assets/Pagination-left-arrow.svg";
 import { ReactComponent as RightIcon } from "assets/Pagination-right-arrow.svg";
+import Select from "components/select";
+import { OptionType } from "components/select/Select";
 
 interface Props {
   onPageChange: (page: number) => void;
@@ -13,7 +15,13 @@ interface Props {
   hideStart: boolean;
   hideEnd: boolean;
   lastPage: number;
+  maxNavigationCount: number;
+  paginationDropdownItems: OptionType[];
+  dropdownValue: OptionType;
+  setDropdownValue: React.Dispatch<React.SetStateAction<OptionType>>;
+  totalPages: number;
 }
+
 export const PageNavigation = ({
   onPageChange,
   pageList,
@@ -24,48 +32,62 @@ export const PageNavigation = ({
   hideEnd,
   lastPage,
   currentPage,
+  paginationDropdownItems,
+  dropdownValue,
+  setDropdownValue,
+  totalPages,
 }: Props) => {
   return (
     <Wrapper>
-      <PaginationElements>
-        {!hideStart && (
-          <>
-            <ElementWrapper onClick={() => onPageChange(0)}> 1 </ElementWrapper>
-            &nbsp; ... &nbsp;
-          </>
-        )}
-        {pageList.map((page, index) => {
-          return (
-            <ElementWrapper
-              active={index === activeIndex}
-              key={page}
-              onClick={() => onPageChange(page)}
-            >
-              {page + 1}
-            </ElementWrapper>
-          );
-        })}
-        {!hideEnd && (
-          <>
-            &nbsp; ... &nbsp;
-            <ElementWrapper onClick={() => onPageChange(lastPage)}>
-              {lastPage + 1}
-            </ElementWrapper>
-          </>
-        )}
-        <NextElement
-          disabled={disableBack}
-          onClick={() => onPageChange(currentPage - 1)}
-        >
-          <LeftIcon />
-        </NextElement>
-        <NextElement
-          disabled={disableForward}
-          onClick={() => onPageChange(currentPage + 1)}
-        >
-          <RightIcon />
-        </NextElement>
-      </PaginationElements>
+      <Select
+        items={paginationDropdownItems}
+        selected={dropdownValue}
+        setSelected={setDropdownValue}
+      />
+      {totalPages > 1 ? (
+        <PaginationElements>
+          {!hideStart && (
+            <>
+              <ElementWrapper onClick={() => onPageChange(0)}>
+                {" "}
+                1{" "}
+              </ElementWrapper>
+              &nbsp; ... &nbsp;
+            </>
+          )}
+          {pageList.map((page, index) => {
+            return (
+              <ElementWrapper
+                active={index === activeIndex}
+                key={page}
+                onClick={() => onPageChange(page)}
+              >
+                {page + 1}
+              </ElementWrapper>
+            );
+          })}
+          {!hideEnd && (
+            <>
+              &nbsp; ... &nbsp;
+              <ElementWrapper onClick={() => onPageChange(lastPage)}>
+                {lastPage + 1}
+              </ElementWrapper>
+            </>
+          )}
+          <NextElement
+            disabled={disableBack}
+            onClick={() => onPageChange(currentPage - 1)}
+          >
+            <LeftIcon />
+          </NextElement>
+          <NextElement
+            disabled={disableForward}
+            onClick={() => onPageChange(currentPage + 1)}
+          >
+            <RightIcon />
+          </NextElement>
+        </PaginationElements>
+      ) : null}
     </Wrapper>
   );
 };
@@ -73,11 +95,15 @@ export const PageNavigation = ({
 export const Wrapper = styled(MaxWidthWrapper)`
   padding-right: 30px;
   padding-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 210px;
 `;
 
 export const PaginationElements = styled.div`
   display: flex;
   justify-content: right;
+  align-self: center;
 `;
 
 interface IElementWrapper {
