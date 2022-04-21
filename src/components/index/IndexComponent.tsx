@@ -63,6 +63,7 @@ const Index = ({
   const [checked, setChecked] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!descendingRequests) return;
     const initial: FilteredRequests = {
       all: [],
       requested: [],
@@ -70,7 +71,6 @@ const Index = ({
       disputed: [],
       answered: [],
     };
-
     const nextFR = descendingRequests.reduce((result, request) => {
       if (ALL_FILTER(request)) {
         result.all.push(request);
@@ -89,7 +89,6 @@ const Index = ({
       }
       return result;
     }, initial);
-
     setFilteredRequests(nextFR);
   }, [descendingRequests]);
 
