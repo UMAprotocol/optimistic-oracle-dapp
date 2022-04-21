@@ -3,6 +3,7 @@ import config from "constants/oracleConfig";
 import Events from "events";
 
 export { oracle };
+
 export const events = new Events();
 export const client = oracle.client.factory(
   config,
