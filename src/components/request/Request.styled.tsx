@@ -4,6 +4,7 @@ import Input from "components/input";
 
 export const Wrapper = styled.div`
   min-height: 90vh;
+  background-color: #eeeeef;
 `;
 
 /* Table Components */
@@ -275,4 +276,8 @@ export const RequestTxText = styled.div`
       opacity: 0.75;
     }
   }
+`;
+
+export const Spacer = styled.div`
+  height: 64px;
 `;
