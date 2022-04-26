@@ -8,7 +8,6 @@ const ethChainId = ChainId.MAINNET;
 // Polygon config
 const polygonChainId = ChainId.POLYGON;
 const kovanChainId = ChainId.KOVAN;
-
 const chains: Record<number, oracle.types.state.PartialChainConfig> = {};
 
 // enable local node if debug is on
@@ -38,8 +37,14 @@ if (process.env.REACT_APP_PROVIDER_URL_137) {
     nativeCurrency: CHAINS[polygonChainId].nativeCurrency,
     chainName: CHAINS[polygonChainId].name,
     blockExplorerUrls: [CHAINS[polygonChainId].explorerUrl],
+    // polygon mainnet does not have requests before this block
+    earliestBlockNumber: 20000000,
+    // this value was selected with testing to give a balance between quantity of requests found vs how fast the latest
+    // requests show removing this will enable the client to query the full range in one request.
+    maxEventRangeQuery: 200000,
   };
 }
+
 if (process.env.REACT_APP_PROVIDER_URL_42) {
   chains[kovanChainId] = {
     rpcUrls: [process.env.REACT_APP_PROVIDER_URL_42],
@@ -49,4 +54,5 @@ if (process.env.REACT_APP_PROVIDER_URL_42) {
   };
 }
 
-export default { chains };
+const config = { chains };
+export default config;

@@ -71,7 +71,9 @@ export default function useOracleReader(state: oracle.types.state.State) {
     console.error(request?.identifier, err);
   }
 
-  const descendingRequests = read.descendingRequests();
+  // the read function probably returns an empty array if DNE, but that causes lots of rerenders if its a dependency.
+  // so lets just use the raw value and check for undefined.
+  const descendingRequests = state.descendingRequests;
   return {
     chainId,
     totalBond,
