@@ -71,7 +71,15 @@ const Index = ({
       disputed: [],
       answered: [],
     };
+    const nowTimestamp = parseInt((new Date().getTime() / 1000).toFixed(0));
+    // subtract the seconds for 1 month
+    const lastMonthTimestamp = nowTimestamp - 60 * 60 * 24 * 31;
     const nextFR = descendingRequests.reduce((result, request) => {
+      // skip requests older the 1 month
+      if (request.timestamp < lastMonthTimestamp) {
+        return result;
+      }
+
       if (ALL_FILTER(request)) {
         result.all.push(request);
       }
