@@ -8,6 +8,7 @@ const ethChainId = ChainId.MAINNET;
 // Polygon config
 const polygonChainId = ChainId.POLYGON;
 const kovanChainId = ChainId.KOVAN;
+const bobaChainId = ChainId.BOBA;
 const chains: Record<number, oracle.types.state.PartialChainConfig> = {};
 
 // enable local node if debug is on
@@ -51,6 +52,15 @@ if (process.env.REACT_APP_PROVIDER_URL_42) {
     nativeCurrency: CHAINS[kovanChainId].nativeCurrency,
     chainName: CHAINS[kovanChainId].name,
     blockExplorerUrls: [CHAINS[kovanChainId].explorerUrl],
+  };
+}
+
+if (process.env.REACT_APP_PROVIDER_URL_288) {
+  chains[bobaChainId] = {
+    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_288],
+    nativeCurrency: CHAINS[bobaChainId].nativeCurrency,
+    chainName: CHAINS[bobaChainId].name,
+    blockExplorerUrls: [CHAINS[bobaChainId].explorerUrl],
   };
 }
 
