@@ -60,7 +60,6 @@ const Index = ({
   const { state } = useClient();
   const { descendingRequests } = useReader(state);
   const [filteredRequests, setFilteredRequests] = useState(initialFR);
-  const [checked, setChecked] = useState<boolean>(false);
 
   useEffect(() => {
     if (!descendingRequests) return;
@@ -100,17 +99,17 @@ const Index = ({
     setFilteredRequests(nextFR);
   }, [descendingRequests]);
 
-  function filterDescendingRequests(checked: boolean, filter: Filter) {
+  function filterDescendingRequests(filter: Filter) {
     let fr: RequestIndex[] = [];
     if (filter === Filter.PROPOSED) fr = filteredRequests.proposed;
     if (filter === Filter.REQUESTS) fr = filteredRequests.requested;
     if (filter === Filter.DISPUTED) fr = filteredRequests.disputed;
+    if (filter === Filter.ANSWERED) fr = filteredRequests.answered;
     if (filter === Filter.DEFAULT) fr = filteredRequests.all;
-    if (!checked) fr = [...fr, ...filteredRequests.answered];
     return fr.sort((a, b) => b.timestamp - a.timestamp);
   }
 
-  const filteredDescendingRequests = filterDescendingRequests(checked, filter);
+  const filteredDescendingRequests = filterDescendingRequests(filter);
 
   return (
     <Wrapper>
@@ -127,7 +126,6 @@ const Index = ({
             variant={filter === Filter.DEFAULT ? "primary" : "outline"}
             onClick={() => {
               setFilter(Filter.DEFAULT);
-              if (checked) setChecked(false);
             }}
           >
             <div>All</div>{" "}
@@ -139,7 +137,6 @@ const Index = ({
             variant={filter === Filter.REQUESTS ? "primary" : "outline"}
             onClick={() => {
               setFilter(Filter.REQUESTS);
-              setChecked(true);
             }}
           >
             <div>Requests </div>{" "}
@@ -151,7 +148,6 @@ const Index = ({
             variant={filter === Filter.PROPOSED ? "primary" : "outline"}
             onClick={() => {
               setFilter(Filter.PROPOSED);
-              setChecked(true);
             }}
           >
             <div>Proposed </div>{" "}
@@ -163,7 +159,6 @@ const Index = ({
             variant={filter === Filter.DISPUTED ? "primary" : "outline"}
             onClick={() => {
               setFilter(Filter.DISPUTED);
-              setChecked(true);
             }}
           >
             <div>Disputed </div>{" "}
@@ -172,22 +167,15 @@ const Index = ({
             </FilterNumbers>
           </FilterButton>
           <FilterButton
-            onClick={() => setChecked((prevValue) => !prevValue)}
-            variant="base"
+            variant={filter === Filter.ANSWERED ? "primary" : "outline"}
+            onClick={() => {
+              setFilter(Filter.ANSWERED);
+            }}
           >
-            <input
-              checked={checked}
-              type="checkbox"
-              onChange={(event) => setChecked(event.target.checked)}
-            />
-            <span>
-              <span />
-              <span />
-            </span>
-            <ShowAnsweredText>Hide Settled</ShowAnsweredText>
-            <ShowAnsweredText>
+            <div>Settled </div>{" "}
+            <FilterNumbers selected={filter === Filter.ANSWERED}>
               {addCommasOnly(filteredRequests.answered.length)}
-            </ShowAnsweredText>
+            </FilterNumbers>
           </FilterButton>
         </FilterButtonRow>
       </FilterWrapper>
@@ -205,7 +193,7 @@ const Index = ({
 };
 
 function ALL_FILTER(x: RequestIndex) {
-  return REQUEST_FILTER(x) || PROPOSED_FILTER(x) || DISPUTE_FILTER(x);
+  return REQUEST_FILTER(x) || PROPOSED_FILTER(x) || DISPUTE_FILTER(x) || ANSWERED_FILTER(x);
 }
 
 function PROPOSED_FILTER(x: RequestIndex) {

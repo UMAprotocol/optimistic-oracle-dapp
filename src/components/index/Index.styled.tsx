@@ -95,45 +95,6 @@ export const FilterButton = styled(Button)`
   &:first-of-type {
     margin-left: 16px;
   }
-  &:last-of-type {
-    background-color: #f5f4f4;
-    color: #272528;
-    margin-left: auto;
-    width: 200px;
-    margin-right: 8px;
-    input[type="checkbox"] {
-      display: none;
-    }
-    input[type="checkbox"] + span {
-      display: inline-block;
-      position: relative;
-      width: 18px;
-      height: 18px;
-      vertical-align: middle;
-      background: #fff left top no-repeat;
-      border: 1px solid #ccc;
-      cursor: pointer;
-      > span {
-        display: none;
-      }
-    }
-    input[type="checkbox"]:checked + span {
-      background: #ff4d4d -19px top no-repeat;
-      span:first-of-type {
-        position: absolute;
-        display: block;
-        left: 6px;
-        top: 2px;
-        width: 5px;
-        height: 10px;
-        border: solid white;
-        border-width: 0 3px 3px 0;
-        -webkit-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        transform: rotate(45deg);
-      }
-    }
-  }
 `;
 
 interface IFilterNumbers {
