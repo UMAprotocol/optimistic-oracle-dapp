@@ -10,7 +10,6 @@ import {
   FilterButton,
   FilterWrapper,
   FilterNumbers,
-  ShowAnsweredText,
 } from "./Index.styled";
 import ooLogo from "assets/uma-oo-logo-redcirclebg.svg";
 import useClient from "hooks/useOracleClient";
