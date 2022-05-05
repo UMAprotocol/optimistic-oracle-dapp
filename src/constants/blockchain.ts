@@ -1,5 +1,6 @@
 import ethereumLogo from "assets/ethereum-logo.svg";
 import polygonLogo from "assets/polygon-tag.svg";
+import bobaLogo from "assets/boba-logo.svg";
 
 // Based on EIP, for adding into MM
 // https://eips.ethereum.org/EIPS/eip-3085
@@ -21,6 +22,7 @@ export enum ChainId {
   MAINNET = 1,
   KOVAN = 42,
   POLYGON = 137,
+  BOBA = 288,
   MM_TESTNET = 1337,
   HARDHAT = 31337,
 }
@@ -86,6 +88,19 @@ export const CHAINS: Record<ChainId, ChainMetadata> = {
     explorerUrl: "https://etherscan.io",
     constructExplorerLink: (txHash: string) =>
       `https://etherscan.io/tx/${txHash}`,
+    nativeCurrency: {
+      name: "Ether",
+      symbol: "ETH",
+      decimals: 18,
+    },
+  },
+  [ChainId.BOBA]: {
+    name: "Boba",
+    chainId: ChainId.BOBA,
+    logoURI: bobaLogo,
+    explorerUrl: "https://blockexplorer.boba.network/",
+    constructExplorerLink: (txHash: string) =>
+      `https://blockexplorer.boba.network/tx/${txHash}`,
     nativeCurrency: {
       name: "Ether",
       symbol: "ETH",
