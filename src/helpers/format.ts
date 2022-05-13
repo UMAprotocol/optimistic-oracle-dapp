@@ -39,8 +39,8 @@ export function parseAncillaryData(ancillaryData: string) {
 
 export function validateYesNoQueryString(parsedAncillaryData: string) {
   return (
-    parsedAncillaryData.includes("title: ") &&
-    parsedAncillaryData.includes("description: ")
+    parsedAncillaryData.includes("title:") &&
+    parsedAncillaryData.includes("description:")
   );
 }
 
@@ -51,7 +51,7 @@ export function formatYesNoQueryString(
   maxLength = MAX_TITLE_LENGTH
 ) {
   // Split the string before title:
-  const splitOne = str.split("title: ")[1];
+  const splitOne = str.split("title:")[1].trim();
 
   // Remove the string after description:
   const title = splitOne.split("description:")[0].replace(/[^\x20-\x7E]+/g, "");

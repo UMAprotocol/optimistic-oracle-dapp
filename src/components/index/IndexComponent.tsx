@@ -192,7 +192,12 @@ const Index = ({
 };
 
 function ALL_FILTER(x: RequestIndex) {
-  return REQUEST_FILTER(x) || PROPOSED_FILTER(x) || DISPUTE_FILTER(x) || ANSWERED_FILTER(x);
+  return (
+    REQUEST_FILTER(x) ||
+    PROPOSED_FILTER(x) ||
+    DISPUTE_FILTER(x) ||
+    ANSWERED_FILTER(x)
+  );
 }
 
 function PROPOSED_FILTER(x: RequestIndex) {

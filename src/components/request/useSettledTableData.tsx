@@ -32,7 +32,7 @@ function useSettledTableData(
         }
       }
     } catch (err: any) {
-      console.log("Error in parsing identifier", err.message);
+      console.error("Error in parsing identifier", err.message);
     }
 
     let nextRows = [
