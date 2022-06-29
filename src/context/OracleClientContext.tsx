@@ -1,38 +1,51 @@
 import React, { useEffect, useState } from "react";
-import { events, oracle, client } from "helpers/oracleClient";
+import { events, oracle, clients, mapObject } from "helpers/oracleClient";
 
-export type State = {
-  state: oracle.types.state.State;
-  oracle: typeof oracle;
-  client: typeof client;
-  events: typeof events;
-  read: typeof client.store.read;
-  flags: Record<oracle.types.state.Flag, boolean>;
+type States = {
+  [key in oracle.types.state.OracleType]?: oracle.types.state.State;
 };
 
-export const Context = React.createContext<State>({} as State);
+export type ContextState = {
+  oracle: typeof oracle;
+  events: typeof events;
+  states: States;
+  clients: oracle.types.interfaces.ClientTable;
+};
+
+export const Context = React.createContext<ContextState>({
+  states: {},
+  clients: clients,
+} as ContextState);
 
 Context.displayName = "OracleClientContext";
 
 export const OracleClientProvider: React.FC = ({ children }) => {
-  const [state, setState] = useState<State["state"]>(client.store.get());
+  const [states, setStates] = useState<States>(
+    mapObject((client) => client.store.get())
+  );
 
   useEffect(() => {
-    events.on("change", setState);
+    function eventHandler(
+      oracleType: oracle.types.state.OracleType,
+      state: oracle.types.state.State
+    ) {
+      setStates((prev) => {
+        return { ...prev, [oracleType]: state };
+      });
+    }
+    events.on("change", eventHandler);
     return () => {
-      events.removeListener("change", setState);
+      events.removeListener("change", eventHandler);
     };
   }, []);
 
   return (
     <Context.Provider
       value={{
-        state,
+        states,
         oracle,
         events,
-        client,
-        read: client.store.read,
-        flags: oracle.utils.getFlags(state),
+        clients,
       }}
     >
       {children}

@@ -15,7 +15,7 @@ import ooLogo from "assets/uma-oo-logo-redcirclebg.svg";
 import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
 import { RequestState } from "constants/blockchain";
-import { RequestIndex } from "@uma/sdk/dist/types/oracle/types/state";
+import { oracle } from "helpers/oracleClient";
 import { addCommasOnly } from "utils/format";
 import { RequestsTableWithPagination } from "./RequestsTableWithPagination";
 import { OptionType } from "components/select/Select";
@@ -27,12 +27,15 @@ enum Filter {
   ANSWERED,
 }
 
+type Requests = oracle.types.interfaces.Requests;
+type Request = oracle.types.interfaces.Request;
+
 interface FilteredRequests {
-  all: RequestIndex[];
-  requested: RequestIndex[];
-  proposed: RequestIndex[];
-  disputed: RequestIndex[];
-  answered: RequestIndex[];
+  all: Requests;
+  requested: Requests;
+  proposed: Requests;
+  disputed: Requests;
+  answered: Requests;
 }
 
 const initialFR: FilteredRequests = {
@@ -59,6 +62,7 @@ const Index = ({
   const { state } = useClient();
   const { descendingRequests } = useReader(state);
   const [filteredRequests, setFilteredRequests] = useState(initialFR);
+  console.log({ descendingRequests, filteredRequests, state });
 
   useEffect(() => {
     if (!descendingRequests) return;
@@ -99,7 +103,7 @@ const Index = ({
   }, [descendingRequests]);
 
   function filterDescendingRequests(filter: Filter) {
-    let fr: RequestIndex[] = [];
+    let fr: Requests = [];
     if (filter === Filter.PROPOSED) fr = filteredRequests.proposed;
     if (filter === Filter.REQUESTS) fr = filteredRequests.requested;
     if (filter === Filter.DISPUTED) fr = filteredRequests.disputed;
@@ -191,7 +195,7 @@ const Index = ({
   );
 };
 
-function ALL_FILTER(x: RequestIndex) {
+function ALL_FILTER(x: Request) {
   return (
     REQUEST_FILTER(x) ||
     PROPOSED_FILTER(x) ||
@@ -200,19 +204,19 @@ function ALL_FILTER(x: RequestIndex) {
   );
 }
 
-function PROPOSED_FILTER(x: RequestIndex) {
+function PROPOSED_FILTER(x: Request) {
   return x.state === RequestState.Proposed;
 }
 
-function REQUEST_FILTER(x: RequestIndex) {
+function REQUEST_FILTER(x: Request) {
   return x.state === RequestState.Requested;
 }
 
-function DISPUTE_FILTER(x: RequestIndex) {
+function DISPUTE_FILTER(x: Request) {
   return x.state === RequestState.Disputed || x.state === RequestState.Resolved;
 }
 
-function ANSWERED_FILTER(x: RequestIndex) {
+function ANSWERED_FILTER(x: Request) {
   return x.state === RequestState.Settled;
 }
 

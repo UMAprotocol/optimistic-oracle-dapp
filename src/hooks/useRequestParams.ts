@@ -1,93 +1,122 @@
-import { useMemo } from "react";
+import assert from "assert";
 import { useSearchParams } from "react-router-dom";
+import * as ss from "superstruct";
+import {
+  isSupportedOracleType,
+  OracleType,
+  defaultOracleType,
+} from "helpers/oracleClient";
+import {capitalizeFirstLetter} from 'utils/format'
 
-const SEARCH_PARAMS_KEYS = [
-  "chainId",
-  "requester",
-  "timestamp",
-  "identifier",
-  "ancillaryData",
-] as const;
-const SEARCH_PARAMS_KEYS_BY_TRANSACTION = [
-  "chainId",
-  "transactionHash",
-  "eventIndex",
-] as const;
+// query params when a link specifies transaction hash
+const RequestInputByTransactionSs = ss.object({
+  chainId: ss.string(),
+  oracleType: ss.optional(ss.string()),
+  transactionHash: ss.string(),
+  eventIndex: ss.string(),
+});
 
-export type ActiveRequestParams = {
+// query params when link specifies request details
+const RequestInputSs = ss.object({
+  chainId: ss.string(),
+  oracleType: ss.optional(ss.string()),
+  requester: ss.string(),
+  timestamp: ss.string(),
+  identifier: ss.string(),
+  ancillaryData: ss.string(),
+});
+
+// this is like a parent class, has required params for both types of query params
+const RequestInputRequiredSs = ss.type({
+  chainId: ss.string(),
+  oracleType: ss.optional(ss.string()),
+});
+
+// these mirror the superstruct types, but make them more specific for data needed by client
+type RequestInputRequired = {
+  chainId: number;
+  oracleType: OracleType;
+};
+type RequestInput = RequestInputRequired & {
   requester: string;
+  timestamp: number;
   identifier: string;
   ancillaryData: string;
-  chainId: number;
-  timestamp: number;
 };
-export type ActiveRequestParamsByTransaction = {
-  chainId: number;
+type RequestInputByTransaction = RequestInputRequired & {
+  eventIndex: number;
   transactionHash: string;
-  eventIndex: number | undefined;
 };
 
-type RequestParams<IsByTransaction extends boolean> =
-  IsByTransaction extends false
-    ? ActiveRequestParams
-    : ActiveRequestParamsByTransaction;
-type Keys<IsByTransaction extends boolean> = IsByTransaction extends false
-  ? typeof SEARCH_PARAMS_KEYS
-  : typeof SEARCH_PARAMS_KEYS_BY_TRANSACTION;
-type UseRequestParamsReturn<IsByTransaction extends boolean> =
-  | { request: RequestParams<IsByTransaction>; error: undefined }
-  | { request: undefined; error: InvalidURLParamsError };
-export function useRequestParams(): UseRequestParamsReturn<true>;
-export function useRequestParams<T extends boolean>(
-  isByTransaction: T
-): UseRequestParamsReturn<T>;
-export default function useRequestParams<T extends boolean>(
-  isByTransaction?: T
-): UseRequestParamsReturn<T> {
+// converts query params by transaction hash to parameters needed for client, or undefined
+export function getRequestInputByTransaction(
+  params: unknown
+): RequestInputByTransaction | undefined {
+  try {
+    const parsed = ss.create(params, RequestInputByTransactionSs);
+    parsed.oracleType = capitalizeFirstLetter(parsed.oracleType || defaultOracleType);
+    assert(
+      isSupportedOracleType(parsed.oracleType),
+      "Invalid oracle type in search params: " + parsed.oracleType
+    );
+    const oracleType: OracleType = parsed.oracleType;
+    return {
+      ...parsed,
+      oracleType,
+      chainId: Number(parsed.chainId),
+      eventIndex: Number(parsed.eventIndex),
+    };
+  } catch (err) {
+    //since we cant easily handle errors in hooks, just return undefined for any reason we cant parse
+  }
+}
+
+// converts query params by request details to parameters needed for client, or undefined
+export function getRequestInput(params: unknown): RequestInput | undefined {
+  try {
+    const parsed = ss.create(params, RequestInputSs);
+    parsed.oracleType = capitalizeFirstLetter(parsed.oracleType || defaultOracleType);
+    assert(
+      isSupportedOracleType(parsed.oracleType),
+      "Invalid oracle type in search params: " + parsed.oracleType
+    );
+    const oracleType: OracleType = parsed.oracleType;
+    return {
+      ...parsed,
+      oracleType,
+      chainId: Number(parsed.chainId),
+      timestamp: Number(parsed.timestamp),
+    };
+  } catch (err) {
+    //since we cant easily handle errors in hooks, just return undefined for any reason we cant parse
+  }
+}
+
+// this parses the required parameters, (oracleType, chainId) from any query
+export function getRequestInputRequired(
+  params: unknown
+): RequestInputRequired | undefined {
+  try {
+    const parsed = ss.create(params, RequestInputRequiredSs);
+    parsed.oracleType = capitalizeFirstLetter(parsed.oracleType || defaultOracleType);
+    assert(
+      isSupportedOracleType(parsed.oracleType),
+      "Invalid oracle type in search params: " + parsed.oracleType
+    );
+    const oracleType: OracleType = parsed.oracleType;
+    return {
+      ...parsed,
+      oracleType,
+      chainId: Number(parsed.chainId),
+    };
+  } catch (err) {
+    //since we cant easily handle errors in hooks, just return undefined for any reason we cant parse
+  }
+}
+
+// turns this into a hook
+export function useRequestInputRequired(): RequestInputRequired | undefined {
   const [searchParams] = useSearchParams();
-  const keys = (
-    Boolean(isByTransaction)
-      ? SEARCH_PARAMS_KEYS_BY_TRANSACTION
-      : SEARCH_PARAMS_KEYS
-  ) as Keys<T>;
-
-  const request = useMemo(() => {
-    const params = {} as any;
-    try {
-      keys.forEach((key) => {
-        const value = searchParams.get(key);
-        if (value === null && key !== "eventIndex") {
-          throw new InvalidURLParamsError(`Missing required parameter: ${key}`);
-        }
-        if (["timestamp", "chainId", "eventIndex"].includes(key)) {
-          const parsedKey = Number(value);
-          params[key] = isNaN(parsedKey) ? undefined : parsedKey;
-        } else {
-          params[key] = value;
-        }
-      });
-      return { request: params as RequestParams<T>, error: undefined };
-    } catch (e) {
-      return { request: undefined, error: e as InvalidURLParamsError };
-    }
-  }, [keys, searchParams]);
-  return request;
-}
-
-export function isByTransactionRequest(
-  request?: RequestParams<boolean>
-): request is ActiveRequestParamsByTransaction {
-  if (!request) {
-    return false;
-  }
-  const { chainId, transactionHash } =
-    request as ActiveRequestParamsByTransaction;
-  return chainId !== undefined && transactionHash !== undefined;
-}
-
-export class InvalidURLParamsError extends Error {
-  constructor(message: string) {
-    super("Invalid URL params");
-    this.message = message;
-  }
+  const params = Object.fromEntries([...searchParams]);
+  return getRequestInputRequired(params);
 }

@@ -1,6 +1,6 @@
 import Onboard from "bnc-onboard";
 import { ethers } from "ethers";
-import { client, oracle } from "./oracleClient";
+import { oracle, forEach } from "./oracleClient";
 import onboardBaseConfig from "./onboardBaseConfig";
 import { Wallet } from "bnc-onboard/dist/src/interfaces";
 
@@ -13,7 +13,9 @@ export const onboard = Onboard({
     address: (address: string) => {
       debug && console.log("onboard address change", address);
       if (address) {
-        client.setUser({ address: ethers.utils.getAddress(address) });
+        forEach((client) => {
+          client.setUser({ address: ethers.utils.getAddress(address) });
+        });
       } else {
         // address is undefined when metamask wallet is logged out, so run the disconnect routine
         disconnect();
@@ -22,7 +24,7 @@ export const onboard = Onboard({
     network: (networkId: number) => {
       debug && console.log("onboard network change", networkId);
       if (!networkId) return;
-      const params: Parameters<typeof client.setUser>["0"] = {
+      const params: Partial<oracle.types.state.User> = {
         chainId: networkId,
       };
       if (currentWallet && currentWallet.provider) {
@@ -32,7 +34,9 @@ export const onboard = Onboard({
         params.provider.polling = false;
         params.signer = params.provider.getSigner();
       }
-      client.setUser(params);
+      forEach((client) => {
+        client.setUser(params);
+      });
     },
     wallet: async (wallet: Wallet) => {
       debug && console.log("onboard wallet change", wallet);
@@ -53,5 +57,7 @@ export const connect = async () => {
 };
 export const disconnect = () => {
   onboard.walletReset();
-  client.clearUser();
+  forEach((client) => {
+    client.clearUser();
+  });
 };

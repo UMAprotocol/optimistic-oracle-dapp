@@ -13,17 +13,18 @@ import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
 import SettledTable from "./SettledTable";
 import dataIcon from "assets/data-icon.svg";
-import useRequestParams, {
-  isByTransactionRequest,
+import {
+  getRequestInputByTransaction,
+  getRequestInput,
 } from "hooks/useRequestParams";
-import useIsByTransactionParams from "hooks/useIsByTransactionParams";
 import { Loading } from "./Loading";
+import { useSearchParams } from "react-router-dom";
 
 const Request = () => {
+  const [searchParams] = useSearchParams();
   const { client, state, flags } = useClient();
   const [requestId, setRequestId] = useState<string | undefined>(undefined);
   const [requestLoading, setRequestLoading] = useState(true);
-
   const {
     chainId,
     proposeTx,
@@ -48,33 +49,31 @@ const Request = () => {
     requestTxHash: requestTx,
   });
 
-  const isByTransactionParams = useIsByTransactionParams();
-  const { request, error } = useRequestParams(isByTransactionParams);
-
   useEffect(() => {
-    // TODO: would be nice to do something with the error here, like redirect to the homepage
-    if (!error && request) {
-      if (isByTransactionRequest(request)) {
-        setRequestId(
-          client.setActiveRequestByTransaction({
-            chainId: request.chainId,
-            transactionHash: request.transactionHash,
-            eventIndex: request.eventIndex ?? 0,
-          })
-        );
-      } else {
-        setRequestId(
-          client.setActiveRequest({
-            requester: request.requester.trim(),
-            identifier: request.identifier,
-            timestamp: request.timestamp,
-            ancillaryData: request.ancillaryData,
-            chainId: request.chainId,
-          })
-        );
-      }
+    const request: unknown = Object.fromEntries([...searchParams]);
+    let requestByTx = getRequestInputByTransaction(request);
+    if (client && requestByTx) {
+      setRequestId(
+        client.setActiveRequestByTransaction({
+          chainId: requestByTx.chainId,
+          transactionHash: requestByTx.transactionHash,
+          eventIndex: requestByTx.eventIndex ?? 0,
+        })
+      );
     }
-  }, [client, error, request]);
+    const requestInput = getRequestInput(request);
+    if (client && requestInput) {
+      setRequestId(
+        client.setActiveRequest({
+          requester: requestInput.requester.trim(),
+          identifier: requestInput.identifier,
+          timestamp: requestInput.timestamp,
+          ancillaryData: requestInput.ancillaryData,
+          chainId: requestInput.chainId,
+        })
+      );
+    }
+  }, [client, searchParams]);
 
   useEffect(() => {
     if (!requestId) return;
