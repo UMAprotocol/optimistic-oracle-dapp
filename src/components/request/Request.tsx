@@ -50,9 +50,10 @@ const Request = () => {
   });
 
   useEffect(() => {
+    if (!client) return;
     const request: unknown = Object.fromEntries([...searchParams]);
-    let requestByTx = getRequestInputByTransaction(request);
-    if (client && requestByTx) {
+    try {
+      let requestByTx = getRequestInputByTransaction(request);
       setRequestId(
         client.setActiveRequestByTransaction({
           chainId: requestByTx.chainId,
@@ -60,9 +61,11 @@ const Request = () => {
           eventIndex: requestByTx.eventIndex ?? 0,
         })
       );
+    } catch (err) {
+      console.warn("parsing query by transaction", err);
     }
-    const requestInput = getRequestInput(request);
-    if (client && requestInput) {
+    try {
+      const requestInput = getRequestInput(request);
       setRequestId(
         client.setActiveRequest({
           requester: requestInput.requester.trim(),
@@ -72,6 +75,8 @@ const Request = () => {
           chainId: requestInput.chainId,
         })
       );
+    } catch (err) {
+      console.warn("parsing query by input", err);
     }
   }, [client, searchParams]);
 

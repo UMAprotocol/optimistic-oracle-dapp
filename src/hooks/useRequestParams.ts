@@ -6,7 +6,7 @@ import {
   OracleType,
   defaultOracleType,
 } from "helpers/oracleClient";
-import {capitalizeFirstLetter} from 'utils/format'
+import { capitalizeFirstLetter } from "utils/format";
 
 // query params when a link specifies transaction hash
 const RequestInputByTransactionSs = ss.object({
@@ -51,72 +51,53 @@ type RequestInputByTransaction = RequestInputRequired & {
 // converts query params by transaction hash to parameters needed for client, or undefined
 export function getRequestInputByTransaction(
   params: unknown
-): RequestInputByTransaction | undefined {
-  try {
-    const parsed = ss.create(params, RequestInputByTransactionSs);
-    parsed.oracleType = capitalizeFirstLetter(parsed.oracleType || defaultOracleType);
-    assert(
-      isSupportedOracleType(parsed.oracleType),
-      "Invalid oracle type in search params: " + parsed.oracleType
-    );
-    const oracleType: OracleType = parsed.oracleType;
-    return {
-      ...parsed,
-      oracleType,
-      chainId: Number(parsed.chainId),
-      eventIndex: Number(parsed.eventIndex),
-    };
-  } catch (err) {
-    //since we cant easily handle errors in hooks, just return undefined for any reason we cant parse
-  }
+): RequestInputByTransaction {
+  const parsed = ss.create(params, RequestInputByTransactionSs);
+  const required = getRequestInputRequired(params);
+  return {
+    ...parsed,
+    eventIndex: Number(parsed.eventIndex),
+    ...required,
+  };
 }
 
 // converts query params by request details to parameters needed for client, or undefined
-export function getRequestInput(params: unknown): RequestInput | undefined {
-  try {
-    const parsed = ss.create(params, RequestInputSs);
-    parsed.oracleType = capitalizeFirstLetter(parsed.oracleType || defaultOracleType);
-    assert(
-      isSupportedOracleType(parsed.oracleType),
-      "Invalid oracle type in search params: " + parsed.oracleType
-    );
-    const oracleType: OracleType = parsed.oracleType;
-    return {
-      ...parsed,
-      oracleType,
-      chainId: Number(parsed.chainId),
-      timestamp: Number(parsed.timestamp),
-    };
-  } catch (err) {
-    //since we cant easily handle errors in hooks, just return undefined for any reason we cant parse
-  }
+export function getRequestInput(params: unknown): RequestInput {
+  const parsed = ss.create(params, RequestInputSs);
+  const required = getRequestInputRequired(params);
+  return {
+    ...parsed,
+    timestamp: Number(parsed.timestamp),
+    ...required,
+  };
 }
 
 // this parses the required parameters, (oracleType, chainId) from any query
-export function getRequestInputRequired(
-  params: unknown
-): RequestInputRequired | undefined {
-  try {
-    const parsed = ss.create(params, RequestInputRequiredSs);
-    parsed.oracleType = capitalizeFirstLetter(parsed.oracleType || defaultOracleType);
-    assert(
-      isSupportedOracleType(parsed.oracleType),
-      "Invalid oracle type in search params: " + parsed.oracleType
-    );
-    const oracleType: OracleType = parsed.oracleType;
-    return {
-      ...parsed,
-      oracleType,
-      chainId: Number(parsed.chainId),
-    };
-  } catch (err) {
-    //since we cant easily handle errors in hooks, just return undefined for any reason we cant parse
-  }
+export function getRequestInputRequired(params: unknown): RequestInputRequired {
+  const parsed = ss.create(params, RequestInputRequiredSs);
+  parsed.oracleType = capitalizeFirstLetter(
+    parsed.oracleType || defaultOracleType
+  );
+  assert(
+    isSupportedOracleType(parsed.oracleType),
+    "Invalid oracle type in search params: " + parsed.oracleType
+  );
+  const oracleType: OracleType = parsed.oracleType;
+  return {
+    ...parsed,
+    oracleType,
+    chainId: Number(parsed.chainId),
+  };
 }
 
 // turns this into a hook
 export function useRequestInputRequired(): RequestInputRequired | undefined {
   const [searchParams] = useSearchParams();
   const params = Object.fromEntries([...searchParams]);
-  return getRequestInputRequired(params);
+  try {
+    return getRequestInputRequired(params);
+  } catch (err) {
+    if (process.env.REACT_APP_DEBUG) console.warn("Error parsing query", err);
+    return undefined;
+  }
 }

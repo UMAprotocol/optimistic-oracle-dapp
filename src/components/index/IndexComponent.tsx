@@ -62,7 +62,6 @@ const Index = ({
   const { state } = useClient();
   const { descendingRequests } = useReader(state);
   const [filteredRequests, setFilteredRequests] = useState(initialFR);
-  console.log({ descendingRequests, filteredRequests, state });
 
   useEffect(() => {
     if (!descendingRequests) return;
