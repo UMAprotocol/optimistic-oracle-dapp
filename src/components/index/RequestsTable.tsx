@@ -7,10 +7,11 @@ import {
 } from "./RequestsTable.styled";
 
 import createRequestsTableCells from "./createRequestsTableCells";
-import { RequestIndexes } from "@uma/sdk/dist/types/oracle/types/state";
+import { oracle } from "@uma/sdk";
+type Requests = oracle.types.state.RequestsWithOracleType;
 
 interface Props {
-  requests: RequestIndexes;
+  requests: Requests;
 }
 const RequestsTable: React.FC<Props> = ({ requests }) => {
   const { headerCells, rows } = createRequestsTableCells(requests);

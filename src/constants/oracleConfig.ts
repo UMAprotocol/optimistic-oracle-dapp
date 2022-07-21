@@ -9,11 +9,14 @@ const ethChainId = ChainId.MAINNET;
 const polygonChainId = ChainId.POLYGON;
 const kovanChainId = ChainId.KOVAN;
 const bobaChainId = ChainId.BOBA;
-const chains: Record<number, oracle.types.state.PartialChainConfig> = {};
+
+const optimisticChains: Record<number, oracle.types.state.PartialChainConfig> =
+  {};
+const skinnyChains: Record<number, oracle.types.state.PartialChainConfig> = {};
 
 // enable local node if debug is on
 if (process.env.REACT_APP_DEBUG) {
-  chains[mmChainId] = {
+  optimisticChains[mmChainId] = {
     rpcUrls: ["http://127.0.0.1:8545"],
     nativeCurrency: CHAINS[ethChainId].nativeCurrency,
     blockExplorerUrls: [CHAINS[ethChainId].explorerUrl],
@@ -24,16 +27,18 @@ if (process.env.REACT_APP_DEBUG) {
 }
 
 if (process.env.REACT_APP_PROVIDER_URL_1) {
-  chains[ethChainId] = {
+  const chainConfig: oracle.types.state.PartialChainConfig = {
     rpcUrls: [process.env.REACT_APP_PROVIDER_URL_1],
     nativeCurrency: CHAINS[ethChainId].nativeCurrency,
     chainName: CHAINS[ethChainId].name,
     blockExplorerUrls: [CHAINS[ethChainId].explorerUrl],
   };
+  optimisticChains[ethChainId] = chainConfig;
+  skinnyChains[ethChainId] = chainConfig;
 }
 
 if (process.env.REACT_APP_PROVIDER_URL_137) {
-  chains[polygonChainId] = {
+  optimisticChains[polygonChainId] = {
     rpcUrls: [process.env.REACT_APP_PROVIDER_URL_137],
     nativeCurrency: CHAINS[polygonChainId].nativeCurrency,
     chainName: CHAINS[polygonChainId].name,
@@ -47,7 +52,7 @@ if (process.env.REACT_APP_PROVIDER_URL_137) {
 }
 
 if (process.env.REACT_APP_PROVIDER_URL_42) {
-  chains[kovanChainId] = {
+  optimisticChains[kovanChainId] = {
     rpcUrls: [process.env.REACT_APP_PROVIDER_URL_42],
     nativeCurrency: CHAINS[kovanChainId].nativeCurrency,
     chainName: CHAINS[kovanChainId].name,
@@ -56,7 +61,7 @@ if (process.env.REACT_APP_PROVIDER_URL_42) {
 }
 
 if (process.env.REACT_APP_PROVIDER_URL_288) {
-  chains[bobaChainId] = {
+  optimisticChains[bobaChainId] = {
     rpcUrls: [process.env.REACT_APP_PROVIDER_URL_288],
     nativeCurrency: CHAINS[bobaChainId].nativeCurrency,
     chainName: CHAINS[bobaChainId].name,
@@ -64,5 +69,12 @@ if (process.env.REACT_APP_PROVIDER_URL_288) {
   };
 }
 
-const config = { chains };
+// order of export is important, this determines the order in which clients are returned from factory
+const config: [
+  oracle.types.state.OracleType,
+  oracle.types.state.PartialConfig
+][] = [
+  [oracle.types.state.OracleType.Optimistic, { chains: optimisticChains }],
+  [oracle.types.state.OracleType.Skinny, { chains: skinnyChains }],
+];
 export default config;

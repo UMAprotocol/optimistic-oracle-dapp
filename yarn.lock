@@ -3269,25 +3269,25 @@
     "@typescript-eslint/types" "5.10.0"
     eslint-visitor-keys "^3.0.0"
 
-"@uma/contracts-frontend@^0.3.5":
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/@uma/contracts-frontend/-/contracts-frontend-0.3.5.tgz#b50c5282cf8fc2a572db3a7d8e8243c9bbb6fca5"
-  integrity sha512-85q56CeC90/jibyx69aqFGJo+AHGdc17iij/RgJNkjNBq6nZVNJsJd3KGRziIeWeonQXj3srwDSPQtcsL5Borg==
+"@uma/contracts-frontend@^0.3.10":
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/@uma/contracts-frontend/-/contracts-frontend-0.3.10.tgz#3cb23d9bc61048c0c4847bd355b3cc7e53c51aff"
+  integrity sha512-IqjGy3xp0XiXTkhLC06OFOuKcSnQjKlllnvfxNYdKkLVz5JVbvptnveSqWkKsY2FUGDSsPNIG1CpYh/PL/AXKQ==
 
-"@uma/contracts-node@^0.3.5":
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/@uma/contracts-node/-/contracts-node-0.3.5.tgz#d5eddf736e7af08dff24b0c8b54bd1015f342970"
-  integrity sha512-/j3Yzl52ZQwt+suMNRAGcJf2Kq+unAv6f1DKVZIplfhaJSrHfgwl17YMR3k82knuRSxjJYyTGfYCOWHvsR1/AQ==
+"@uma/contracts-node@^0.3.10":
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/@uma/contracts-node/-/contracts-node-0.3.10.tgz#12f90873e83ba478b16c019d1c5d232e4d5ee782"
+  integrity sha512-jlWY1MIHu+kPEiV/JJaV+Mu5mCWWwEvXgnwNwdfSILKr6fn9sTk3HYPIMpt969794NbJg1RJAQshGXWPkFzhOA==
 
-"@uma/sdk@^0.23.2":
-  version "0.23.2"
-  resolved "https://registry.yarnpkg.com/@uma/sdk/-/sdk-0.23.2.tgz#b4fe7cdacd9fd371e3e4473950f23878187aaeb6"
-  integrity sha512-nanWAk3kXvBqtqAA1yEEZFhDAnwia8hun8QLFLYZp73o9ry3v1fJPNtI9lm0wwqUVsXqLipnk2oMj2ui/kh89w==
+"@uma/sdk@^0.26.0":
+  version "0.26.0"
+  resolved "https://registry.yarnpkg.com/@uma/sdk/-/sdk-0.26.0.tgz#a76d57a03e8b64bc141ecf082f676b7f7c1c0c2f"
+  integrity sha512-9nYoe2DKBJySKNCsPOWIy+8bTgW3FsFXzpjXfyNsO9ekX757leQ/GsAMN3k9qXkNgoqd/sWSAyHUIeHY6T46pw==
   dependencies:
     "@google-cloud/datastore" "^6.6.0"
     "@types/lodash-es" "^4.17.5"
-    "@uma/contracts-frontend" "^0.3.5"
-    "@uma/contracts-node" "^0.3.5"
+    "@uma/contracts-frontend" "^0.3.10"
+    "@uma/contracts-node" "^0.3.10"
     axios "^0.24.0"
     bn.js "^4.11.9"
     decimal.js "^10.3.1"
@@ -14354,6 +14354,11 @@ superagent@^3.8.3:
     mime "^1.4.1"
     qs "^6.5.1"
     readable-stream "^2.3.5"
+
+superstruct@^0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/superstruct/-/superstruct-0.16.0.tgz#9af5e059acd08e774789ad8880962427ef68dace"
+  integrity sha512-IDQtwnnlaan1NhuHqyD/U11lROYvCQ79JyfwlFU9xEVHzqV/Ys/RrwmHPCG0CVH/1g0BuodEjH1msxK2UHxehA==
 
 supports-color@^4.2.1:
   version "4.5.0"

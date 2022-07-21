@@ -17,6 +17,8 @@ import {
 import { CHAINS, ChainId } from "constants/blockchain";
 import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
+import { oracle } from "helpers/oracleClient";
+
 import alertIcon from "assets/alert-icon.svg";
 import { formatRequestTitle } from "helpers/format";
 
@@ -32,14 +34,14 @@ const RequestHero: FC<Props> = ({ chainId }) => {
     logo = CHAINS[chainId].logoURI;
     chainName = CHAINS[chainId].name;
   }
-  const { oracle, state } = useClient();
+  const { state } = useClient();
   const {
     requestState,
     requestTx,
     exploreRequestTx,
     identifier,
     ancillaryData,
-  } = useReader(state);
+  } = useReader(state || {});
 
   return (
     <HeroSection>

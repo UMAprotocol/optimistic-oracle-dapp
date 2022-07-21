@@ -33,7 +33,9 @@ const headerCells: ICell[] = [
   },
 ];
 
-function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
+function createRequestsTableCells(
+  requests: oracle.types.state.RequestsWithOracleType
+) {
   const rows = [] as IRow[];
 
   if (requests.length) {
@@ -66,21 +68,23 @@ function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
       if (req.state === oracle.types.state.RequestState.Settled)
         requestState = "Settled";
 
-      let proposedPrice = req.proposedPrice;
+      let proposedPrice = req.proposedPrice
+        ? req.proposedPrice.toString()
+        : undefined;
 
-      if (req.proposedPrice && unanswerable.includes(req.proposedPrice)) {
+      if (proposedPrice && unanswerable.includes(proposedPrice)) {
         proposedPrice = "Requested too early";
       } else if (
-        req.proposedPrice &&
-        req.proposedPrice !== "0" &&
+        proposedPrice &&
+        proposedPrice !== "0" &&
         identifier !== "YES_OR_NO_QUERY"
       ) {
-        proposedPrice = ethers.utils.formatEther(req.proposedPrice);
+        proposedPrice = ethers.utils.formatEther(proposedPrice);
       } else if (
-        req.proposedPrice &&
+        proposedPrice &&
         parseIdentifier(req.identifier) === "YES_OR_NO_QUERY"
       ) {
-        const formattedPrice = ethers.utils.formatEther(req.proposedPrice);
+        const formattedPrice = ethers.utils.formatEther(proposedPrice);
         if (formattedPrice === "0.0") proposedPrice = "No";
         if (formattedPrice === "1.0") proposedPrice = "Yes";
         if (formattedPrice === "0.5") proposedPrice = "Indeterminate";
@@ -91,9 +95,7 @@ function createRequestsTableCells(requests: oracle.types.state.RequestIndexes) {
           size: "lg",
           value: (
             <StyledLink
-              to={`/request?requester=${req.requester}
-            &identifier=${req.identifier}&ancillaryData=${req.ancillaryData}&timestamp=${req.timestamp}&chainId=${req.chainId}
-            `}
+              to={`/request?requester=${req.requester}&identifier=${req.identifier}&ancillaryData=${req.ancillaryData}&timestamp=${req.timestamp}&chainId=${req.chainId}&oracleType=${req.oracleType}`}
             >
               {identifier}
             </StyledLink>
