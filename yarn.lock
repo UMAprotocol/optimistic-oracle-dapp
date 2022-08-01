@@ -3269,25 +3269,25 @@
     "@typescript-eslint/types" "5.10.0"
     eslint-visitor-keys "^3.0.0"
 
-"@uma/contracts-frontend@^0.3.10":
-  version "0.3.10"
-  resolved "https://registry.yarnpkg.com/@uma/contracts-frontend/-/contracts-frontend-0.3.10.tgz#3cb23d9bc61048c0c4847bd355b3cc7e53c51aff"
-  integrity sha512-IqjGy3xp0XiXTkhLC06OFOuKcSnQjKlllnvfxNYdKkLVz5JVbvptnveSqWkKsY2FUGDSsPNIG1CpYh/PL/AXKQ==
+"@uma/contracts-frontend@^0.3.11":
+  version "0.3.11"
+  resolved "https://registry.yarnpkg.com/@uma/contracts-frontend/-/contracts-frontend-0.3.11.tgz#d966be9da9312de2090acdf5860576080b987052"
+  integrity sha512-1ogKI+olhGvcc/MyUtsbMIbwW/2nIqaCbDI/v9zBZrhkTgqp6FKqQeXM+TIx0fbxROAFVZrFd0sJjzyuCmYelg==
 
-"@uma/contracts-node@^0.3.10":
-  version "0.3.10"
-  resolved "https://registry.yarnpkg.com/@uma/contracts-node/-/contracts-node-0.3.10.tgz#12f90873e83ba478b16c019d1c5d232e4d5ee782"
-  integrity sha512-jlWY1MIHu+kPEiV/JJaV+Mu5mCWWwEvXgnwNwdfSILKr6fn9sTk3HYPIMpt969794NbJg1RJAQshGXWPkFzhOA==
+"@uma/contracts-node@^0.3.11":
+  version "0.3.11"
+  resolved "https://registry.yarnpkg.com/@uma/contracts-node/-/contracts-node-0.3.11.tgz#ecbb7e4eb5f389a5ceef0c646653a0ae54041116"
+  integrity sha512-meRHB9YRz6DCF/0i3+IwVUwfi7gMyvJazvcWPbavFKRZzgYHSloWCOz5CL7ckYaz2OwfVupgYeCFmBltLM0B3A==
 
-"@uma/sdk@^0.26.0":
-  version "0.26.0"
-  resolved "https://registry.yarnpkg.com/@uma/sdk/-/sdk-0.26.0.tgz#a76d57a03e8b64bc141ecf082f676b7f7c1c0c2f"
-  integrity sha512-9nYoe2DKBJySKNCsPOWIy+8bTgW3FsFXzpjXfyNsO9ekX757leQ/GsAMN3k9qXkNgoqd/sWSAyHUIeHY6T46pw==
+"@uma/sdk@^0.27.0":
+  version "0.27.0"
+  resolved "https://registry.yarnpkg.com/@uma/sdk/-/sdk-0.27.0.tgz#c4f25bb3d1094ac3ed35e456135d2476ef81cea9"
+  integrity sha512-vy4LHxSW+O3lYmXoFj1hk/tIlUQMY4EOxSMgPY7skk20fWPHEkzUlA/TMrDJYT5piEhfLoAA7p7SBUxV/Rzo6w==
   dependencies:
     "@google-cloud/datastore" "^6.6.0"
     "@types/lodash-es" "^4.17.5"
-    "@uma/contracts-frontend" "^0.3.10"
-    "@uma/contracts-node" "^0.3.10"
+    "@uma/contracts-frontend" "^0.3.11"
+    "@uma/contracts-node" "^0.3.11"
     axios "^0.24.0"
     bn.js "^4.11.9"
     decimal.js "^10.3.1"

@@ -28,9 +28,10 @@ export default function useOracleReader(state: oracle.types.state.State) {
   const reward =
     request?.reward && decimals && formatUnits(request.reward, decimals);
 
+  // this needs to be a string because custom liveness could be bigger than what a number can handle
   const liveness = request?.customLiveness?.gt(0)
-    ? request.customLiveness.toNumber()
-    : defaultLiveness && defaultLiveness.toNumber();
+    ? request.customLiveness.toString()
+    : defaultLiveness && defaultLiveness.toString();
 
   const expirationTime = request?.expirationTime?.toNumber();
   const requestState = request?.state;
@@ -73,7 +74,9 @@ export default function useOracleReader(state: oracle.types.state.State) {
 
   // the read function probably returns an empty array if DNE, but that causes lots of rerenders if its a dependency.
   // so lets just use the raw value and check for undefined.
-  const descendingRequests = state.descendingRequests;
+  const descendingRequests: oracle.types.interfaces.Requests | undefined =
+    state.descendingRequests;
+
   return {
     chainId,
     totalBond,

@@ -1,4 +1,5 @@
 import assert from "assert";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import * as ss from "superstruct";
 import {
@@ -93,11 +94,20 @@ export function getRequestInputRequired(params: unknown): RequestInputRequired {
 // turns this into a hook
 export function useRequestInputRequired(): RequestInputRequired | undefined {
   const [searchParams] = useSearchParams();
-  const params = Object.fromEntries([...searchParams]);
-  try {
-    return getRequestInputRequired(params);
-  } catch (err) {
-    if (process.env.REACT_APP_DEBUG) console.warn("Error parsing query", err);
-    return undefined;
-  }
+  const [requestQuery, setRequestQuery] = useState<
+    undefined | RequestInputRequired
+  >();
+
+  // made this a use effect to prevent rerenders since parsing the search params returns new objects every time
+  useEffect(() => {
+    const params = Object.fromEntries([...searchParams]);
+    try {
+      setRequestQuery(getRequestInputRequired(params));
+    } catch (err) {
+      if (process.env.REACT_APP_DEBUG) console.warn("Error parsing query", err);
+      if (requestQuery) setRequestQuery(undefined);
+    }
+  }, [searchParams]);
+
+  return requestQuery;
 }
