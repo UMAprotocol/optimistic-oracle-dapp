@@ -20,6 +20,7 @@ type ChainMetadata = {
 
 export enum ChainId {
   MAINNET = 1,
+  GOERLI = 5,
   KOVAN = 42,
   POLYGON = 137,
   BOBA = 288,
@@ -35,6 +36,19 @@ export const CHAINS: Record<ChainId, ChainMetadata> = {
     explorerUrl: "https://etherscan.io",
     constructExplorerLink: (txHash: string) =>
       `https://etherscan.io/tx/${txHash}`,
+    nativeCurrency: {
+      name: "Ether",
+      symbol: "ETH",
+      decimals: 18,
+    },
+  },
+  [ChainId.GOERLI]: {
+    name: "Goerli Ethereum",
+    chainId: ChainId.GOERLI,
+    logoURI: ethereumLogo,
+    explorerUrl: "https://goerli.etherscan.io",
+    constructExplorerLink: (txHash: string) =>
+      `https://goerli.etherscan.io/tx/${txHash}`,
     nativeCurrency: {
       name: "Ether",
       symbol: "ETH",

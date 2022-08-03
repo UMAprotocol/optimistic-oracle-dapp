@@ -9,10 +9,16 @@ const ethChainId = ChainId.MAINNET;
 const polygonChainId = ChainId.POLYGON;
 const kovanChainId = ChainId.KOVAN;
 const bobaChainId = ChainId.BOBA;
+const goerliChainId = ChainId.GOERLI;
 
 const optimisticChains: Record<number, oracle.types.state.PartialChainConfig> =
   {};
 const skinnyChains: Record<number, oracle.types.state.PartialChainConfig> = {};
+
+const optimisticV2Chains: Record<
+  number,
+  oracle.types.state.PartialChainConfig
+> = {};
 
 // enable local node if debug is on
 if (process.env.REACT_APP_DEBUG) {
@@ -38,7 +44,7 @@ if (process.env.REACT_APP_PROVIDER_URL_1) {
 }
 
 if (process.env.REACT_APP_PROVIDER_URL_137) {
-  optimisticChains[polygonChainId] = {
+  const config: oracle.types.state.PartialChainConfig = {
     rpcUrls: [process.env.REACT_APP_PROVIDER_URL_137],
     nativeCurrency: CHAINS[polygonChainId].nativeCurrency,
     chainName: CHAINS[polygonChainId].name,
@@ -47,6 +53,13 @@ if (process.env.REACT_APP_PROVIDER_URL_137) {
     earliestBlockNumber: 20000000,
     // this value was selected with testing to give a balance between quantity of requests found vs how fast the latest
     // requests show removing this will enable the client to query the full range in one request.
+    maxEventRangeQuery: 200000,
+  };
+  optimisticChains[polygonChainId] = { ...config };
+
+  optimisticV2Chains[polygonChainId] = {
+    ...config,
+    earliestBlockNumber: 30900000,
     maxEventRangeQuery: 200000,
   };
 }
@@ -69,6 +82,21 @@ if (process.env.REACT_APP_PROVIDER_URL_288) {
   };
 }
 
+if (process.env.REACT_APP_PROVIDER_URL_5) {
+  const config: oracle.types.state.PartialChainConfig = {
+    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_5],
+    nativeCurrency: CHAINS[goerliChainId].nativeCurrency,
+    chainName: CHAINS[goerliChainId].name,
+    blockExplorerUrls: [CHAINS[goerliChainId].explorerUrl],
+  };
+  optimisticChains[goerliChainId] = {
+    ...config,
+    // sdk currently does not have a default address for chain 5, so manually provide in config
+    optimisticOracleAddress: "0x6f26Bf09B1C792e3228e5467807a900A503c0281",
+  };
+  optimisticV2Chains[goerliChainId] = config;
+}
+
 // order of export is important, this determines the order in which clients are returned from factory
 const config: [
   oracle.types.state.OracleType,
@@ -76,5 +104,6 @@ const config: [
 ][] = [
   [oracle.types.state.OracleType.Optimistic, { chains: optimisticChains }],
   [oracle.types.state.OracleType.Skinny, { chains: skinnyChains }],
+  [oracle.types.state.OracleType.OptimisticV2, { chains: optimisticV2Chains }],
 ];
 export default config;
