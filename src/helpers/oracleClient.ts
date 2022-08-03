@@ -42,6 +42,6 @@ forEach((client) => {
 
 if (process.env.REACT_APP_DEBUG) {
   events.on("change", (index, state) => {
-    console.log("event change", index, state);
+    console.log("change", index, state);
   });
 }

@@ -21,13 +21,21 @@ type ChainMetadata = {
 export enum ChainId {
   MAINNET = 1,
   GOERLI = 5,
+  OPTIMISM = 10,
   KOVAN = 42,
+  METER = 82,
+  XDAI = 100,
   POLYGON = 137,
   BOBA = 288,
+  SX = 416,
   MM_TESTNET = 1337,
+  EVMOS = 9001,
+  ARBITRUM = 42161,
+  AVAX = 43114,
   HARDHAT = 31337,
 }
 
+// useful place to get most of this information: https://chainlist.org/
 export const CHAINS: Record<ChainId, ChainMetadata> = {
   [ChainId.MAINNET]: {
     name: "Ethereum",
@@ -55,6 +63,45 @@ export const CHAINS: Record<ChainId, ChainMetadata> = {
       decimals: 18,
     },
   },
+  [ChainId.OPTIMISM]: {
+    name: "Optimism",
+    chainId: ChainId.OPTIMISM,
+    logoURI: ethereumLogo,
+    explorerUrl: "https://optimistic.etherscan.io",
+    constructExplorerLink: (txHash: string) =>
+      `https://optimistic.etherscan.io/tx/${txHash}`,
+    nativeCurrency: {
+      name: "Ether",
+      symbol: "OETH",
+      decimals: 18,
+    },
+  },
+  [ChainId.METER]: {
+    name: "Meter",
+    chainId: ChainId.METER,
+    logoURI: ethereumLogo,
+    explorerUrl: "https://scan.meter.io",
+    constructExplorerLink: (txHash: string) =>
+      `https://scan.meter.io/tx/${txHash}`,
+    nativeCurrency: {
+      name: "Meter",
+      symbol: "MTR",
+      decimals: 18,
+    },
+  },
+  [ChainId.XDAI]: {
+    name: "xDai",
+    chainId: ChainId.XDAI,
+    logoURI: ethereumLogo,
+    explorerUrl: "https://blockscout.com/xdai/mainnet",
+    constructExplorerLink: (txHash: string) =>
+      `https://blockscout.com/xdai/mainnet/tx/${txHash}`,
+    nativeCurrency: {
+      name: "xDai",
+      symbol: "XDAI",
+      decimals: 18,
+    },
+  },
   [ChainId.KOVAN]: {
     name: "Kovan Ethereum",
     chainId: ChainId.KOVAN,
@@ -72,7 +119,6 @@ export const CHAINS: Record<ChainId, ChainMetadata> = {
     name: "Polygon",
     chainId: ChainId.POLYGON,
     logoURI: polygonLogo,
-    rpcUrl: "https://polygon-rpc.com/",
     explorerUrl: "https://polygonscan.com",
     constructExplorerLink: (txHash: string) =>
       `https://polygonscan.com/tx/${txHash}`,
@@ -112,12 +158,64 @@ export const CHAINS: Record<ChainId, ChainMetadata> = {
     name: "Boba",
     chainId: ChainId.BOBA,
     logoURI: bobaLogo,
-    explorerUrl: "https://blockexplorer.boba.network/",
+    explorerUrl: "https://blockexplorer.boba.network",
     constructExplorerLink: (txHash: string) =>
       `https://blockexplorer.boba.network/tx/${txHash}`,
     nativeCurrency: {
       name: "Ether",
       symbol: "ETH",
+      decimals: 18,
+    },
+  },
+  [ChainId.SX]: {
+    name: "SX",
+    chainId: ChainId.SX,
+    logoURI: ethereumLogo,
+    explorerUrl: "https://explorer.sx.technology",
+    constructExplorerLink: (txHash: string) =>
+      `https://explorer.sx.technology/tx/${txHash}`,
+    nativeCurrency: {
+      name: "SX",
+      symbol: "SX",
+      decimals: 18,
+    },
+  },
+  [ChainId.EVMOS]: {
+    name: "Evmos",
+    chainId: ChainId.EVMOS,
+    logoURI: ethereumLogo,
+    explorerUrl: "https://evm.evmos.org",
+    constructExplorerLink: (txHash: string) =>
+      `https://evm.evmos.org/tx/${txHash}`,
+    nativeCurrency: {
+      name: "Evmos",
+      symbol: "EVMOS",
+      decimals: 18,
+    },
+  },
+  [ChainId.ARBITRUM]: {
+    name: "Arbitrum",
+    chainId: ChainId.ARBITRUM,
+    logoURI: ethereumLogo,
+    explorerUrl: "https://arbiscan.io",
+    constructExplorerLink: (txHash: string) =>
+      `https://arbiscan.io/tx/${txHash}`,
+    nativeCurrency: {
+      name: "Ether",
+      symbol: "AETH",
+      decimals: 18,
+    },
+  },
+  [ChainId.AVAX]: {
+    name: "Avalanche",
+    chainId: ChainId.AVAX,
+    logoURI: ethereumLogo,
+    explorerUrl: "https://snowtrace.io",
+    constructExplorerLink: (txHash: string) =>
+      `https://snowtrace.io/tx/${txHash}`,
+    nativeCurrency: {
+      name: "Avalanche",
+      symbol: "AVAX",
       decimals: 18,
     },
   },
