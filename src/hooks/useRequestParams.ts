@@ -105,7 +105,7 @@ export function useRequestInputRequired(): RequestInputRequired | undefined {
       setRequestQuery(getRequestInputRequired(params));
     } catch (err) {
       if (process.env.REACT_APP_DEBUG) console.warn("Error parsing query", err);
-      if (requestQuery) setRequestQuery(undefined);
+      setRequestQuery(undefined);
     }
   }, [searchParams]);
 

@@ -10,14 +10,17 @@ const optimisticV2Chains: Record<
   oracle.types.state.PartialChainConfig
 > = {};
 
+// typescript doesnt believe that [string] is compatible with [string, ...string[]], so we have to cast some parts of our config
+type RequiredStringList = [string, ...string[]];
+
 // enable local node if debug is on, this only works as a fork of mainnet
-if (process.env.REACT_APP_DEBUG) {
+if (process.env.REACT_APP_FORK_1) {
   const chainId = ChainId.MM_TESTNET;
   const chain = CHAINS[chainId];
-  const config: oracle.types.state.PartialChainConfig = {
-    rpcUrls: ["http://127.0.0.1:8545"],
+  const config = {
+    rpcUrls: ["http://127.0.0.1:8545"] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
-    blockExplorerUrls: [chain.explorerUrl],
+    blockExplorerUrls: [chain.explorerUrl] as RequiredStringList,
     chainName: chain.name,
   };
   optimisticChains[chainId] = {
@@ -40,11 +43,11 @@ if (process.env.REACT_APP_DEBUG) {
 if (process.env.REACT_APP_PROVIDER_URL_1) {
   const chainId = ChainId.MAINNET;
   const chain = CHAINS[chainId];
-  const config: oracle.types.state.PartialChainConfig = {
-    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_1],
+  const config = {
+    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_1] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
     chainName: chain.name,
-    blockExplorerUrls: [chain.explorerUrl],
+    blockExplorerUrls: [chain.explorerUrl] as RequiredStringList,
   };
   optimisticChains[chainId] = {
     ...config,
@@ -63,11 +66,11 @@ if (process.env.REACT_APP_PROVIDER_URL_1) {
 if (process.env.REACT_APP_PROVIDER_URL_5) {
   const chainId = ChainId.GOERLI;
   const chain = CHAINS[chainId];
-  const config: oracle.types.state.PartialChainConfig = {
-    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_5],
+  const config = {
+    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_5] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
     chainName: chain.name,
-    blockExplorerUrls: [chain.explorerUrl],
+    blockExplorerUrls: [chain.explorerUrl] as RequiredStringList,
   };
   // no skinny deployment on goerli
   optimisticChains[chainId] = {
@@ -76,18 +79,18 @@ if (process.env.REACT_APP_PROVIDER_URL_5) {
   };
   optimisticV2Chains[chainId] = {
     ...config,
-    optimisticOracleAddress: "0x3C8a21099C202003Ec6f050Eb24F8f24a3828Ad3",
+    optimisticOracleAddress: "0xA5B9d8a0B0Fa04Ba71BDD68069661ED5C0848884",
   };
 }
 
 if (process.env.REACT_APP_PROVIDER_URL_10) {
   const chainId = ChainId.OPTIMISM;
   const chain = CHAINS[chainId];
-  const config: oracle.types.state.PartialChainConfig = {
-    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_10],
+  const config = {
+    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_10] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
     chainName: chain.name,
-    blockExplorerUrls: [chain.explorerUrl],
+    blockExplorerUrls: [chain.explorerUrl] as RequiredStringList,
   };
   // no skinny deployment on this chain
   optimisticChains[chainId] = {
@@ -102,11 +105,11 @@ if (process.env.REACT_APP_PROVIDER_URL_10) {
 if (process.env.REACT_APP_PROVIDER_URL_82) {
   const chainId = ChainId.METER;
   const chain = CHAINS[chainId];
-  const config: oracle.types.state.PartialChainConfig = {
-    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_82],
+  const config = {
+    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_82] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
     chainName: chain.name,
-    blockExplorerUrls: [chain.explorerUrl],
+    blockExplorerUrls: [chain.explorerUrl] as RequiredStringList,
   };
   // no skinny deployment on this chain
   optimisticChains[chainId] = {
@@ -121,11 +124,11 @@ if (process.env.REACT_APP_PROVIDER_URL_82) {
 if (process.env.REACT_APP_PROVIDER_URL_100) {
   const chainId = ChainId.XDAI;
   const chain = CHAINS[chainId];
-  const config: oracle.types.state.PartialChainConfig = {
-    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_100],
+  const config = {
+    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_100] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
     chainName: chain.name,
-    blockExplorerUrls: [chain.explorerUrl],
+    blockExplorerUrls: [chain.explorerUrl] as RequiredStringList,
   };
   // no skinny or v2 deployment on this chain
   optimisticChains[chainId] = {
@@ -136,11 +139,11 @@ if (process.env.REACT_APP_PROVIDER_URL_100) {
 if (process.env.REACT_APP_PROVIDER_URL_137) {
   const chainId = ChainId.POLYGON;
   const chain = CHAINS[chainId];
-  const config: oracle.types.state.PartialChainConfig = {
-    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_137],
+  const config = {
+    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_137] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
     chainName: chain.name,
-    blockExplorerUrls: [chain.explorerUrl],
+    blockExplorerUrls: [chain.explorerUrl] as RequiredStringList,
   };
   // no skinny deployment on this chain
   optimisticChains[chainId] = {
@@ -164,11 +167,11 @@ if (process.env.REACT_APP_PROVIDER_URL_137) {
 if (process.env.REACT_APP_PROVIDER_URL_288) {
   const chainId = ChainId.BOBA;
   const chain = CHAINS[chainId];
-  const config: oracle.types.state.PartialChainConfig = {
-    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_288],
+  const config = {
+    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_288] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
     chainName: chain.name,
-    blockExplorerUrls: [chain.explorerUrl],
+    blockExplorerUrls: [chain.explorerUrl] as RequiredStringList,
   };
   // no skinny deployment
   optimisticChains[chainId] = {
@@ -184,11 +187,11 @@ if (process.env.REACT_APP_PROVIDER_URL_288) {
 if (process.env.REACT_APP_PROVIDER_URL_416) {
   const chainId = ChainId.SX;
   const chain = CHAINS[chainId];
-  const config: oracle.types.state.PartialChainConfig = {
-    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_416],
+  const config = {
+    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_416] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
     chainName: chain.name,
-    blockExplorerUrls: [chain.explorerUrl],
+    blockExplorerUrls: [chain.explorerUrl] as RequiredStringList,
   };
   // no skinny deployment
   optimisticChains[chainId] = {
@@ -203,11 +206,11 @@ if (process.env.REACT_APP_PROVIDER_URL_416) {
 if (process.env.REACT_APP_PROVIDER_URL_9001) {
   const chainId = ChainId.EVMOS;
   const chain = CHAINS[chainId];
-  const config: oracle.types.state.PartialChainConfig = {
-    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_9001],
+  const config = {
+    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_9001] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
     chainName: chain.name,
-    blockExplorerUrls: [chain.explorerUrl],
+    blockExplorerUrls: [chain.explorerUrl] as RequiredStringList,
   };
   // no skinny deployment
   optimisticChains[chainId] = {
@@ -222,11 +225,14 @@ if (process.env.REACT_APP_PROVIDER_URL_9001) {
 if (process.env.REACT_APP_PROVIDER_URL_42161) {
   const chainId = ChainId.ARBITRUM;
   const chain = CHAINS[chainId];
-  const config: oracle.types.state.PartialChainConfig = {
-    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_42161],
+  const config = {
+    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_42161] as [
+      string,
+      ...string[]
+    ],
     nativeCurrency: chain.nativeCurrency,
     chainName: chain.name,
-    blockExplorerUrls: [chain.explorerUrl],
+    blockExplorerUrls: [chain.explorerUrl] as RequiredStringList,
   };
   // no skinny deployment
   optimisticChains[chainId] = {
@@ -241,11 +247,14 @@ if (process.env.REACT_APP_PROVIDER_URL_42161) {
 if (process.env.REACT_APP_PROVIDER_URL_43114) {
   const chainId = ChainId.AVAX;
   const chain = CHAINS[chainId];
-  const config: oracle.types.state.PartialChainConfig = {
-    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_43114],
+  const config = {
+    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_43114] as [
+      string,
+      ...string[]
+    ],
     nativeCurrency: chain.nativeCurrency,
     chainName: chain.name,
-    blockExplorerUrls: [chain.explorerUrl],
+    blockExplorerUrls: [chain.explorerUrl] as RequiredStringList,
   };
   // no skinny deployment
   optimisticChains[chainId] = {

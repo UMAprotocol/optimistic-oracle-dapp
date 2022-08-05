@@ -9,6 +9,7 @@ type Client = oracle.client.Client;
 export const isSupportedOracleType = oracle.utils.isSupportedOracleType;
 
 export { oracle };
+
 export type { OracleType, State, Client };
 export const events = new Events();
 export const clients = oracle.factory(
