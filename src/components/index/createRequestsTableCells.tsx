@@ -40,7 +40,8 @@ function createRequestsTableCells(
 
   if (requests.length) {
     requests.forEach((req) => {
-      const identifier = formatRequestTitle(req);
+      const title = formatRequestTitle(req);
+      const identifier = parseIdentifier(req.identifier);
       const timestamp = req.timestamp ? (
         <div>
           {formatDate(req.timestamp)}
@@ -72,7 +73,11 @@ function createRequestsTableCells(
         ? req.proposedPrice.toString()
         : undefined;
 
-      if (proposedPrice && unanswerable.includes(proposedPrice)) {
+      // req.state 1 is fresh request with no proposed answer, in that case always set to "-"
+      // proposed price sometimes defaults to 0 even if noone has proposed an answer yet.
+      if (req.state === undefined || req.state <= 1) {
+        proposedPrice = "-";
+      } else if (proposedPrice && unanswerable.includes(proposedPrice)) {
         proposedPrice = "Requested too early";
       } else if (
         proposedPrice &&
@@ -80,10 +85,7 @@ function createRequestsTableCells(
         identifier !== "YES_OR_NO_QUERY"
       ) {
         proposedPrice = ethers.utils.formatEther(proposedPrice);
-      } else if (
-        proposedPrice &&
-        parseIdentifier(req.identifier) === "YES_OR_NO_QUERY"
-      ) {
+      } else if (proposedPrice && identifier === "YES_OR_NO_QUERY") {
         const formattedPrice = ethers.utils.formatEther(proposedPrice);
         if (formattedPrice === "0.0") proposedPrice = "No";
         if (formattedPrice === "1.0") proposedPrice = "Yes";
@@ -97,7 +99,7 @@ function createRequestsTableCells(
             <StyledLink
               to={`/request?requester=${req.requester}&identifier=${req.identifier}&ancillaryData=${req.ancillaryData}&timestamp=${req.timestamp}&chainId=${req.chainId}&oracleType=${req.oracleType}`}
             >
-              {identifier}
+              {title}
             </StyledLink>
           ),
           cellClassName: "first-cell",

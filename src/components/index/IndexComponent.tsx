@@ -36,6 +36,7 @@ interface FilteredRequests {
   proposed: Requests;
   disputed: Requests;
   answered: Requests;
+  old: Requests;
 }
 
 const initialFR: FilteredRequests = {
@@ -44,6 +45,7 @@ const initialFR: FilteredRequests = {
   proposed: [],
   disputed: [],
   answered: [],
+  old: [],
 };
 
 interface Props {
@@ -66,6 +68,7 @@ const Index = ({
   useEffect(() => {
     if (!descendingRequests) return;
     const initial: FilteredRequests = {
+      old: [],
       all: [],
       requested: [],
       proposed: [],
@@ -78,6 +81,7 @@ const Index = ({
     const nextFR = descendingRequests.reduce((result, request) => {
       // skip requests older the 1 month
       if (request.timestamp < lastMonthTimestamp) {
+        result.old.push(request);
         return result;
       }
 
@@ -99,6 +103,11 @@ const Index = ({
       return result;
     }, initial);
     setFilteredRequests(nextFR);
+    if (process.env.REACT_APP_DEBUG && nextFR.old.length)
+      console.log(
+        `${nextFR.old.length} requests too old to show: `,
+        nextFR.old
+      );
   }, [descendingRequests]);
 
   function filterDescendingRequests(filter: Filter) {

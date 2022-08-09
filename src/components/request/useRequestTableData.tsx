@@ -216,7 +216,7 @@ function useRequestTableData({
     });
 
     let umipLink =
-      "https://docs.umaproject.org/uma-tokenholders/approved-price-identifiers";
+      "https://docs.umaproject.org/resources/approved-price-identifiers";
     if (convertedIdentifier === "YES_OR_NO_QUERY") {
       umipLink =
         "https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-107.md";
