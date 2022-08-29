@@ -8,12 +8,13 @@ import NotFound from "components/not-found";
 import Index from "components/index";
 import ChangeNetwork from "components/change-network/ChangeNetwork";
 import useConnection from "hooks/useConnection";
-import { forEach } from "helpers/oracleClient";
+import useClient from "hooks/useOracleClient";
 import { useRequestInputRequired } from "hooks/useRequestParams";
 import { OptionType } from "components/select/Select";
 import { items } from "components/index/RequestsTableWithPagination";
 const Router = () => {
   const { wrongNetwork } = useConnection();
+  const { client } = useClient();
   const requestQuery = useRequestInputRequired();
   // pulled this into router so that you dont lose your page number when you go to details page.
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -24,7 +25,7 @@ const Router = () => {
       <GlobalStyles />
       {wrongNetwork && requestQuery?.chainId && (
         <ChangeNetwork
-          switchChain={() => forEach((client) => client.switchOrAddChain())}
+          switchChain={() => client.switchOrAddChain()}
           chainId={requestQuery.chainId}
         />
       )}
