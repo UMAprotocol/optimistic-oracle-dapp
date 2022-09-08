@@ -92,16 +92,14 @@ function createRequestsTableCells(
         if (formattedPrice === "0.5") proposedPrice = "Indeterminate";
       }
 
+      const requestDetailsLink = `/request?transactionHash=${
+        req.requestTx
+      }&chainId=${req.chainId}&oracleType=${req.oracleType}&eventIndex=${0}`;
+
       const cells = [
         {
           size: "lg",
-          value: (
-            <StyledLink
-              to={`/request?requester=${req.requester}&identifier=${req.identifier}&ancillaryData=${req.ancillaryData}&timestamp=${req.timestamp}&chainId=${req.chainId}&oracleType=${req.oracleType}`}
-            >
-              {title}
-            </StyledLink>
-          ),
+          value: <StyledLink to={requestDetailsLink}>{title}</StyledLink>,
           cellClassName: "first-cell",
         },
         {
