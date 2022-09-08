@@ -14,7 +14,7 @@ const RequestInputByTransactionSs = ss.object({
   chainId: ss.string(),
   oracleType: ss.optional(ss.string()),
   transactionHash: ss.string(),
-  eventIndex: ss.string(),
+  eventIndex: ss.optional(ss.string()),
 });
 
 // query params when link specifies request details
@@ -57,7 +57,7 @@ export function getRequestInputByTransaction(
   const required = getRequestInputRequired(params);
   return {
     ...parsed,
-    eventIndex: Number(parsed.eventIndex),
+    eventIndex: Number(parsed.eventIndex || 0),
     ...required,
   };
 }
