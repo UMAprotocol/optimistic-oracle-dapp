@@ -24,6 +24,7 @@ function useOracleClient(oracleTypeOverride?: oracle.types.state.OracleType) {
   const flags = context.oracle.utils.getFlags(state);
 
   return {
+    oracleType,
     client,
     state,
     flags,

@@ -92,8 +92,9 @@ function createRequestsTableCells(
         if (formattedPrice === "0.5") proposedPrice = "Indeterminate";
       }
 
+      // we can lookup the transaction based on request, dispute or settle transactions
       const requestDetailsLink = `/request?transactionHash=${
-        req.requestTx
+        req.requestTx || req.proposeTx || req.disputeTx || req.settleTx
       }&chainId=${req.chainId}&oracleType=${req.oracleType}&eventIndex=${0}`;
 
       const cells = [

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Table from "../table/Table";
 import useRequestTableData from "./useRequestTableData";
+import { useRequestInputRequired } from "hooks/useRequestParams";
 import {
   Wrapper,
   TableContentWrapper,
@@ -22,7 +23,8 @@ import { useSearchParams } from "react-router-dom";
 
 const Request = () => {
   const [searchParams] = useSearchParams();
-  const { client, state, flags } = useClient();
+  const { client, state, flags, oracleType } = useClient();
+  const requestQuery = useRequestInputRequired();
   const [requestId, setRequestId] = useState<string | undefined>(undefined);
   const [requestLoading, setRequestLoading] = useState(true);
   const {
@@ -50,7 +52,10 @@ const Request = () => {
   });
 
   useEffect(() => {
+    // make sure client exists
     if (!client) return;
+    // make sure the client oracle type matches the request query oracle type
+    if (oracleType !== requestQuery?.oracleType) return;
     const request: unknown = Object.fromEntries([...searchParams]);
     try {
       let requestByTx = getRequestInputByTransaction(request);
@@ -78,7 +83,7 @@ const Request = () => {
     } catch (err) {
       console.warn("parsing query by input", err);
     }
-  }, [client, searchParams]);
+  }, [client, searchParams, requestQuery?.oracleType, oracleType]);
 
   useEffect(() => {
     if (!requestId) return;
