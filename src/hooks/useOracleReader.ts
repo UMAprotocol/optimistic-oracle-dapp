@@ -77,6 +77,7 @@ export default function useOracleReader(state: oracle.types.state.State) {
   const descendingRequests: oracle.types.interfaces.Requests | undefined =
     state.descendingRequests;
 
+  const eventBased = request?.eventBased || false;
   return {
     chainId,
     totalBond,
@@ -106,5 +107,6 @@ export default function useOracleReader(state: oracle.types.state.State) {
     exploreDisputerAddress,
     parsedIdentifier,
     descendingRequests,
+    eventBased,
   };
 }
