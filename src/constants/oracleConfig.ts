@@ -10,6 +10,7 @@ const optimisticV2Chains: Record<
   oracle.types.state.PartialChainConfig
 > = {};
 
+export const ChainsEnabled: { label: string; value: string }[] = [];
 // typescript doesnt believe that [string] is compatible with [string, ...string[]], so we have to cast some parts of our config
 type RequiredStringList = [string, ...string[]];
 
@@ -17,6 +18,7 @@ type RequiredStringList = [string, ...string[]];
 if (process.env.REACT_APP_FORK_1) {
   const chainId = ChainId.MM_TESTNET;
   const chain = CHAINS[chainId];
+  ChainsEnabled.push({ label: chain.name, value: chainId.toString() });
   const config = {
     rpcUrls: ["http://127.0.0.1:8545"] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
@@ -43,6 +45,7 @@ if (process.env.REACT_APP_FORK_1) {
 if (process.env.REACT_APP_PROVIDER_URL_1) {
   const chainId = ChainId.MAINNET;
   const chain = CHAINS[chainId];
+  ChainsEnabled.push({ label: chain.name, value: chainId.toString() });
   const config = {
     rpcUrls: [process.env.REACT_APP_PROVIDER_URL_1] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
@@ -66,6 +69,7 @@ if (process.env.REACT_APP_PROVIDER_URL_1) {
 if (process.env.REACT_APP_PROVIDER_URL_5) {
   const chainId = ChainId.GOERLI;
   const chain = CHAINS[chainId];
+  ChainsEnabled.push({ label: chain.name, value: chainId.toString() });
   const config = {
     rpcUrls: [process.env.REACT_APP_PROVIDER_URL_5] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
@@ -86,6 +90,7 @@ if (process.env.REACT_APP_PROVIDER_URL_5) {
 if (process.env.REACT_APP_PROVIDER_URL_10) {
   const chainId = ChainId.OPTIMISM;
   const chain = CHAINS[chainId];
+  ChainsEnabled.push({ label: chain.name, value: chainId.toString() });
   const config = {
     rpcUrls: [process.env.REACT_APP_PROVIDER_URL_10] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
@@ -105,6 +110,7 @@ if (process.env.REACT_APP_PROVIDER_URL_10) {
 if (process.env.REACT_APP_PROVIDER_URL_82) {
   const chainId = ChainId.METER;
   const chain = CHAINS[chainId];
+  ChainsEnabled.push({ label: chain.name, value: chainId.toString() });
   const config = {
     rpcUrls: [process.env.REACT_APP_PROVIDER_URL_82] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
@@ -124,6 +130,7 @@ if (process.env.REACT_APP_PROVIDER_URL_82) {
 if (process.env.REACT_APP_PROVIDER_URL_100) {
   const chainId = ChainId.XDAI;
   const chain = CHAINS[chainId];
+  ChainsEnabled.push({ label: chain.name, value: chainId.toString() });
   const config = {
     rpcUrls: [process.env.REACT_APP_PROVIDER_URL_100] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
@@ -139,6 +146,7 @@ if (process.env.REACT_APP_PROVIDER_URL_100) {
 if (process.env.REACT_APP_PROVIDER_URL_137) {
   const chainId = ChainId.POLYGON;
   const chain = CHAINS[chainId];
+  ChainsEnabled.push({ label: chain.name, value: chainId.toString() });
   const config = {
     rpcUrls: [process.env.REACT_APP_PROVIDER_URL_137] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
@@ -167,6 +175,7 @@ if (process.env.REACT_APP_PROVIDER_URL_137) {
 if (process.env.REACT_APP_PROVIDER_URL_288) {
   const chainId = ChainId.BOBA;
   const chain = CHAINS[chainId];
+  ChainsEnabled.push({ label: chain.name, value: chainId.toString() });
   const config = {
     rpcUrls: [process.env.REACT_APP_PROVIDER_URL_288] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
@@ -187,6 +196,7 @@ if (process.env.REACT_APP_PROVIDER_URL_288) {
 if (process.env.REACT_APP_PROVIDER_URL_416) {
   const chainId = ChainId.SX;
   const chain = CHAINS[chainId];
+  ChainsEnabled.push({ label: chain.name, value: chainId.toString() });
   const config = {
     rpcUrls: [process.env.REACT_APP_PROVIDER_URL_416] as RequiredStringList,
     nativeCurrency: chain.nativeCurrency,
@@ -225,6 +235,7 @@ if (process.env.REACT_APP_PROVIDER_URL_9001) {
 if (process.env.REACT_APP_PROVIDER_URL_42161) {
   const chainId = ChainId.ARBITRUM;
   const chain = CHAINS[chainId];
+  ChainsEnabled.push({ label: chain.name, value: chainId.toString() });
   const config = {
     rpcUrls: [process.env.REACT_APP_PROVIDER_URL_42161] as [
       string,
@@ -247,6 +258,7 @@ if (process.env.REACT_APP_PROVIDER_URL_42161) {
 if (process.env.REACT_APP_PROVIDER_URL_43114) {
   const chainId = ChainId.AVAX;
   const chain = CHAINS[chainId];
+  ChainsEnabled.push({ label: chain.name, value: chainId.toString() });
   const config = {
     rpcUrls: [process.env.REACT_APP_PROVIDER_URL_43114] as [
       string,
