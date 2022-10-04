@@ -64,7 +64,7 @@ const RequestForm: FC = () => {
   const checkForInputError = (v: string) => {
     if (eventBased && v === MagicNumber) {
       throw new Error(
-        "Event based expiry requests cannot be resolved with too early ie magic number"
+        `Event based expiry requests cannot be resolved with "too early", i.e. "magic number".`
       );
     }
     if (isNaN(Number(v))) {
