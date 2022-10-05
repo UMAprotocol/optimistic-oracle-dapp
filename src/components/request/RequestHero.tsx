@@ -41,6 +41,7 @@ const RequestHero: FC<Props> = ({ chainId }) => {
     exploreRequestTx,
     identifier,
     ancillaryData,
+    eventBased,
   } = useReader(state || {});
 
   return (
@@ -61,7 +62,7 @@ const RequestHero: FC<Props> = ({ chainId }) => {
           <HeaderButtonWrapper>
             <HeroButton>
               <HeroButtonFlex>
-                <HeroLogo src={logo} alt="polygon_logo" />
+                <HeroLogo src={logo} alt="chain_logo" />
                 <HeroButtonText>{chainName}</HeroButtonText>
               </HeroButtonFlex>
             </HeroButton>
@@ -79,6 +80,7 @@ const RequestHero: FC<Props> = ({ chainId }) => {
                 "Proposal"
               )}
             </HeroButton>
+            {eventBased && <HeroButton> Event Based Expiry </HeroButton>}
           </HeaderButtonWrapper>
         </HeroHeaderRow>
         <RequestForm />

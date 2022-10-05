@@ -25,32 +25,14 @@ import useReader from "hooks/useOracleReader";
 import { ethers } from "ethers";
 import { prettyFormatNumber } from "helpers/format";
 import BouncingDotsLoader from "components/bouncing-dots-loader";
+
+const MagicNumber =
+  "-57896044618658097711785492504343953926634992332820282019728.792003956564819968";
+
 const RequestForm: FC = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [value, setValue] = useState("");
   const [inputError, setInputError] = useState("");
-  const inputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const v = event.target.value;
-    setValue(v);
-    setInputError("");
-    try {
-      checkForInputError(v);
-    } catch (err: any) {
-      setInputError(err.message);
-    }
-  };
-  const checkForInputError = (v: string) => {
-    if (isNaN(Number(v))) {
-      throw new Error("Must be a valid number.");
-    }
-    if (v.includes(".")) {
-      const split = v.split(".");
-      if (split[1].length > 18) {
-        throw new Error("Value must not exceed currency decimals.");
-      }
-    }
-    return false;
-  };
 
   const { flags, client, state } = useClient();
   const { connect } = useConnection();
@@ -66,7 +48,36 @@ const RequestForm: FC = () => {
     proposeTx,
     exploreProposeTx,
     exploreDisputeTx,
+    eventBased,
   } = useReader(state);
+
+  const inputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const v = event.target.value;
+    setValue(v);
+    setInputError("");
+    try {
+      checkForInputError(v);
+    } catch (err: any) {
+      setInputError(err.message);
+    }
+  };
+  const checkForInputError = (v: string) => {
+    if (eventBased && v === MagicNumber) {
+      throw new Error(
+        `Event based expiry requests cannot be resolved with "too early", i.e. "magic number".`
+      );
+    }
+    if (isNaN(Number(v))) {
+      throw new Error("Must be a valid number.");
+    }
+    if (v.includes(".")) {
+      const split = v.split(".");
+      if (split[1].length > 18) {
+        throw new Error("Value must not exceed currency decimals.");
+      }
+    }
+    return false;
+  };
 
   // TODO: update these to the correct design for text and button state
   const getProposeButtonProps = (value: string) => {
@@ -136,7 +147,6 @@ const RequestForm: FC = () => {
   ]);
 
   const getDisputeButtonProps = () => {
-    // setInputError("");
     if (flags.MissingUser)
       return {
         label: "Connect wallet",
