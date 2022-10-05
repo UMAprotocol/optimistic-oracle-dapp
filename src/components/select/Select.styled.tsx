@@ -6,11 +6,11 @@ interface ISelectStyledProps {
 }
 
 export const SelectContainer = styled.div`
-  width: 120px;
+  width: auto;
 `;
 
 export const SelectHeader = styled.button<ISelectStyledProps>`
-  padding: 10px;
+  padding: 7px;
   display: flex;
   border-radius: 6px;
   border-width: 1px;
@@ -26,7 +26,7 @@ export const SelectHeader = styled.button<ISelectStyledProps>`
 export const SelectList = styled.ul<ISelectStyledProps>`
   max-height: 210px;
   overflow-y: auto;
-  margin: 12px 0 0 0;
+  margin: 2px 0 0 0;
   border-width: ${(props) => (props.isOpen ? "1px" : "0")};
   border-style: solid;
   border-color: #565656;
@@ -59,8 +59,7 @@ export const SelectListItem = styled.li<ISelectStyledProps>`
 `;
 
 export const Arrow = styled.span`
-  position: absolute;
-  margin-left: 90px;
+  margin-left: 10px;
 `;
 
 export const UpArrow = styled(Arrow)`

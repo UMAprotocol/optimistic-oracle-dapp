@@ -18,7 +18,9 @@ import { RequestState } from "constants/blockchain";
 import { oracle } from "helpers/oracleClient";
 import { addCommasOnly } from "utils/format";
 import { RequestsTableWithPagination } from "./RequestsTableWithPagination";
-import { OptionType } from "components/select/Select";
+import Select, { OptionType } from "components/select/Select";
+import { ChainsEnabled } from "constants/oracleConfig";
+
 enum Filter {
   DEFAULT,
   REQUESTS,
@@ -54,6 +56,7 @@ interface Props {
   dropdownPaginationValue: OptionType;
   setDropdownPaginationValue: React.Dispatch<React.SetStateAction<OptionType>>;
 }
+
 const Index = ({
   currentPage,
   setCurrentPage,
@@ -64,6 +67,10 @@ const Index = ({
   const { state } = useClient();
   const { descendingRequests } = useReader(state);
   const [filteredRequests, setFilteredRequests] = useState(initialFR);
+  const [filteredChain, setFilteredChain] = useState({
+    value: "0",
+    label: "All Chains",
+  });
 
   useEffect(() => {
     if (!descendingRequests) return;
@@ -82,6 +89,14 @@ const Index = ({
       // skip requests older the 1 month
       if (request.timestamp < lastMonthTimestamp) {
         result.old.push(request);
+        return result;
+      }
+
+      // skip requests if specific chain is selected
+      if (
+        filteredChain.value !== "0" &&
+        request.chainId.toString() !== filteredChain.value
+      ) {
         return result;
       }
 
@@ -108,7 +123,7 @@ const Index = ({
         `${nextFR.old.length} requests too old to show: `,
         nextFR.old
       );
-  }, [descendingRequests]);
+  }, [descendingRequests, filteredChain]);
 
   function filterDescendingRequests(filter: Filter) {
     let fr: Requests = [];
@@ -188,6 +203,11 @@ const Index = ({
               {addCommasOnly(filteredRequests.answered.length)}
             </FilterNumbers>
           </FilterButton>
+          <Select
+            items={[{ value: "0", label: "All Chains" }, ...ChainsEnabled]}
+            selected={filteredChain}
+            setSelected={(e) => setFilteredChain(e)}
+          />
         </FilterButtonRow>
       </FilterWrapper>
       {filteredDescendingRequests.length ? (
