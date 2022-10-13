@@ -40,11 +40,10 @@ function useRequestTableData({
   timestamp,
   ancillaryData,
   requestTxHash,
-  rules,
 }: UseRequestTableParams) {
   const [rows, setRows] = useState<IRow[]>([]);
   const [headerCells] = useState<ICell[]>(hc);
-  rules = useOptimisticGovernorRules();
+  const { rules } = useOptimisticGovernorRules();
 
   useEffect(() => {
     const nextRows = [] as IRow[];

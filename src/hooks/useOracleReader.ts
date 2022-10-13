@@ -39,7 +39,14 @@ export default function useOracleReader(state: oracle.types.state.State) {
   const disputer = request?.disputer;
   const proposer = request?.proposer;
   const chainId: ChainId = Number(state.inputs?.request?.chainId || 1);
-  const provider = read.provider(chainId);
+
+  let provider;
+  try {
+    provider = read.provider(chainId);
+  } catch (err) {
+    provider = undefined;
+    console.error(provider, err);
+  }
 
   const requestTx = request?.requestTx;
   const proposeTx = request?.proposeTx;

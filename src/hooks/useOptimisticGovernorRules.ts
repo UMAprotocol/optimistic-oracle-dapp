@@ -26,18 +26,20 @@ export function useOptimisticGovernorRules() {
 
   useEffect(() => {
     if (requester === undefined) return;
+    if (provider === undefined) return;
 
-    const contract = new ethers.Contract(requester, ogAbi, provider);
-    contract
-      .rules()
-      .then((rules: string) => {
-        setRules(rules);
-      })
-      .catch((error: any) => {
+    async function getRules() {
+      try {
+        const contract = new ethers.Contract(requester!, ogAbi, provider);
+        const contractRules = await contract?.rules();
+        setRules(contractRules);
+      } catch (error) {
         setRules(undefined);
-        console.error(error);
-      });
+        console.error(`Get rules failed: ${error}`);
+      }
+    }
+    getRules();
   }, [requester, provider]);
 
-  return rules;
+  return { rules };
 }
