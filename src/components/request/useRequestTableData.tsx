@@ -31,7 +31,6 @@ type UseRequestTableParams = {
   timestamp?: number;
   ancillaryData?: string;
   requestTxHash?: string;
-  rules?: string;
 };
 function useRequestTableData({
   chainId = 1,
