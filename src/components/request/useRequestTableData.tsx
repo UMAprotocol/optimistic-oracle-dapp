@@ -3,6 +3,7 @@ import { ICell, IRow } from "../table/Table";
 import { ethers } from "ethers";
 import { CHAINS, ChainId } from "constants/blockchain";
 import { parseIdentifier, formatTime, formatDate } from "helpers/format";
+import { useOptimisticGovernorRules } from "hooks/useOptimisticGovernorRules";
 
 const hc: ICell[] = [
   {
@@ -41,6 +42,7 @@ function useRequestTableData({
 }: UseRequestTableParams) {
   const [rows, setRows] = useState<IRow[]>([]);
   const [headerCells] = useState<ICell[]>(hc);
+  const { rules } = useOptimisticGovernorRules();
 
   useEffect(() => {
     const nextRows = [] as IRow[];
@@ -226,7 +228,7 @@ function useRequestTableData({
       cells: [
         {
           size: "xs",
-          value: "4",
+          value: "6",
         },
         {
           size: "sm",
@@ -249,8 +251,38 @@ function useRequestTableData({
       ],
     });
 
+    if (rules !== undefined) {
+      nextRows.push({
+        cells: [
+          {
+            size: "xs",
+            value: "7",
+          },
+          {
+            size: "sm",
+            value: "rules",
+          },
+          {
+            size: "sm",
+            value: "string",
+          },
+          {
+            size: "lg",
+            value: rules,
+          },
+        ],
+      });
+    }
     setRows(nextRows);
-  }, [chainId, requester, identifier, timestamp, ancillaryData, requestTxHash]);
+  }, [
+    chainId,
+    requester,
+    identifier,
+    timestamp,
+    ancillaryData,
+    requestTxHash,
+    rules,
+  ]);
 
   return { rows, headerCells };
 }
