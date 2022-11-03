@@ -138,7 +138,7 @@ const Index = ({
     }, initial);
     setFilteredRequests(nextFR.filtered);
     const chainSelections = defaultChainSelections.map((chainSelection) => {
-      const label = `${chainSelection.label} - ${
+      const label = `${chainSelection.label}: ${
         nextFR.chainCount[chainSelection.value] || 0
       }`;
       return {
