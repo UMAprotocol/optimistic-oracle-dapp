@@ -56,6 +56,11 @@ interface Props {
   dropdownPaginationValue: OptionType;
   setDropdownPaginationValue: React.Dispatch<React.SetStateAction<OptionType>>;
 }
+const defaultChainSelection = {
+  value: "0",
+  label: "All Chains",
+};
+const defaultChainSelections = [defaultChainSelection, ...ChainsEnabled];
 
 const Index = ({
   currentPage,
@@ -67,20 +72,27 @@ const Index = ({
   const { state } = useClient();
   const { descendingRequests } = useReader(state);
   const [filteredRequests, setFilteredRequests] = useState(initialFR);
-  const [filteredChain, setFilteredChain] = useState({
-    value: "0",
-    label: "All Chains",
-  });
+  const [filteredChain, setFilteredChain] = useState(defaultChainSelection);
+  const [chainSelections, setChainSelections] = useState(
+    defaultChainSelections
+  );
 
   useEffect(() => {
     if (!descendingRequests) return;
-    const initial: FilteredRequests = {
-      old: [],
-      all: [],
-      requested: [],
-      proposed: [],
-      disputed: [],
-      answered: [],
+
+    const initial: {
+      chainCount: Record<string, number>;
+      filtered: FilteredRequests;
+    } = {
+      chainCount: { "0": 0 },
+      filtered: {
+        old: [],
+        all: [],
+        requested: [],
+        proposed: [],
+        disputed: [],
+        answered: [],
+      },
     };
     const nowTimestamp = parseInt((new Date().getTime() / 1000).toFixed(0));
     // subtract the seconds for 1 month
@@ -88,9 +100,16 @@ const Index = ({
     const nextFR = descendingRequests.reduce((result, request) => {
       // skip requests older the 1 month
       if (request.timestamp < lastMonthTimestamp) {
-        result.old.push(request);
+        result.filtered.old.push(request);
         return result;
       }
+      // count requests per chain
+      if (result.chainCount[request.chainId.toString()] === undefined) {
+        result.chainCount[request.chainId.toString()] = 0;
+      }
+      result.chainCount[request.chainId.toString()]++;
+      // all requests count
+      result.chainCount["0"]++;
 
       // skip requests if specific chain is selected
       if (
@@ -101,27 +120,37 @@ const Index = ({
       }
 
       if (ALL_FILTER(request)) {
-        result.all.push(request);
+        result.filtered.all.push(request);
       }
       if (REQUEST_FILTER(request)) {
-        result.requested.push(request);
+        result.filtered.requested.push(request);
       }
       if (DISPUTE_FILTER(request)) {
-        result.disputed.push(request);
+        result.filtered.disputed.push(request);
       }
       if (PROPOSED_FILTER(request)) {
-        result.proposed.push(request);
+        result.filtered.proposed.push(request);
       }
       if (ANSWERED_FILTER(request)) {
-        result.answered.push(request);
+        result.filtered.answered.push(request);
       }
       return result;
     }, initial);
-    setFilteredRequests(nextFR);
-    if (process.env.REACT_APP_DEBUG && nextFR.old.length)
+    setFilteredRequests(nextFR.filtered);
+    const chainSelections = defaultChainSelections.map((chainSelection) => {
+      const label = `${chainSelection.label} - ${
+        nextFR.chainCount[chainSelection.value] || 0
+      }`;
+      return {
+        ...chainSelection,
+        label,
+      };
+    });
+    setChainSelections(chainSelections);
+    if (process.env.REACT_APP_DEBUG && nextFR.filtered.old.length)
       console.log(
-        `${nextFR.old.length} requests too old to show: `,
-        nextFR.old
+        `${nextFR.filtered.old.length} requests too old to show: `,
+        nextFR.filtered.old
       );
   }, [descendingRequests, filteredChain]);
 
@@ -204,9 +233,14 @@ const Index = ({
             </FilterNumbers>
           </FilterButton>
           <Select
-            items={[{ value: "0", label: "All Chains" }, ...ChainsEnabled]}
+            items={chainSelections}
             selected={filteredChain}
-            setSelected={(e) => setFilteredChain(e)}
+            setSelected={({ value }) =>
+              setFilteredChain(
+                defaultChainSelections.find((s) => s.value === value) ||
+                  defaultChainSelection
+              )
+            }
           />
         </FilterButtonRow>
       </FilterWrapper>
