@@ -33,7 +33,7 @@ export const SelectList = styled.ul<ISelectStyledProps>`
   background-color: #fff;
   list-style: none;
   position: absolute;
-  width: 120px;
+  width: auto;
   border-radius: 8px;
   color: #565656;
   z-index: 1000;

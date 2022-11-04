@@ -20,7 +20,7 @@ export interface OptionType {
 export interface Props {
   items: OptionType[];
   selected: OptionType;
-  setSelected: React.Dispatch<React.SetStateAction<OptionType>>;
+  setSelected: React.Dispatch<OptionType>;
 }
 
 const Select: FC<Props> = ({ items, selected, setSelected }) => {
