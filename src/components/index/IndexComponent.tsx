@@ -98,8 +98,8 @@ const Index = ({
     // subtract the seconds for 1 month
     const lastMonthTimestamp = nowTimestamp - 60 * 60 * 24 * 31;
     const nextFR = descendingRequests.reduce((result, request) => {
-      // skip requests older the 1 month
-      if (request.timestamp < lastMonthTimestamp) {
+      // skip requests older the 1 month, unless they are event based.
+      if (!request.eventBased && request.timestamp < lastMonthTimestamp) {
         result.filtered.old.push(request);
         return result;
       }
