@@ -278,6 +278,27 @@ if (process.env.REACT_APP_PROVIDER_URL_43114) {
     optimisticOracleAddress: "0x28077B47Cd03326De7838926A63699849DD4fa87",
   };
 }
+if (process.env.REACT_APP_PROVIDER_URL_80001) {
+  const chainId = ChainId.MUMBAI;
+  const chain = CHAINS[chainId];
+  ChainsEnabled.push({ label: chain.name, value: chainId.toString() });
+  const config = {
+    rpcUrls: [process.env.REACT_APP_PROVIDER_URL_80001] as RequiredStringList,
+    nativeCurrency: chain.nativeCurrency,
+    chainName: chain.name,
+    blockExplorerUrls: [chain.explorerUrl] as RequiredStringList,
+  };
+  // no skinny deployment on this chain
+  optimisticChains[chainId] = {
+    ...config,
+    optimisticOracleAddress: "0xAB75727d4e89A7f7F04f57C00234a35950527115",
+  };
+
+  optimisticV2Chains[chainId] = {
+    ...config,
+    optimisticOracleAddress: "0x60E6140330F8FE31e785190F39C1B5e5e833c2a9",
+  };
+}
 
 // order of export is important, this determines the order in which clients are returned from factory
 const config: [

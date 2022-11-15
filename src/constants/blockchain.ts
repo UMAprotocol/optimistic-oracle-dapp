@@ -33,6 +33,7 @@ export enum ChainId {
   ARBITRUM = 42161,
   AVAX = 43114,
   HARDHAT = 31337,
+  MUMBAI = 80001,
 }
 
 // useful place to get most of this information: https://chainlist.org/
@@ -216,6 +217,19 @@ export const CHAINS: Record<ChainId, ChainMetadata> = {
     nativeCurrency: {
       name: "Avalanche",
       symbol: "AVAX",
+      decimals: 18,
+    },
+  },
+  [ChainId.MUMBAI]: {
+    name: "Mumbai Polygon",
+    chainId: ChainId.MUMBAI,
+    logoURI: polygonLogo,
+    explorerUrl: "https://mumbai.polygonscan.com",
+    constructExplorerLink: (txHash: string) =>
+      `https://mumbai.polygonscan.com/tx/${txHash}`,
+    nativeCurrency: {
+      name: "Polygon",
+      symbol: "MATIC",
       decimals: 18,
     },
   },

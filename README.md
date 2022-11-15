@@ -19,6 +19,7 @@ At least one of these providers should be enabled in order for the app to collec
 - REACT_APP_PROVIDER_URL_9001=Evmos Provider
 - REACT_APP_PROVIDER_URL_42161=Arbitrum Provider
 - REACT_APP_PROVIDER_URL_43114=Avalanche Provider
+- REACT_APP_PROVIDER_URL_80001=Mumbai Provider
 - REACT_APP_DEBUG=1 enable event state debugging output to console. Remove definition in production. Setting debug to 1 will also enable local hardhat testing with chain id 1337.
 - REACT_APP_FORK_1=1 enabled mainnet fork through local hardhat or other node, hard coded to http://127.0.0.1:8545 and chain 1337
 
