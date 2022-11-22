@@ -10,6 +10,8 @@ import {
   FilterButton,
   FilterWrapper,
   FilterNumbers,
+  Checkbox,
+  Label,
 } from "./Index.styled";
 import ooLogo from "assets/uma-oo-logo-redcirclebg.svg";
 import useClient from "hooks/useOracleClient";
@@ -76,6 +78,7 @@ const Index = ({
   const [chainSelections, setChainSelections] = useState(
     defaultChainSelections
   );
+  const [hideEventBasedExpiry, setHideEventBasedExpiry] = useState(false);
 
   useEffect(() => {
     if (!descendingRequests) return;
@@ -98,6 +101,7 @@ const Index = ({
     // subtract the seconds for 1 month
     const lastMonthTimestamp = nowTimestamp - 60 * 60 * 24 * 31;
     const nextFR = descendingRequests.reduce((result, request) => {
+      if (hideEventBasedExpiry && request.eventBased) return result;
       // skip requests older the 1 month, unless they are event based.
       if (!request.eventBased && request.timestamp < lastMonthTimestamp) {
         result.filtered.old.push(request);
@@ -152,7 +156,7 @@ const Index = ({
         `${nextFR.filtered.old.length} requests too old to show: `,
         nextFR.filtered.old
       );
-  }, [descendingRequests, filteredChain]);
+  }, [descendingRequests, filteredChain, hideEventBasedExpiry]);
 
   function filterDescendingRequests(filter: Filter) {
     let fr: Requests = [];
@@ -242,6 +246,13 @@ const Index = ({
               )
             }
           />
+          <Label>
+            <Checkbox
+              type="checkbox"
+              onChange={() => setHideEventBasedExpiry(!hideEventBasedExpiry)}
+            />
+            Hide Event Based Expiry
+          </Label>
         </FilterButtonRow>
       </FilterWrapper>
       {filteredDescendingRequests.length ? (

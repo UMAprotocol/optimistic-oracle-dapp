@@ -110,3 +110,10 @@ export const FilterNumbers = styled.div<IFilterNumbers>`
 `;
 
 export const ShowAnsweredText = styled.div``;
+
+export const Checkbox = styled.input`
+  margin: 5px 5px 5px 10px;
+`;
+export const Label = styled.label`
+  margin: auto 0 auto 0;
+`;
