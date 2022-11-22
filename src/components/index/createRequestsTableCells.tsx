@@ -31,6 +31,11 @@ const headerCells: ICell[] = [
     value: "Proposed answer",
     cellClassName: "other-header-cell",
   },
+  {
+    size: "sm",
+    value: "Event Based Expiry",
+    cellClassName: "other-header-cell",
+  },
 ];
 
 function createRequestsTableCells(
@@ -97,6 +102,9 @@ function createRequestsTableCells(
         req.requestTx || req.proposeTx || req.disputeTx || req.settleTx
       }&chainId=${req.chainId}&oracleType=${req.oracleType}&eventIndex=${0}`;
 
+      const eventBased =
+        req.eventBased === false ? "No" : req.eventBased === true ? "Yes" : "-";
+
       const cells = [
         {
           size: "lg",
@@ -116,6 +124,11 @@ function createRequestsTableCells(
         {
           size: "sm",
           value: proposedPrice ?? "-",
+          cellClassName: "other-cell",
+        },
+        {
+          size: "sm",
+          value: eventBased,
           cellClassName: "other-cell",
         },
       ] as ICell[];

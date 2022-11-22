@@ -3292,25 +3292,25 @@
     "@typescript-eslint/types" "5.10.0"
     eslint-visitor-keys "^3.0.0"
 
-"@uma/contracts-frontend@^0.3.15":
-  version "0.3.15"
-  resolved "https://registry.yarnpkg.com/@uma/contracts-frontend/-/contracts-frontend-0.3.15.tgz#cc8eae27826809b6925b2cd268d3973aea027804"
-  integrity sha512-FKDu3FXHd31ILXu9Wo+Er4El0BN35I2+Unu9Nun6PWHZtByo1/4B2439xtfysDKQFF0f4PHMdL1V645A5Q1OKQ==
+"@uma/contracts-frontend@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@uma/contracts-frontend/-/contracts-frontend-0.4.2.tgz#60345f473858c3582e04b1d0af355c8efbe5599a"
+  integrity sha512-AKa8F8zUo1xHocj/IM3tQlnOzgW5P7Wkvrbh2ktGnRzOEAA41N62JPukRGECTd6y4Oxwa+/9Awl2Tq231F7KDA==
 
-"@uma/contracts-node@^0.3.15":
-  version "0.3.15"
-  resolved "https://registry.yarnpkg.com/@uma/contracts-node/-/contracts-node-0.3.15.tgz#bcd658edb0baa9ddaeb4248933affa04865468cf"
-  integrity sha512-z14gtnt6VKjMkfZYGtCFERG/wyngHUp0/yDKB6ZhAVz/EanUSGpWvD4ehm/xC/HCSQcT253oFl9e0P1tsZRblw==
+"@uma/contracts-node@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@uma/contracts-node/-/contracts-node-0.4.2.tgz#b2da6a8fa386a7a042beb525dd2ceaf1576fbb00"
+  integrity sha512-toYR5+xgclOFZnOhk9tcEyGnyB0wp6Nl3QgP3Oc045UCVdAajVsBH/L08kpYIcHxVHsNQgoQ2lbR3ZpYIdewRA==
 
-"@uma/sdk@^0.29.0":
-  version "0.29.0"
-  resolved "https://registry.yarnpkg.com/@uma/sdk/-/sdk-0.29.0.tgz#1a41897e6c8b37d149a598d9e17ffcd9f9a7564c"
-  integrity sha512-FWHK3GWOJ+Y+q3lVro7u2jAFNKIevEVsRzIIl6YS7Jqt5eHFpFewq/iFtXXBspmr+wXyGLLrGqb8aZ1c24E/ww==
+"@uma/sdk@^0.31.0":
+  version "0.31.0"
+  resolved "https://registry.yarnpkg.com/@uma/sdk/-/sdk-0.31.0.tgz#eb6ba8dea3c2cd7d7d87612fdf167643041d4992"
+  integrity sha512-m4Syj6xuMgwQUT5ukc7DdT25UOrfJjlLy3JqtuswmyPQHP8aUlABWzeaasjXuiLH01ZgF4vdnLvaN8dz+pbJiQ==
   dependencies:
     "@google-cloud/datastore" "^7.0.0"
     "@types/lodash-es" "^4.17.5"
-    "@uma/contracts-frontend" "^0.3.15"
-    "@uma/contracts-node" "^0.3.15"
+    "@uma/contracts-frontend" "^0.4.2"
+    "@uma/contracts-node" "^0.4.2"
     axios "^0.24.0"
     bn.js "^4.11.9"
     decimal.js "^10.3.1"
