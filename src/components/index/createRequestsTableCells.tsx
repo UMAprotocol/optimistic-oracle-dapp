@@ -23,6 +23,11 @@ const headerCells: ICell[] = [
   },
   {
     size: "sm",
+    value: "Event Based",
+    cellClassName: "other-header-cell",
+  },
+  {
+    size: "sm",
     value: "Status",
     cellClassName: "other-header-cell",
   },
@@ -97,6 +102,9 @@ function createRequestsTableCells(
         req.requestTx || req.proposeTx || req.disputeTx || req.settleTx
       }&chainId=${req.chainId}&oracleType=${req.oracleType}&eventIndex=${0}`;
 
+      const eventBased =
+        req.eventBased === false ? "No" : req.eventBased === true ? "Yes" : "-";
+
       const cells = [
         {
           size: "lg",
@@ -106,6 +114,11 @@ function createRequestsTableCells(
         {
           size: "sm",
           value: timestamp,
+          cellClassName: "other-cell",
+        },
+        {
+          size: "sm",
+          value: eventBased,
           cellClassName: "other-cell",
         },
         {

@@ -36,7 +36,7 @@ export const StyledCellBody = styled(Cell)`
 
   &.other-cell,
   &.other-header-cell {
-    flex: 0 0 200px;
+    flex: 0 0 180px;
   }
   &.other-header-cell {
     font-weight: 600;

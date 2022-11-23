@@ -77,7 +77,7 @@ interface ICellStyled {
 export const Cell = styled.div<ICellStyled>`
   flex: ${({ size = "sm" }) => {
     if (size === "xs") return "0 0 30px";
-    if (size === "sm" || size === undefined) return "0 0 60px";
+    if (size === "sm") return "0 0 60px";
     if (size === "md") return "0 0 130px";
     if (size === "lg") return "flex: 1 2 550px";
     return "0 0 60px";
@@ -89,17 +89,9 @@ export const Cell = styled.div<ICellStyled>`
   &:not(:first-of-type) {
     min-width: 150px;
   }
-  &:nth-of-type(4) {
-    flex: 1 2 550px;
-    word-break: break-word;
-    @media ${QUERIES.tabletAndUp} {
-      min-width: 250px;
-    }
-  }
 `;
 
 export const Body = styled.div`
-  /* padding: 15px 0; */
   background-color: var(--gray-300);
 `;
 
