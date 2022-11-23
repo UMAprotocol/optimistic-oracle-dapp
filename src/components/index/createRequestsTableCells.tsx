@@ -23,17 +23,17 @@ const headerCells: ICell[] = [
   },
   {
     size: "sm",
+    value: "Event Based",
+    cellClassName: "other-header-cell",
+  },
+  {
+    size: "sm",
     value: "Status",
     cellClassName: "other-header-cell",
   },
   {
     size: "sm",
     value: "Proposed answer",
-    cellClassName: "other-header-cell",
-  },
-  {
-    size: "sm",
-    value: "Event Based Expiry",
     cellClassName: "other-header-cell",
   },
 ];
@@ -118,17 +118,17 @@ function createRequestsTableCells(
         },
         {
           size: "sm",
+          value: eventBased,
+          cellClassName: "other-cell",
+        },
+        {
+          size: "sm",
           value: requestState,
           cellClassName: "other-cell",
         },
         {
           size: "sm",
           value: proposedPrice ?? "-",
-          cellClassName: "other-cell",
-        },
-        {
-          size: "sm",
-          value: eventBased,
           cellClassName: "other-cell",
         },
       ] as ICell[];
