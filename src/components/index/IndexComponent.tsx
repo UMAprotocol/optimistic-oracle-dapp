@@ -251,7 +251,7 @@ const Index = ({
               type="checkbox"
               onChange={() => setHideEventBasedExpiry(!hideEventBasedExpiry)}
             />
-            Hide Event Based Expiry
+            Hide Event Based Requests
           </Label>
         </FilterButtonRow>
       </FilterWrapper>
