@@ -89,6 +89,9 @@ export const Cell = styled.div<ICellStyled>`
   &:not(:first-of-type) {
     min-width: 150px;
   }
+  &:nth-of-type(4) {
+    word-break: break-word;
+  }
 `;
 
 export const Body = styled.div`
