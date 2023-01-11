@@ -42,7 +42,7 @@ function useRequestTableData({
 }: UseRequestTableParams) {
   const [rows, setRows] = useState<IRow[]>([]);
   const [headerCells] = useState<ICell[]>(hc);
-  const { rules } = useOptimisticGovernorRules();
+  const { rules, explanation } = useOptimisticGovernorRules();
 
   useEffect(() => {
     const nextRows = [] as IRow[];
@@ -273,6 +273,29 @@ function useRequestTableData({
         ],
       });
     }
+
+    if (explanation !== undefined) {
+      nextRows.push({
+        cells: [
+          {
+            size: "xs",
+            value: "8",
+          },
+          {
+            size: "sm",
+            value: "explanation",
+          },
+          {
+            size: "sm",
+            value: "string",
+          },
+          {
+            size: "lg",
+            value: explanation,
+          },
+        ],
+      });
+    }
     setRows(nextRows);
   }, [
     chainId,
@@ -282,6 +305,7 @@ function useRequestTableData({
     ancillaryData,
     requestTxHash,
     rules,
+    explanation,
   ]);
 
   return { rows, headerCells };
