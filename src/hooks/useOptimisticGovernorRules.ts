@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
 import { ethers } from "ethers";
+import { toUtf8String } from "ethers/lib/utils";
 
 const ogAbi = [
   "function rules() view returns (string)",
@@ -44,7 +45,7 @@ export function useOptimisticGovernorRules() {
             "proposeTransactions",
             proposeData.data
           );
-          setExplanation(decodedTransaction[1]);
+          setExplanation(toUtf8String(decodedTransaction[1]));
         }
       } catch (error) {
         setExplanation(undefined);
