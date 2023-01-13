@@ -5,8 +5,59 @@ import { ethers } from "ethers";
 import { toUtf8String } from "ethers/lib/utils";
 
 const ogAbi = [
-  "function rules() view returns (string)",
-  "function proposeTransactions(tuple(address to, uint8 operation, uint256 value, bytes data)[] _transactions, bytes _explanation)",
+  {
+    inputs: [],
+    name: "rules",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "to",
+            type: "address",
+          },
+          {
+            internalType: "enum Enum.Operation",
+            name: "operation",
+            type: "uint8",
+          },
+          {
+            internalType: "uint256",
+            name: "value",
+            type: "uint256",
+          },
+          {
+            internalType: "bytes",
+            name: "data",
+            type: "bytes",
+          },
+        ],
+        internalType: "struct OptimisticGovernor.Transaction[]",
+        name: "_transactions",
+        type: "tuple[]",
+      },
+      {
+        internalType: "bytes",
+        name: "_explanation",
+        type: "bytes",
+      },
+    ],
+    name: "proposeTransactions",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
 ];
 
 export function useOptimisticGovernorRules() {
@@ -16,8 +67,10 @@ export function useOptimisticGovernorRules() {
   const [explanation, setExplanation] = useState<undefined | string>();
 
   useEffect(() => {
-    if (requester === undefined) return;
-    if (provider === undefined) return;
+    if (requester === undefined || provider === undefined) {
+      setRules(undefined);
+      return;
+    }
 
     async function getRules() {
       try {
@@ -34,9 +87,15 @@ export function useOptimisticGovernorRules() {
 
   useEffect(() => {
     async function getExplanation() {
-      if (rules === undefined) return;
-      if (provider === undefined) return;
-      if (proposeTx === undefined) return;
+      if (
+        rules === undefined ||
+        provider === undefined ||
+        proposeTx === undefined
+      ) {
+        setExplanation(undefined);
+        return;
+      }
+
       try {
         const proposeData = await provider.getTransaction(proposeTx);
         if (proposeData?.data !== undefined) {
