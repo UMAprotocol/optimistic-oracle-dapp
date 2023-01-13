@@ -5,59 +5,8 @@ import { ethers } from "ethers";
 import { toUtf8String } from "ethers/lib/utils";
 
 const ogAbi = [
-  {
-    inputs: [],
-    name: "rules",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        components: [
-          {
-            internalType: "address",
-            name: "to",
-            type: "address",
-          },
-          {
-            internalType: "enum Enum.Operation",
-            name: "operation",
-            type: "uint8",
-          },
-          {
-            internalType: "uint256",
-            name: "value",
-            type: "uint256",
-          },
-          {
-            internalType: "bytes",
-            name: "data",
-            type: "bytes",
-          },
-        ],
-        internalType: "struct OptimisticGovernor.Transaction[]",
-        name: "_transactions",
-        type: "tuple[]",
-      },
-      {
-        internalType: "bytes",
-        name: "_explanation",
-        type: "bytes",
-      },
-    ],
-    name: "proposeTransactions",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
+  "function rules() view returns (string)",
+  "function proposeTransactions(tuple(address to, uint8 operation, uint256 value, bytes data)[] _transactions, bytes _explanation)",
 ];
 
 export function useOptimisticGovernorRules() {
