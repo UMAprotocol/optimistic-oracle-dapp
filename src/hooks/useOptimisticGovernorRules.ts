@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import useClient from "hooks/useOracleClient";
 import useReader from "hooks/useOracleReader";
-import { ethers } from "ethers";
+import { ethers, providers } from "ethers";
 import { toUtf8String } from "ethers/lib/utils";
 
 const ogAbi = [
@@ -23,7 +23,8 @@ export function useOptimisticGovernorRules() {
 
     async function getRules() {
       try {
-        const contract = new ethers.Contract(requester!, ogAbi, provider);
+        // this makes sure we dont get compile issues since there are problems between ethers sdk and local ethers
+        const contract = new ethers.Contract(requester!, ogAbi, provider as providers.Provider);
         const contractRules = await contract?.rules();
         setRules(contractRules);
       } catch (error) {

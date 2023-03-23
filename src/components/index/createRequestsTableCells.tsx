@@ -100,7 +100,9 @@ function createRequestsTableCells(
       // we can lookup the transaction based on request, dispute or settle transactions
       const requestDetailsLink = `/request?transactionHash=${
         req.requestTx || req.proposeTx || req.disputeTx || req.settleTx
-      }&chainId=${req.chainId}&oracleType=${req.oracleType}&eventIndex=${0}`;
+      }&chainId=${req.chainId}&oracleType=${req.oracleType}&eventIndex=${
+        req.requestLogIndex || req.proposeLogIndex || req.disputeLogIndex || req.settleLogIndex || 0
+      }`;
 
       const eventBased =
         req.eventBased === false ? "No" : req.eventBased === true ? "Yes" : "-";
